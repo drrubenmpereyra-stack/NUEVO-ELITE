@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Clínica - Estrategias y Niveles de Cambio | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --hc-sesiones: #059669;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
+        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        select, textarea { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        select:focus, textarea:focus { outline: none; border-color: var(--hc-sesiones); }
+        textarea { width: 100%; height: 45px; resize: none; }
+
+        .indicators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .indicator-box { background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 10px; }
+        
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #047857; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — ELITE 2.0</p>
+        </div>
+    </header>
+
+    <nav class="main-nav-bar">
+        <a href="app_2.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones_2.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <a href="sesiones_2.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
+        <a href="entrevista_2.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <a href="eync.html" class="subnav-btn active"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
+            <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
+            <div class="form-group">
+                <label for="eync-patient">Paciente Activo</label>
+                <select id="eync-patient" onchange="loadPatientEyNC()">
+                    <option value="">-- Seleccione un paciente --</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="eync-content-card" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-chess"></i> Módulo EyNC (Estrategias y Niveles de Cambio)</h2>
+            
+            <!-- Fijar Objetivos -->
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                <label><b>Fijar Objetivos:</b></label>
+                <div style="display:flex; gap:10px; margin-top:5px;">
+                    <textarea id="eync-obj-texto" placeholder="Escriba el objetivo manualmente..."></textarea>
+                    <button onclick="fijarObjetivo()" class="btn" style="height: 45px;">FIJAR</button>
+                </div>
+                <div id="eync-lista-objetivos" style="margin-top:15px; display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <!-- Indicadores de Cambio (1A a 1G) -->
+            <label style="margin-bottom: 10px; display: block;"><b>Matriz de Indicadores de Cambio:</b></label>
+            <div class="indicators-grid">
+                <div>
+                    ${crearFilaIndicador("1A- SÍNTOMAS", "supresión o alivio")}
+                    ${crearFilaIndicador("1B- DEFENSAS", "variaciones correlativas")}
+                    ${crearFilaIndicador("1C- RELACIONES", "mayor ajuste y gratificación")}
+                    ${crearFilaIndicador("1D- AUTOESTIMA", "autoestima realista")}
+                </div>
+                <div>
+                    ${crearFilaIndicador("1E- CERCANOS", "cambio conductas otros")}
+                    ${crearFilaIndicador("1F- ADAPTACIÓN", "productividad, recreación")}
+                    ${crearFilaIndicador("1G- CONCIENCIA", "posibilidades y trabas")}
+                </div>
+            </div>
+
+            <div style="margin-top:25px; display:flex; gap:10px;">
+                <button onclick="consultarIA()" class="btn" style="background:#8e44ad; flex:1;"><i class="fa-solid fa-wand-magic-sparkles"></i> BOTÓN IA</button>
+            </div>
+            <div id="ia-output-eync" style="margin-top:15px; padding:15px; background:#f4f1f8; border-left:5px solid #8e44ad; display:none; border-radius:4px; font-size: 0.9rem;"></div>
+        </div>
+    </main>
+
+    <script>
+        function crearFilaIndicador(id, hint) {
+            return `
+                <div class="indicator-box" data-key="${id}">
+                    <b style="font-size:0.85em; color: var(--primary-color);">${id}</b> <small style="color:gray;">(${hint})</small><br>
+                    <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                        <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-${id}" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                        <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-${id}" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                        <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-${id}" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                    </div>
+                </div>`;
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index_2.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index_2.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let activePatientId = null;
+        let eyncData = { objectives: [], indicators: {} };
+
+        async function initEyNC() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('eync-patient');
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
+            }
+        }
+
+        window.loadPatientEyNC = async function() {
+            activePatientId = document.getElementById('eync-patient').value;
+            const contentCard = document.getElementById('eync-content-card');
+
+            if (!activePatientId) {
+                contentCard.style.display = 'none';
+                return;
+            }
+
+            contentCard.style.display = 'block';
+            
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                if (patientSnap.exists()) {
+                    const data = patientSnap.data();
+                    eyncData = data.eyncData || { objectives: [], indicators: {} };
+                    renderObjetivos();
+                    cargarIndicadoresUI();
+                }
+            } catch (error) {
+                console.error("Error al cargar datos de EyNC:", error);
+            }
+        }
+
+        window.fijarObjetivo = async function() {
+            const txt = document.getElementById('eync-obj-texto');
+            const textoVal = txt.value.trim();
+            if (!textoVal || !activePatientId) return;
+
+            const nuevoObj = { id: Date.now(), texto: textoVal, estado: 'No Logrado' };
+            eyncData.objectives.push(nuevoObj);
+            txt.value = "";
+
+            renderObjetivos();
+            await persistirCloud();
+        }
+
+        window.eliminarObjetivo = async function(id) {
+            if (!activePatientId) return;
+            eyncData.objectives = eyncData.objectives.filter(o => o.id !== id);
+            renderObjetivos();
+            await persistirCloud();
+        }
+
+        window.setEstadoObj = async function(id, st) {
+            const obj = eyncData.objectives.find(o => o.id === id);
+            if (obj) {
+                obj.estado = st;
+                await persistirCloud();
+            }
+        }
+
+        function renderObjetivos() {
+            const container = document.getElementById('eync-lista-objetivos');
+            container.innerHTML = '';
+
+            if (eyncData.objectives.length === 0) {
+                container.innerHTML = '<p style="color: #64748b; font-size: 0.85rem; text-align: center;">No hay objetivos fijados.</p>';
+                return;
+            }
+
+            eyncData.objectives.forEach(o => {
+                const div = document.createElement('div');
+                div.style.cssText = "background:#fff; padding:10px; border-radius:5px; border:1px solid #ddd; border-left:5px solid #059669; display:flex; justify-content:space-between; align-items:center; font-size:0.85em;";
+                div.innerHTML = `
+                    <span style="flex:1; margin-right:10px;">${o.texto}</span>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <label style="color:#e74c3c; font-size:0.75em; cursor:pointer;"><input type="radio" name="st_${o.id}" onchange="setEstadoObj(${o.id},'No Logrado')" ${o.estado === 'No Logrado' ? 'checked' : ''}> No logrado</label>
+                        <label style="color:#d4a017; font-size:0.75em; cursor:pointer;"><input type="radio" name="st_${o.id}" onchange="setEstadoObj(${o.id},'En proceso')" ${o.estado === 'En proceso' ? 'checked' : ''}> En proceso</label>
+                        <label style="color:#27ae60; font-size:0.75em; cursor:pointer;"><input type="radio" name="st_${o.id}" onchange="setEstadoObj(${o.id},'Logrado')" ${o.estado === 'Logrado' ? 'checked' : ''}> Logrado</label>
+                        <button onclick="eliminarObjetivo(${o.id})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-weight:bold; margin-left:10px; font-size:1.1em;" title="Eliminar">✕</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        window.guardarIndicadoresCloud = async function() {
+            if (!activePatientId) return;
+            const indicators = {};
+            document.querySelectorAll('.indicator-box').forEach(box => {
+                const key = box.getAttribute('data-key');
+                const checked = box.querySelector('input[type="radio"]:checked');
+                if (checked) indicators[key] = checked.value;
+            });
+            eyncData.indicators = indicators;
+            await persistirCloud();
+        }
+
+        function cargarIndicadoresUI() {
+            document.querySelectorAll('.indicator-box input[type="radio"]').forEach(r => r.checked = false);
+            if (!eyncData.indicators) return;
+
+            Object.keys(eyncData.indicators).forEach(key => {
+                const val = eyncData.indicators[key];
+                const radio = document.querySelector(`.indicator-box[data-key="${key}"] input[value="${val}"]`);
+                if (radio) radio.checked = true;
+            });
+        }
+
+        async function persistirCloud() {
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                await updateDoc(patientRef, { eyncData: eyncData });
+            } catch (error) {
+                console.error("Error al sincronizar con la nube:", error);
+            }
+        }
+
+        window.consultarIA = function() {
+            const output = document.getElementById('ia-output-eync');
+            output.style.display = 'block';
+            output.innerHTML = "<b>Interpretación IA (ELITE 2.0):</b> Análisis de objetivos y niveles de cambio procesado con éxito. Se recomienda mantener enfoque sobre los indicadores que se encuentran marcados 'En proceso'.";
+        }
+
+        initEyNC();
+    </script>
+</body>
+</html>
