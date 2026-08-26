@@ -27,7 +27,6 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* NIVEL 1: BARRA PRINCIPAL */
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
         .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
         .main-nav-btn:hover { opacity: 1; }
@@ -39,7 +38,6 @@
         .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
         .btn-materiales { background-color: var(--color-materiales); }
 
-        /* NIVEL 2: BARRA SECUNDARIA */
         .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
         .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
@@ -47,7 +45,6 @@
         .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
 
-        /* NIVEL 3: BARRA TERCIARIA */
         .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
         .subnav-internal.active-internal { display: flex; }
         .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
@@ -80,7 +77,6 @@
         </div>
     </header>
 
-    <!-- NIVEL 1: BARRA PRINCIPAL -->
     <nav class="main-nav-bar">
         <a href="app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
         <a href="sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
@@ -89,45 +85,43 @@
         <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
-    <!-- NIVEL 2: BARRA SECUNDARIA (Historia Clínica) -->
     <nav class="subnav-bar">
-        <a href="sesiones.html" class="subnav-btn">1. Registro de Sesiones[cite: 1]</a>
-        <a href="entrevista.html" class="subnav-btn active">2. Primera entrevista[cite: 1]</a>
-        <a href="eync.html" class="subnav-btn">3. Est y NC[cite: 1]</a>
-        <a href="ejes.html" class="subnav-btn" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas[cite: 1]</a>
-        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾[cite: 1]</a>
-        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas[cite: 1]</a>
+        <a href="sesiones.html" class="subnav-btn">1. Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn active">2. Primera entrevista</a>
+        <a href="eync.html" class="subnav-btn">3. Estrategias y Niveles de Cambio</a>
+        <a href="./eje1.html" class="subnav-btn" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas</a>
+        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾</a>
+        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
-    <!-- NIVEL 3: BARRA TERCIARIA -->
     <div id="internal-ejes" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Ejes:</span>
-        <a href="ejes.html" class="internal-btn">4.1 Eje 1 Foco[cite: 1]</a>
-        <a href="elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP[cite: 1]</a>
+        <a href="./eje1.html" class="internal-btn">4.1 Eje 1 Foco</a>
+        <a href="./elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP</a>
         <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4 Integraciones</a>
     </div>
 
     <div id="internal-freud" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Aparato Psíquico:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones</a>
     </div>
 
     <div id="internal-psiquismo" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Psiquismo Creador:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica</a>
     </div>
 
     <main class="container">
