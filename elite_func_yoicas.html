@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Gestión Elite v7.0 - Eje 2: Funciones Yoicas</title>
+    <style>
+        body {
+            background-color: #0b0b0b;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+            border: 2px solid #00e5ff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- CABECERA DE FILTROS -->
+    <div style="background:#151515; padding:12px; border-bottom:1px solid #00e5ff; display:flex; gap:15px; align-items:center;">
+        <b style="color:#00e5ff; font-size:11px;">ESTADÍSTICA FUNCIONES YOICAS (DESDE / HASTA):</b>
+        <input type="date" id="stats-yo-inicio" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
+        <input type="date" id="stats-yo-fin" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
+    </div>
+
+    <!-- CUERPO DE EVALUACIÓN (SCROLL) -->
+    <div id="valyo-indicadores-scroll" style="flex:1; overflow-y:auto; padding:20px; border-bottom:2px solid #00e5ff;"></div>
+
+    <!-- PANEL DE CONTROL E INFERIOR (CONSOLA Y ECUALIZADOR) -->
+    <div style="height:360px; background:#0a0a0a; padding:15px; border-top:2px solid #00e5ff; display:flex; flex-direction:column; box-sizing:border-box;">
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button onclick="medirValYo()" style="flex:1; background:#00e5ff; color:black; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">📊 MEDIR / GRAFICAR</button>
+            <button onclick="interpretarIAValYo()" style="flex:1; background:#b21f1f; color:white; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">🤖 INFORME IA</button>
+            <button onclick="guardarValYo()" style="flex:1; background:#27ae60; color:white; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">💾 GUARDAR</button>
+        </div>
+        
+        <div id="valyo-consola" style="flex:1; border:1px solid #333; background:#000; padding:12px; overflow-y:auto; border-radius:8px;">
+            <div id="eq-main" style="display:flex; align-items:flex-end; justify-content:space-around; height:90px; border-bottom:1px solid #222; padding-bottom:30px; margin-bottom:15px;"></div>
+            <div id="ia-informe" style="font-size:12px; color:#ccc; margin-bottom:15px;"></div>
+            <div id="etiquetas-listado" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Rúbrica oficial de Funciones Yoicas
+    const rubricaValYo = {
+        "Función de Realidad": {
+            criterio: "Capacidad de distinguir estímulos internos de externos (Corteza Prefrontal / Juicio Crítico).",
+            n1: "Alucinaciones, delirios o pérdida total de objetividad.",
+            n2: "Proyecciones frecuentes; distorsiones ante el estrés.",
+            n3: "Juicio de realidad conservado: capacidad de autocrítica."
+        },
+        "Regulación de Impulsos": {
+            criterio: "Control inhibitorio y tolerancia a la frustración (Circuito Órbito-frontal).",
+            n1: "Actuación (Acting-out) inmediata; incapacidad de postergar.",
+            n2: "Impulsividad selectiva; sentimientos de culpa posteriores.",
+            n3: "Elevada tolerancia a la frustración; demora de gratificación."
+        },
+        "Mecanismos de Defensa": {
+            criterio: "Estrategias de mediación ante el conflicto (Madurez del procesamiento emocional).",
+            n1: "Defensas primarias (escisión, negación, identificación proyectiva).",
+            n2: "Defensas neuróticas (represión, formación reactiva, desplazamiento).",
+            n3: "Defensas maduras (sublimación, humor, supresión consciente)."
+        },
+        "Integración de Identidad": {
+            criterio: "Continuidad del 'Self' y cohesión imagen corporal (Red de Modo Predeterminado).",
+            n1: "Identidad difusa; sentimiento de vacío; fragmentación corporal.",
+            n2: "Identidad inestable; dependencia excesiva del entorno.",
+            n3: "Identidad cohesiva; sentido histórico del sí mismo."
+        },
+        "Función Sintético-Asociativa": {
+            criterio: "Capacidad de organizar la experiencia y el pensamiento (Integración Hemisférica).",
+            n1: "Pensamiento desorganizado; incapacidad de jerarquizar.",
+            n2: "Dificultad para vincular afecto y pensamiento (alexitimia parcial).",
+            n3: "Excelente capacidad de insight y simbolización."
+        }
+    };
+
+    window.fy_iniciarModulo = function() {
+        renderValYo();
+    };
+
+    function renderValYo() {
+        const areaScroll = document.getElementById('valyo-indicadores-scroll');
+        if (!areaScroll) return;
+        
+        areaScroll.innerHTML = "";
+        Object.keys(rubricaValYo).forEach(key => {
+            const data = rubricaValYo[key];
+            const divInd = document.createElement('div');
+            divInd.style = "background:#111; padding:15px; margin-bottom:12px; border-left:5px solid #00e5ff; border-radius:5px;";
+            divInd.title = `CRITERIO: ${data.criterio}`;
+            divInd.innerHTML = `
+                <b style="color:#00e5ff; display:block; margin-bottom:10px; font-size:13px;">${key.toUpperCase()}</b>
+                <div style="display:flex; justify-content:space-between;">
+                    <label title="${data.n1}" style="color:#ff5252; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="1"> Nivel 1: Deficitario</label>
+                    <label title="${data.n2}" style="color:#ffd740; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="2"> Nivel 2: Intermedio</label>
+                    <label title="${data.n3}" style="color:#69f0ae; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="3"> Nivel 3: Funcional</label>
+                </div>`;
+            areaScroll.appendChild(divInd);
+        });
+    }
+
+    function medirValYo() {
+        const eq = document.getElementById('eq-main');
+        if (!eq) return;
+        eq.innerHTML = "";
+        
+        Object.keys(rubricaValYo).forEach(key => {
+            const val = document.querySelector(`input[name="yo_${key}"]:checked`)?.value || 0;
+            const h = (val / 3) * 100;
+            const color = val <= 1.5 ? '#ff5252' : val <= 2.5 ? '#ffd740' : '#69f0ae';
+            eq.innerHTML += `
+                <div style="width:18%; height:100%; display:flex; flex-direction:column; align-items:center; position:relative;">
+                    <div style="width:18px; height:100%; background:#222; position:relative; border:2px solid #444; border-radius:3px;">
+                        <div style="position:absolute; bottom:0; width:100%; height:${h}%; background:linear-gradient(to top, #000, ${color});"></div>
+                    </div>
+                    <span style="font-size:7px; color:#fff; margin-top:5px; text-align:center; position:absolute; top:105%; width:max-content; font-weight:bold;">${key.toUpperCase()}</span>
+                </div>`;
+        });
+    }
+
+    function interpretarIAValYo() {
+        const iaBox = document.getElementById('ia-informe');
+        if (!iaBox) return;
+        let total = 0;
+        let reporte = "<b>INFORME RVC-YO (LITERAL):</b><br><br>";
+        
+        Object.keys(rubricaValYo).forEach(key => {
+            const v = document.querySelector(`input[name="yo_${key}"]:checked`)?.value;
+            if(v) {
+                total += parseInt(v);
+                reporte += `• ${key}: ${rubricaValYo[key]['n'+v]}<br>`;
+            }
+        });
+        
+        let escala = total <= 8 ? "Rango Deficitario" : total <= 12 ? "Rango Neurótico" : "Fortaleza Yoica";
+        iaBox.innerHTML = `${reporte}<br><b style="color:#00e5ff;">PUNTAJE GLOBAL: ${total} PUNTOS - ${escala}</b>`;
+    }
+
+    function guardarValYo() {
+        let vals = {}; 
+        Object.keys(rubricaValYo).forEach(k => vals[k] = document.querySelector(`input[name="yo_${k}"]:checked`)?.value || 0);
+        
+        const etiquetaListado = document.getElementById('etiquetas-listado');
+        if (etiquetaListado) {
+            const tag = document.createElement('div');
+            tag.style = "background:#222; border:1px solid #00e5ff; padding:8px; font-size:10px; color:#fff; border-radius:4px; margin-top:5px;";
+            tag.innerHTML = `<b>Registro Yoico Guardado:</b> ${Object.values(vals).join(' - ')}`;
+            etiquetaListado.prepend(tag);
+        }
+    }
+
+    // Inicialización automática al abrir la página
+    window.onload = function() {
+        fy_iniciarModulo();
+    };
+</script>
+
+</body>
+</html>
