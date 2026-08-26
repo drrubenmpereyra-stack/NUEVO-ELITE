@@ -9,7 +9,7 @@
         :root {
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
-            --hc-sesiones: #059669; /* Verde esmeralda clínico para Sesiones */
+            --hc-sesiones: #059669;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
@@ -21,13 +21,11 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* Barra Superior de Secciones Generales */
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
         .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
         .main-nav-btn:hover { color: white; }
         .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
 
-        /* Submenú de Historia Clínica (Flow Verde) */
         .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
         .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
@@ -49,27 +47,12 @@
         textarea { width: 100%; min-height: 140px; resize: vertical; padding-right: 45px; }
         
         .mic-btn {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            background: #e2e8f0;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #475569;
-            transition: all 0.2s;
+            position: absolute; right: 10px; top: 10px; background: #e2e8f0; border: none;
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; color: #475569; transition: all 0.2s;
         }
         .mic-btn:hover { background: #cbd5e1; color: #1e293b; }
-        .mic-btn.recording {
-            background: #ef4444;
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
+        .mic-btn.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
@@ -93,16 +76,15 @@
         </div>
     </header>
 
-    <!-- Barra Superior de Secciones Generales -->
     <nav class="main-nav-bar">
         <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
         <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
     </nav>
 
-    <!-- Submenú de Historia Clínica (Flow Verde) con enlace a Primera Entrevista -->
     <nav class="subnav-bar">
         <a href="sesiones.html" class="subnav-btn active"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
         <a href="entrevista.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <a href="eync.html" class="subnav-btn"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
