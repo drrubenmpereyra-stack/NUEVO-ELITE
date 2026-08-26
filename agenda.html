@@ -10,6 +10,7 @@
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
             --admin-agenda: #3b82f6;
+            --color-admin: #2563eb;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
@@ -20,6 +21,12 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
+        /* Barra Superior de Secciones Generales */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
         .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-agenda); }
         .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
@@ -48,6 +55,12 @@
             <p style="font-size: 0.8rem; opacity: 0.8;">Sección General: Administración</p>
         </div>
     </header>
+
+    <!-- Barra Superior de Secciones Generales -->
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
 
     <nav class="subnav-bar">
         <a href="app.html" class="subnav-btn"><i class="fa-solid fa-users"></i> Pacientes</a>
@@ -193,3 +206,4 @@
     </script>
 </body>
 </html>
+```[cite: 1, 11]
