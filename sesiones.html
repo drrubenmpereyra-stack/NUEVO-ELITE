@@ -21,7 +21,13 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* Barra de Submenú para Historia Clínica (Flow Verde/Turquesa) */
+        /* Barra de Secciones Generales (Nivel Superior) */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
+        /* Submenú de Historia Clínica (Flow Verde) */
         .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
         .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
@@ -42,7 +48,6 @@
         .textarea-wrapper { position: relative; }
         textarea { width: 100%; min-height: 140px; resize: vertical; padding-right: 45px; }
         
-        /* Botón de Micrófono Flotante en el Textarea */
         .mic-btn {
             position: absolute;
             right: 10px;
@@ -88,15 +93,19 @@
         </div>
     </header>
 
+    <!-- Barra Superior de Secciones Generales -->
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
     <!-- Submenú de Historia Clínica (Flow Verde) -->
     <nav class="subnav-bar">
         <a href="sesiones.html" class="subnav-btn active"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
-        <a href="app.html" class="subnav-btn" style="background: rgba(255,255,255,0.2);"><i class="fa-solid fa-arrow-left"></i> Volver a Administración</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
     <main class="container">
-        <!-- Selector de Paciente Activo para la Sesión -->
         <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
             <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
             <div class="form-group">
@@ -107,7 +116,6 @@
             </div>
         </div>
 
-        <!-- Formulario de Nueva Sesión -->
         <div id="session-form-card" class="card" style="display: none;">
             <h2><i class="fa-solid fa-pen-nib"></i> Registrar Nueva Sesión</h2>
             <form id="session-form">
@@ -135,7 +143,6 @@
             </form>
         </div>
 
-        <!-- Historial de Sesiones del Paciente -->
         <div id="sessions-history-card" class="card" style="display: none;">
             <h2><i class="fa-solid fa-timeline"></i> Evolución y Bitácora de Sesiones</h2>
             <div id="sessions-container">
@@ -146,7 +153,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
         window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
@@ -194,8 +201,6 @@
 
             formCard.style.display = 'block';
             historyCard.style.display = 'block';
-            
-            // Establecer fecha de hoy por defecto
             document.getElementById('session-date').valueAsDate = new Date();
             renderSessions();
         }
@@ -218,7 +223,6 @@
                         return;
                     }
 
-                    // Ordenar de más reciente a más antigua
                     sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
                     sessions.forEach(s => {
@@ -267,29 +271,23 @@
             }
         });
 
-        // Configuración de Reconocimiento de Voz (Micrófono)
         let recognition = null;
         let isRecording = false;
 
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = 'es-AR'; // Configurado para español regional
+            recognition.lang = 'es-AR';
             recognition.continuous = true;
             recognition.interimResults = true;
 
             recognition.onresult = (event) => {
-                let interimTranscript = '';
                 let finalTranscript = '';
-
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
                         finalTranscript += event.results[i][0].transcript;
-                    } else {
-                        interimTranscript += event.results[i][0].transcript;
                     }
                 }
-
                 const textarea = document.getElementById('session-narrative');
                 if (finalTranscript) {
                     textarea.value += (textarea.value ? ' ' : '') + finalTranscript;
@@ -302,9 +300,7 @@
             };
 
             recognition.onend = () => {
-                if (isRecording) {
-                    recognition.start(); // Mantener activo si no se detuvo manualmente
-                }
+                if (isRecording) { recognition.start(); }
             };
         }
 
