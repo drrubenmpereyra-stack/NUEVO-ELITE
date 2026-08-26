@@ -26,11 +26,11 @@
         .main-nav-btn:hover { color: white; }
         .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
 
-        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
-        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-bar { background: #064e3b; padding: 10px 15px; display: flex; gap: 10px; flex-wrap: nowrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); overflow-x: auto; white-space: nowrap; }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; flex-shrink: 0; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
         .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
-        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; flex-shrink: 0; }
         .logout-btn:hover { background: #dc2626; }
 
         .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
@@ -68,6 +68,15 @@
         <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
         <a href="entrevista.html" class="subnav-btn active"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
         <a href="eync.html" class="subnav-btn"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
+        <a href="eje1.html" class="subnav-btn"><i class="fa-solid fa-bullseye"></i> Eje 1: Foco</a>
+        <a href="eje2.html" class="subnav-btn"><i class="fa-solid fa-brain"></i> Eje 2: Funciones Yoicas</a>
+        <a href="eje3.html" class="subnav-btn"><i class="fa-solid fa-handshake"></i> Eje 3: Relación Terapéutica</a>
+        <a href="radar.html" class="subnav-btn"><i class="fa-solid fa-chart-radar"></i> Radar de Fiorini</a>
+        <a href="genograma.html" class="subnav-btn"><i class="fa-solid fa-project-diagram"></i> Genograma</a>
+        <a href="herramientas_clinicas.html" class="subnav-btn"><i class="fa-solid fa-toolbox"></i> Herramientas Usadas</a>
+        <a href="freud.html" class="subnav-btn"><i class="fa-solid fa-user-shield"></i> Aparato Psíquico Freudiano</a>
+        <a href="creador.html" class="subnav-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Psiquismo Creador</a>
+        <a href="interconsultas.html" class="subnav-btn"><i class="fa-solid fa-hospital-user"></i> Interconsultas</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
