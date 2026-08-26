@@ -11,7 +11,7 @@ window.logout = function() {
     window.location.href = 'index.html';
 }
 
-// Credenciales de Firebase
+// Tus credenciales de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
     authDomain: "materiales-terapeuticos.firebaseapp.com",
