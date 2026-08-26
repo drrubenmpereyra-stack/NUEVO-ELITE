@@ -10,7 +10,11 @@
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
             --success-color: #16a34a;
-            --admin-pacientes: #2563eb;
+            --color-admin: #2563eb;
+            --color-hc: #059669;
+            --color-hpac: #ea580c;
+            --color-hter: #ca8a04;
+            --color-mat: #7c3aed;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
@@ -21,17 +25,16 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* Barra Superior de Secciones Generales */
-        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
-        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
-        .main-nav-btn:hover { color: white; }
-        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.82rem; font-weight: 600; padding: 6px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .main-nav-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+        .main-nav-btn.admin.active { color: white; background: var(--color-admin); }
+        .main-nav-btn.hc { color: #94a3b8; }
 
-        /* Barra de Submenú de Administración (Flow de Azules) */
-        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-pacientes); }
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--color-admin); }
         .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
-        .subnav-btn.active { background-color: var(--admin-pacientes); box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4); }
+        .subnav-btn.active { background-color: var(--color-admin); box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4); }
         .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
 
@@ -72,13 +75,16 @@
         </div>
     </header>
 
-    <!-- Barra Superior de Secciones Generales -->
+    <!-- BARRA PRINCIPAL DE 5 BLOQUES -->
     <nav class="main-nav-bar">
-        <a href="app.html" class="main-nav-btn active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones.html" class="main-nav-btn"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="app.html" class="main-nav-btn admin active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn hc"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="actuando.html" class="main-nav-btn hpac"><i class="fa-solid fa-user-injured"></i> 3. Herramientas Pacientes</a>
+        <a href="terapeuta.html" class="main-nav-btn hter"><i class="fa-solid fa-user-doctor"></i> 4. Herramientas Terapeuta</a>
+        <a href="materiales.html" class="main-nav-btn mat"><i class="fa-solid fa-book"></i> 5. Materiales Técnicos</a>
     </nav>
 
-    <!-- Submenú de Administración con Flow de Azules -->
+    <!-- Submenú de Administración (Azul) -->
     <nav class="subnav-bar">
         <a href="app.html" class="subnav-btn active"><i class="fa-solid fa-users"></i> Pacientes</a>
         <a href="agenda.html" class="subnav-btn"><i class="fa-solid fa-calendar-days"></i> Agenda</a>
@@ -154,3 +160,221 @@
     <script type="module" src="app.js"></script>
 </body>
 </html>
+```[cite: 12]
+
+#### 2. `agenda.html` (Administración - Agenda)
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Agenda | Clínica de la Convergencia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --admin-agenda: #3b82f6;
+            --color-admin: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.82rem; font-weight: 600; padding: 6px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .main-nav-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+        .main-nav-btn.admin.active { color: white; background: var(--color-admin); }
+
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-agenda); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--admin-agenda); box-shadow: 0 2px 5px rgba(59, 130, 246, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        input, select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input:focus, select:focus { outline: none; border-color: var(--admin-agenda); }
+        .btn { background-color: var(--admin-agenda); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #2563eb; }
+        .appointment-item { background: #f1f5f9; border-left: 4px solid var(--admin-agenda); padding: 12px 15px; border-radius: 4px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Sección General: Administración</p>
+        </div>
+    </header>
+
+    <!-- BARRA PRINCIPAL DE 5 BLOQUES -->
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn admin active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn hc"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="actuando.html" class="main-nav-btn hpac"><i class="fa-solid fa-user-injured"></i> 3. Herramientas Pacientes</a>
+        <a href="terapeuta.html" class="main-nav-btn hter"><i class="fa-solid fa-user-doctor"></i> 4. Herramientas Terapeuta</a>
+        <a href="materiales.html" class="main-nav-btn mat"><i class="fa-solid fa-book"></i> 5. Materiales Técnicos</a>
+    </nav>
+
+    <!-- Submenú de Administración (Azul) -->
+    <nav class="subnav-bar">
+        <a href="app.html" class="subnav-btn"><i class="fa-solid fa-users"></i> Pacientes</a>
+        <a href="agenda.html" class="subnav-btn active"><i class="fa-solid fa-calendar-days"></i> Agenda</a>
+        <a href="contabilidad.html" class="subnav-btn"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</a>
+        <a href="impresiones.html" class="subnav-btn"><i class="fa-solid fa-print"></i> Impresiones</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2><i class="fa-solid fa-calendar-plus"></i> Registrar Nuevo Turno / Cita</h2>
+            <form id="appointment-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="appt-patient">Paciente</label>
+                        <select id="appt-patient" required>
+                            <option value="">-- Seleccionar paciente --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-date">Fecha</label>
+                        <input type="date" id="appt-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-time">Hora</label>
+                        <input type="time" id="appt-time" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="appt-notes">Observaciones del Turno</label>
+                    <input type="text" id="appt-notes" placeholder="Ej. Sesión regular...">
+                </div>
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Agendar Cita en la Nube</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-list-check"></i> Agenda de Turnos Programados</h2>
+            <div id="appointments-container">
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">Cargando turnos...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initAgenda() {
+            try {
+                const patientsSnap = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('appt-patient');
+                selectEl.innerHTML = '<option value="">-- Seleccionar paciente --</option>';
+                const patientMap = {};
+                
+                patientsSnap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    patientMap[docSnap.id] = data.name;
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+
+                const apptSnap = await getDocs(collection(db, "appointments"));
+                const container = document.getElementById('appointments-container');
+                container.innerHTML = '';
+
+                if (apptSnap.empty) {
+                    container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">No hay turnos agendados.</p>';
+                    return;
+                }
+
+                apptSnap.forEach(apptDoc => {
+                    const appt = apptDoc.data();
+                    const patientName = patientMap[appt.patientId] || 'Paciente desconocido';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'appointment-item';
+                    div.innerHTML = `
+                        <div>
+                            <strong><i class="fa-solid fa-user"></i> ${patientName}</strong>
+                            <p style="font-size: 0.85rem; color: #475569;"><i class="fa-regular fa-calendar"></i> ${appt.date} — <i class="fa-regular fa-clock"></i> ${appt.time} hs</p>
+                            <span style="font-size: 0.8rem; color: #64748b;">${appt.notes || 'Sin observaciones'}</span>
+                        </div>
+                        <button onclick="deleteAppt('${apptDoc.id}')" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+                            <i class="fa-solid fa-trash"></i> Cancelar
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Error al cargar agenda:", error);
+            }
+        }
+
+        document.getElementById('appointment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newAppt = {
+                patientId: document.getElementById('appt-patient').value,
+                date: document.getElementById('appt-date').value,
+                time: document.getElementById('appt-time').value,
+                notes: document.getElementById('appt-notes').value.trim()
+            };
+
+            try {
+                await addDoc(collection(db, "appointments"), newAppt);
+                document.getElementById('appointment-form').reset();
+                alert('¡Turno agendado con éxito en la nube!');
+                initAgenda();
+            } catch (error) {
+                console.error("Error al guardar turno:", error);
+            }
+        });
+
+        window.deleteAppt = async function(id) {
+            if (!confirm('¿Desea cancelar este turno?')) return;
+            try {
+                await deleteDoc(doc(db, "appointments", id));
+                initAgenda();
+            } catch (error) {
+                console.error("Error al eliminar turno:", error);
+            }
+        };
+
+        initAgenda();
+    </script>
+</body>
+</html>
+```[cite: 11]
+
+Prueba actualizando estos dos primeros archivos en tu repositorio de GitHub para verificar que la barra de 5 bloques y el submenú de administración carg
