@@ -10,11 +10,16 @@
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
             --hc-sesiones: #059669;
-            --color-hc: #059669;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
             --border-color: #cbd5e1;
+            
+            --color-admin: #2563eb;
+            --color-historia: #16a34a;
+            --color-pacientes: #ea580c;
+            --color-terapeuta: #eab308;
+            --color-materiales: #9333ea;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
@@ -22,18 +27,32 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* Barra Superior de Secciones Generales */
-        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
-        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
-        .main-nav-btn:hover { color: white; }
-        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+        /* NIVEL 1: BARRA PRINCIPAL */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
+        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
+        .main-nav-btn:hover { opacity: 1; }
+        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
 
-        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
-        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
-        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
-        .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
-        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .btn-admin { background-color: var(--color-admin); }
+        .btn-historia { background-color: var(--color-historia); }
+        .btn-pacientes { background-color: var(--color-pacientes); }
+        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
+        .btn-materiales { background-color: var(--color-materiales); }
+
+        /* NIVEL 2: BARRA SECUNDARIA */
+        .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        .subnav-btn.active { background-color: var(--hc-sesiones); color: white; box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
+
+        /* NIVEL 3: BARRA TERCIARIA */
+        .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
+        .subnav-internal.active-internal { display: flex; }
+        .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+        .internal-btn:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+        .internal-btn.active { background: var(--secondary-color); color: white; }
 
         .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
         .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -74,23 +93,59 @@
     <header>
         <div>
             <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
-            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección General: Historia Clínica</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — ELITE 2.0</p>
         </div>
     </header>
 
-    <!-- Barra Superior de Secciones Generales -->
+    <!-- NIVEL 1: BARRA PRINCIPAL -->
     <nav class="main-nav-bar">
-        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
+    <!-- NIVEL 2: BARRA SECUNDARIA (Historia Clínica) -->
     <nav class="subnav-bar">
-        <a href="sesiones.html" class="subnav-btn active"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
-        <a href="entrevista.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
-        <a href="eync.html" class="subnav-btn"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
-        <a href="ejes.html" class="subnav-btn"><i class="fa-solid fa-bullseye"></i> Ejes del Proceso Terapéutico</a>
+        <a href="sesiones.html" class="subnav-btn active">1. Registro de Sesiones[cite: 1]</a>
+        <a href="entrevista.html" class="subnav-btn">2. Primera entrevista[cite: 1]</a>
+        <a href="eync.html" class="subnav-btn">3. Est y NC[cite: 1]</a>
+        <a href="ejes.html" class="subnav-btn" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas[cite: 1]</a>
+        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾[cite: 1]</a>
+        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas[cite: 1]</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
+
+    <!-- NIVEL 3: BARRA TERCIARIA -->
+    <div id="internal-ejes" class="subnav-internal">
+        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Ejes:</span>
+        <a href="ejes.html" class="internal-btn">4.1 Eje 1 Foco[cite: 1]</a>
+        <a href="elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4 Integraciones</a>
+    </div>
+
+    <div id="internal-freud" class="subnav-internal">
+        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Aparato Psíquico:</span>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones[cite: 1]</a>
+    </div>
+
+    <div id="internal-psiquismo" class="subnav-internal">
+        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Psiquismo Creador:</span>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica[cite: 1]</a>
+    </div>
 
     <main class="container">
         <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
@@ -109,7 +164,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="session-title">Título / Nro. de Sesión</label>
-                        <input type="text" id="session-title" required value="Sesión Ordinaria N° 1" placeholder="Ej. Sesión Ordinaria N° 4">
+                        <input type="text" id="session-title" required placeholder="Ej. Sesión Ordinaria N° 4">
                     </div>
                     <div class="form-group">
                         <label for="session-date">Fecha de Sesión</label>
@@ -137,6 +192,21 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function toggleInternal(internalId, event) {
+            event.preventDefault();
+            document.querySelectorAll('.subnav-internal').forEach(internal => {
+                if(internal.id !== internalId) internal.classList.remove('active-internal');
+            });
+            const target = document.getElementById(internalId);
+            if(target) target.classList.toggle('active-internal');
+        }
+        function avisoDesarrollo(e) {
+            e.preventDefault();
+            alert("Módulo en desarrollo / Próximamente disponible en GitHub.");
+        }
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -248,7 +318,7 @@
                 sessions.push(newSession);
 
                 await updateDoc(patientRef, { sessions: sessions });
-                document.getElementById('session-title').value = 'Sesión Ordinaria N° ' + (sessions.length + 1);
+                document.getElementById('session-title').value = '';
                 document.getElementById('session-narrative').value = '';
                 alert('¡Sesión guardada con éxito en la nube!');
                 renderSessions();
@@ -280,23 +350,13 @@
                     textarea.value += (textarea.value ? ' ' : '') + finalTranscript;
                 }
             };
-
-            recognition.onerror = (event) => {
-                console.error("Error de reconocimiento de voz:", event.error);
-                stopSpeechRecognition();
-            };
-
-            recognition.onend = () => {
-                if (isRecording) { recognition.start(); }
-            };
         }
 
         window.toggleSpeechRecognition = function() {
             if (!recognition) {
-                alert('Su navegador no soporta el reconocimiento de voz por micrófono. Utilice Google Chrome o Edge.');
+                alert('Su navegador no soporta el reconocimiento de voz.');
                 return;
             }
-
             const btn = document.getElementById('mic-toggle-btn');
             const status = document.getElementById('mic-status');
 
@@ -304,7 +364,7 @@
                 recognition.start();
                 isRecording = true;
                 btn.classList.add('recording');
-                status.innerHTML = '<i class="fa-solid fa-microphone-lines"></i> Escuchando... Hable con claridad.';
+                status.innerHTML = '<i class="fa-solid fa-microphone-lines"></i> Escuchando...';
             } else {
                 recognition.stop();
                 isRecording = false;
@@ -317,4 +377,3 @@
     </script>
 </body>
 </html>
-```[cite: 28]
