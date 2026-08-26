@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Clínica - Eje 1: Foco (Fiorini) | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --hc-sesiones: #059669;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
+        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        input, select, textarea { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--hc-sesiones); }
+        textarea { resize: vertical; min-height: 70px; }
+
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #047857; }
+
+        /* Contenedor del Esquema Visual Interactivo */
+        .schema-preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            align-items: center;
+        }
+        @media (max-width: 900px) { .schema-preview-container { grid-template-columns: 1fr; } }
+        
+        .schema-image-box { text-align: center; background: white; padding: 15px; border-radius: 6px; border: 1px solid #cbd5e1; }
+        .schema-image-box img { max-width: 100%; height: auto; border-radius: 4px; }
+
+        .schema-live-box { background: white; padding: 15px; border-radius: 6px; border: 1px solid #cbd5e1; max-height: 500px; overflow-y: auto; }
+        .live-item { margin-bottom: 10px; padding: 8px; background: #f8fafc; border-left: 3px solid var(--hc-sesiones); border-radius: 4px; font-size: 0.85rem; }
+        .live-item strong { color: var(--primary-color); display: block; margin-bottom: 2px; }
+
+        .foco-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección General: Historia Clínica</p>
+        </div>
+    </header>
+
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <a href="eync.html" class="subnav-btn"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
+        <a href="ejes.html" class="subnav-btn active"><i class="fa-solid fa-bullseye"></i> Ejes del Proceso Terapéutico</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <!-- Selección de Paciente -->
+        <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
+            <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
+            <div class="form-group">
+                <label for="foco-patient">Paciente Activo</label>
+                <select id="foco-patient" onchange="loadPatientFocos()">
+                    <option value="">-- Seleccione un paciente --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Formulario del Eje 1: Foco -->
+        <div id="foco-form-card" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco (Modelo Fiorini)</h2>
+            
+            <form id="foco-form">
+                <div class="form-grid" style="margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="foco-titulo">Título del Foco / Identificador</label>
+                        <input type="text" id="foco-titulo" required value="Foco Terapéutico N° 1" placeholder="Ej. Foco Inicial">
+                    </div>
+                    <div class="form-group">
+                        <label for="foco-fecha">Fecha de Registro</label>
+                        <input type="date" id="foco-fecha" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>1- Motivo de consulta y conflicto nuclear</label>
+                        <textarea id="foco-1" placeholder="Motivo explícito / Inconsciente..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>2- Situación actual estructurada a partir de un eje</label>
+                        <textarea id="foco-2" placeholder="Breve hipótesis clínica..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>3- Situación grupal</label>
+                        <textarea id="foco-3" placeholder="Dinamismos, conflictos, roles, recuerdos..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>4- Aspectos caracterológicos individuales</label>
+                        <textarea id="foco-4" placeholder="Psicodinamismos, defensas, recursos..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>5- Determinantes del contexto social más amplio</label>
+                        <textarea id="foco-5" placeholder="Económicos, sociales, culturales..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>6- Aspectos histórico genéticos</label>
+                        <textarea id="foco-6" placeholder="Individuales, grupales, sociales..." oninput="updateLiveSchema()"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>7- Momento evolutivo</label>
+                    <textarea id="foco-7" placeholder="Individual, grupal, social..." oninput="updateLiveSchema()"></textarea>
+                </div>
+
+                <!-- Visor en Tiempo Real e Imagen Base -->
+                <div style="margin-bottom: 20px;">
+                    <label style="margin-bottom: 8px; display: block;"><i class="fa-solid fa-eye"></i> Vista Previa Dinámica sobre el Esquema:</label>
+                    <div class="schema-preview-container">
+                        <div class="schema-image-box">
+                            <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
+                            <p style="font-size: 0.75rem; color: #64748b; margin-top: 5px;">Esquema de referencia modelo Fiorini</p>
+                        </div>
+                        <div class="schema-live-box" id="live-schema-output">
+                            <p style="color: #64748b; font-size: 0.85rem; text-align: center;">Comience a escribir en los campos para ver reflejado el contenido aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Foco en la Nube</button>
+            </form>
+        </div>
+
+        <!-- Historial de Focos Guardados -->
+        <div id="focos-history-card" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-folder-open"></i> Historial de Focos Registrados</h2>
+            <div id="focos-container">
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">Seleccione un paciente para ver sus registros de foco.</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let activePatientId = null;
+
+        const labelsMap = {
+            1: "1- Motivo de consulta y conflicto nuclear",
+            2: "2- Situación actual estructurada a partir de un eje",
+            3: "3- Situación grupal",
+            4: "4- Aspectos caracterológicos individuales",
+            5: "5- Determinantes del contexto social más amplio",
+            6: "6- Aspectos histórico genéticos",
+            7: "7- Momento evolutivo"
+        };
+
+        async function initEjes() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('foco-patient');
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
+            }
+        }
+
+        window.loadPatientFocos = async function() {
+            activePatientId = document.getElementById('foco-patient').value;
+            const formCard = document.getElementById('foco-form-card');
+            const historyCard = document.getElementById('focos-history-card');
+
+            if (!activePatientId) {
+                formCard.style.display = 'none';
+                historyCard.style.display = 'none';
+                return;
+            }
+
+            formCard.style.display = 'block';
+            historyCard.style.display = 'block';
+            document.getElementById('foco-fecha').valueAsDate = new Date();
+            updateLiveSchema();
+            renderFocosHistory();
+        }
+
+        window.updateLiveSchema = function() {
+            const container = document.getElementById('live-schema-output');
+            container.innerHTML = '';
+            let hasContent = false;
+
+            for (let i = 1; i <= 7; i++) {
+                const val = document.getElementById(`foco-${i}`).value.trim();
+                if (val) {
+                    hasContent = true;
+                    const div = document.createElement('div');
+                    div.className = 'live-item';
+                    div.innerHTML = `<strong>[Sect. ${i}] ${labelsMap[i]}</strong> ${val}`;
+                    container.appendChild(div);
+                }
+            }
+
+            if (!hasContent) {
+                container.innerHTML = '<p style="color: #64748b; font-size: 0.85rem; text-align: center;">Comience a escribir en los campos para ver reflejado el contenido aquí...</p>';
+            }
+        }
+
+        async function renderFocosHistory() {
+            const container = document.getElementById('focos-container');
+            container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center;">Cargando focos...</p>';
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                
+                if (patientSnap.exists()) {
+                    const data = patientSnap.data();
+                    const focos = data.focosEje1 || [];
+                    
+                    container.innerHTML = '';
+                    if (focos.length === 0) {
+                        container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">No hay esquemas de foco registrados para este paciente.</p>';
+                        return;
+                    }
+
+                    focos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                    focos.forEach(f => {
+                        let itemsHtml = '';
+                        for (let i = 1; i <= 7; i++) {
+                            if (f.datos[i]) {
+                                itemsHtml += `<p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>${labelsMap[i]}:</strong> ${f.datos[i]}</p>`;
+                            }
+                        }
+
+                        const div = document.createElement('div');
+                        div.className = 'foco-card';
+                        div.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
+                                <strong><i class="fa-solid fa-bullseye"></i> ${f.titulo}</strong>
+                                <span style="font-size: 0.8rem; color: #64748b;">Fecha: ${f.fecha}</span>
+                            </div>
+                            ${itemsHtml}
+                        `;
+                        container.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                console.error("Error al renderizar historial de focos:", error);
+            }
+        }
+
+        document.getElementById('foco-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!activePatientId) return;
+
+            const datosFoco = {};
+            for (let i = 1; i <= 7; i++) {
+                datosFoco[i] = document.getElementById(`foco-${i}`).value.trim();
+            }
+
+            const nuevoFoco = {
+                id: Date.now().toString(),
+                titulo: document.getElementById('foco-titulo').value.trim(),
+                fecha: document.getElementById('foco-fecha').value,
+                datos: datosFoco
+            };
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                let focos = patientSnap.data().focosEje1 || [];
+                focos.push(nuevoFoco);
+
+                await updateDoc(patientRef, { focosEje1: focos });
+                document.getElementById('foco-form').reset();
+                document.getElementById('foco-titulo').value = 'Foco Terapéutico N° 1';
+                document.getElementById('foco-fecha').valueAsDate = new Date();
+                updateLiveSchema();
+                alert('¡Esquema de Foco guardado con éxito en la nube!');
+                renderFocosHistory();
+            } catch (error) {
+                console.error("Error al guardar foco:", error);
+                alert("Error al registrar el esquema de foco.");
+            }
+        });
+
+        initEjes();
+    </script>
+</body>
+</html>
