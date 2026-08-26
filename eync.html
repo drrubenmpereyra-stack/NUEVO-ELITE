@@ -60,13 +60,13 @@
     </header>
 
     <nav class="main-nav-bar">
-        <a href="app_2.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones_2.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
     </nav>
 
     <nav class="subnav-bar">
-        <a href="sesiones_2.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
-        <a href="entrevista_2.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
         <a href="eync.html" class="subnav-btn active"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
@@ -85,7 +85,6 @@
         <div id="eync-content-card" class="card" style="display: none;">
             <h2><i class="fa-solid fa-chess"></i> Módulo EyNC (Estrategias y Niveles de Cambio)</h2>
             
-            <!-- Fijar Objetivos -->
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
                 <label><b>Fijar Objetivos:</b></label>
                 <div style="display:flex; gap:10px; margin-top:5px;">
@@ -95,19 +94,67 @@
                 <div id="eync-lista-objetivos" style="margin-top:15px; display:flex; flex-direction:column; gap:8px;"></div>
             </div>
 
-            <!-- Indicadores de Cambio (1A a 1G) -->
             <label style="margin-bottom: 10px; display: block;"><b>Matriz de Indicadores de Cambio:</b></label>
             <div class="indicators-grid">
                 <div>
-                    ${crearFilaIndicador("1A- SÍNTOMAS", "supresión o alivio")}
-                    ${crearFilaIndicador("1B- DEFENSAS", "variaciones correlativas")}
-                    ${crearFilaIndicador("1C- RELACIONES", "mayor ajuste y gratificación")}
-                    ${crearFilaIndicador("1D- AUTOESTIMA", "autoestima realista")}
+                    <div class="indicator-box" data-key="1A- SÍNTOMAS">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1A- SÍNTOMAS</b> <small style="color:gray;">(supresión o alivio)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1A- SÍNTOMAS" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1A- SÍNTOMAS" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1A- SÍNTOMAS" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
+                    <div class="indicator-box" data-key="1B- DEFENSAS">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1B- DEFENSAS</b> <small style="color:gray;">(variaciones correlativas)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1B- DEFENSAS" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1B- DEFENSAS" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1B- DEFENSAS" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
+                    <div class="indicator-box" data-key="1C- RELACIONES">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1C- RELACIONES</b> <small style="color:gray;">(mayor ajuste y gratificación)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1C- RELACIONES" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1C- RELACIONES" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1C- RELACIONES" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
+                    <div class="indicator-box" data-key="1D- AUTOESTIMA">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1D- AUTOESTIMA</b> <small style="color:gray;">(autoestima realista)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1D- AUTOESTIMA" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1D- AUTOESTIMA" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1D- AUTOESTIMA" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    ${crearFilaIndicador("1E- CERCANOS", "cambio conductas otros")}
-                    ${crearFilaIndicador("1F- ADAPTACIÓN", "productividad, recreación")}
-                    ${crearFilaIndicador("1G- CONCIENCIA", "posibilidades y trabas")}
+                    <div class="indicator-box" data-key="1E- CERCANOS">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1E- CERCANOS</b> <small style="color:gray;">(cambio conductas otros)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1E- CERCANOS" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1E- CERCANOS" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1E- CERCANOS" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
+                    <div class="indicator-box" data-key="1F- ADAPTACIÓN">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1F- ADAPTACIÓN</b> <small style="color:gray;">(productividad, recreación)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1F- ADAPTACIÓN" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1F- ADAPTACIÓN" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1F- ADAPTACIÓN" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
+                    <div class="indicator-box" data-key="1G- CONCIENCIA">
+                        <b style="font-size:0.85em; color: var(--primary-color);">1G- CONCIENCIA</b> <small style="color:gray;">(posibilidades y trabas)</small><br>
+                        <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
+                            <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-1G- CONCIENCIA" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
+                            <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-1G- CONCIENCIA" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
+                            <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-1G- CONCIENCIA" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -118,26 +165,12 @@
         </div>
     </main>
 
-    <script>
-        function crearFilaIndicador(id, hint) {
-            return `
-                <div class="indicator-box" data-key="${id}">
-                    <b style="font-size:0.85em; color: var(--primary-color);">${id}</b> <small style="color:gray;">(${hint})</small><br>
-                    <div style="margin-top:8px; font-size:0.8em; display:flex; gap:12px; flex-wrap:wrap;">
-                        <label style="color:#e74c3c; cursor:pointer;"><input type="radio" name="ch-${id}" value="No Logrado" onchange="guardarIndicadoresCloud()"> No Logrado</label>
-                        <label style="color:#d4a017; cursor:pointer;"><input type="radio" name="ch-${id}" value="En proceso" onchange="guardarIndicadoresCloud()"> En proceso</label>
-                        <label style="color:#27ae60; cursor:pointer;"><input type="radio" name="ch-${id}" value="Logrado" onchange="guardarIndicadoresCloud()"> Logrado</label>
-                    </div>
-                </div>`;
-        }
-    </script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index_2.html'; }
-        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index_2.html'; }
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
 
         const firebaseConfig = {
             apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
