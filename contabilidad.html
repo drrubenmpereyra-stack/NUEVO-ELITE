@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Contabilidad | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --admin-contabilidad: #1d4ed8; /* Subtono Azul Financiero */
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-contabilidad); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--admin-contabilidad); box-shadow: 0 2px 5px rgba(29, 78, 216, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        input, select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input:focus, select:focus { outline: none; border-color: var(--admin-contabilidad); }
+        .btn { background-color: var(--admin-contabilidad); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #1e40af; }
+        .payment-item { background: #f1f5f9; border-left: 4px solid var(--admin-contabilidad); padding: 12px 15px; border-radius: 4px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección General: Administración</p>
+        </div>
+    </header>
+
+    <nav class="subnav-bar">
+        <a href="app.html" class="subnav-btn"><i class="fa-solid fa-users"></i> Pacientes</a>
+        <a href="agenda.html" class="subnav-btn"><i class="fa-solid fa-calendar-days"></i> Agenda</a>
+        <a href="contabilidad.html" class="subnav-btn active"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</a>
+        <a href="impresiones.html" class="subnav-btn"><i class="fa-solid fa-print"></i> Impresiones</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2><i class="fa-solid fa-cash-register"></i> Registrar Pago de Honorarios</h2>
+            <form id="payment-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pay-patient">Paciente</label>
+                        <select id="pay-patient" required>
+                            <option value="">-- Seleccionar paciente --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pay-amount">Monto ($)</label>
+                        <input type="number" id="pay-amount" step="0.01" required placeholder="Ej. 15000">
+                    </div>
+                    <div class="form-group">
+                        <label for="pay-date">Fecha de Pago</label>
+                        <input type="date" id="pay-date" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="pay-concept">Concepto / Detalle</label>
+                    <input type="text" id="pay-concept" placeholder="Ej. Pago de sesión semanal N°3">
+                </div>
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Registrar Cobro en la Nube</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-wallet"></i> Historial de Pagos Registrados</h2>
+            <div id="payments-container">
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">Cargando registros contables...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initContabilidad() {
+            try {
+                const patientsSnap = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('pay-patient');
+                selectEl.innerHTML = '<option value="">-- Seleccionar paciente --</option>';
+                const patientMap = {};
+                
+                patientsSnap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    patientMap[docSnap.id] = data.name;
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+
+                const paySnap = await getDocs(collection(db, "payments"));
+                const container = document.getElementById('payments-container');
+                container.innerHTML = '';
+
+                if (paySnap.empty) {
+                    container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">No hay pagos registrados.</p>';
+                    return;
+                }
+
+                paySnap.forEach(payDoc => {
+                    const pay = payDoc.data();
+                    const patientName = patientMap[pay.patientId] || 'Paciente desconocido';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'payment-item';
+                    div.innerHTML = `
+                        <div>
+                            <strong><i class="fa-solid fa-user"></i> ${patientName}</strong>
+                            <p style="font-size: 0.9rem; color: #1e40af; font-weight: 600;"><i class="fa-solid fa-dollar-sign"></i> ${pay.amount} — <span style="font-weight: normal; color: #475569;">${pay.concept || 'Sin concepto'}</span></p>
+                            <span style="font-size: 0.8rem; color: #64748b;"><i class="fa-regular fa-calendar"></i> Fecha: ${pay.date}</span>
+                        </div>
+                        <button onclick="deletePayment('${payDoc.id}')" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Error al cargar contabilidad:", error);
+            }
+        }
+
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPayment = {
+                patientId: document.getElementById('pay-patient').value,
+                amount: parseFloat(document.getElementById('pay-amount').value),
+                date: document.getElementById('pay-date').value,
+                concept: document.getElementById('pay-concept').value.trim()
+            };
+
+            try {
+                await addDoc(collection(db, "payments"), newPayment);
+                document.getElementById('payment-form').reset();
+                alert('¡Pago registrado con éxito en la nube!');
+                initContabilidad();
+            } catch (error) {
+                console.error("Error al guardar pago:", error);
+            }
+        });
+
+        window.deletePayment = async function(id) {
+            if (!confirm('¿Desea eliminar este registro de pago?')) return;
+            try {
+                await deleteDoc(doc(db, "payments", id));
+                initContabilidad();
+            } catch (error) {
+                console.error("Error al eliminar pago:", error);
+            }
+        };
+
+        initContabilidad();
+    </script>
+</body>
+</html>
