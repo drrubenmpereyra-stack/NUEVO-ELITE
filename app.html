@@ -3,154 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - Pacientes | ELITE 2.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sistema Gestión Elite v7.0 - app.html</title>
+    
+    <!-- Firebase SDKs Globales -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
     <style>
-        :root {
-            --primary-color: #1e3a8a;
-            --secondary-color: #0d9488;
-            --success-color: #16a34a;
-            --admin-pacientes: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #334155;
-            --border-color: #cbd5e1;
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
-        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
-        
-        /* Barra Superior de Secciones Generales */
-        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
-        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
-        .main-nav-btn:hover { color: white; }
-        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
-
-        /* Barra de Submenú de Administración (Flow de Azules) */
-        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-pacientes); }
-        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
-        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
-        .subnav-btn.active { background-color: var(--admin-pacientes); box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4); }
-        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
-        .logout-btn:hover { background: #dc2626; }
-
-        .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
-        .patients-layout { display: grid; grid-template-columns: 350px 1fr; gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-        input[type="text"], input[type="url"], textarea, select { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
-        input:focus, textarea:focus { outline: none; border-color: var(--secondary-color); }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: none; }
-        .btn-primary { background-color: var(--primary-color); color: white; width: 100%; }
-        .btn-primary:hover { background-color: #172554; }
-        .btn-secondary { background-color: var(--secondary-color); color: white; }
-        .btn-success { background-color: var(--success-color); color: white; }
-        .patients-list { max-height: 400px; overflow-y: auto; }
-        .patient-item { padding: 10px; border-bottom: 1px solid #e2e8f0; cursor: pointer; border-radius: 4px; transition: background 0.2s; }
-        .patient-item:hover, .patient-item.active { background-color: #f1f5f9; border-left: 4px solid var(--primary-color); }
-        .placeholder-card { text-align: center; padding: 60px 20px; color: #64748b; }
-        .placeholder-card i { font-size: 3rem; margin-bottom: 15px; color: #94a3b8; }
-        .hidden { display: none; }
-        .patient-header { display: flex; justify-content: space-between; align-items: center; }
-        .divider { border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0; }
-        .inline-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-bottom: 20px; }
-        .doc-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
-        .doc-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .notes-section textarea { margin-top: 8px; resize: vertical; }
-        @media (max-width: 900px) { .patients-layout { grid-template-columns: 1fr; } .inline-form { grid-template-columns: 1fr; } }
+        /* Barra de Navegación Modular */
+        .elite-navbar {
+            background: #111;
+            border-bottom: 2px solid #00e5ff;
+            padding: 10px 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .tab-btn {
+            background-color: #2c3e50;
+            color: white;
+            border: 1px solid #00e5ff;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover {
+            background-color: #00e5ff;
+            color: black;
+        }
+        /* Contenedor Principal Adaptado para Módulos Independientes */
+        #app-content {
+            flex: 1;
+            position: relative;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0b0b0b;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div>
-            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — Repositorio Clínico ELITE 2.0</p>
+    <!-- BARRA DE NAVEGACIÓN MODULAR -->
+    <div class="elite-navbar">
+        <span style="color:#00e5ff; font-weight:bold; font-size:12px; margin-right:10px;">ELITE 7.0:</span>
+        <button class="tab-btn" onclick="alert('Módulo de Pacientes')">👥 PACIENTES</button>
+        <button class="tab-btn" onclick="alert('Historia Clínica')">📋 HISTORIA CLÍNICA</button>
+        <button class="tab-btn" style="background-color: #005f73; border-color: #00e5ff;" onclick="cargarModuloYoico()">🔘 F. YOICAS</button>
+        <button class="tab-btn" onclick="alert('Próximo módulo')">🧠 APARATO PSÍQUICO</button>
+        <button class="tab-btn" onclick="alert('Próximo módulo')">📊 AGENDA Y PAGOS</button>
+    </div>
+
+    <!-- ÁREA DE TRABAJO DINÁMICA -->
+    <div id="app-content">
+        <div style="margin: auto; text-align: center; color: #666;">
+            <h2 style="color: #00e5ff;">Sistema Gestión Elite v7.0</h2>
+            <p>Selecciona un módulo en la barra superior para cargar su contenido de forma independiente.</p>
         </div>
-    </header>
+    </div>
 
-    <!-- Barra Superior de Secciones Generales -->
-    <nav class="main-nav-bar">
-        <a href="app.html" class="main-nav-btn active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones.html" class="main-nav-btn"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-    </nav>
+<script>
+    // Configuración global de Firebase (Ajusta tus credenciales reales aquí si es necesario)
+    /*
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+    };
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    */
 
-    <!-- Submenú de Administración con Flow de Azules -->
-    <nav class="subnav-bar">
-        <a href="app.html" class="subnav-btn active"><i class="fa-solid fa-users"></i> Pacientes</a>
-        <a href="agenda.html" class="subnav-btn"><i class="fa-solid fa-calendar-days"></i> Agenda</a>
-        <a href="contabilidad.html" class="subnav-btn"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</a>
-        <a href="impresiones.html" class="subnav-btn"><i class="fa-solid fa-print"></i> Impresiones</a>
-        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
-    </nav>
+    // Variable global de control del paciente activo para los módulos
+    window.pacienteActualId = "paciente_general_demo";
 
-    <main class="container">
-        <div class="patients-layout">
-            <section class="sidebar">
-                <div class="card">
-                    <h2><i class="fa-solid fa-user-plus"></i> Nuevo Paciente</h2>
-                    <form id="patient-form">
-                        <div class="form-group">
-                            <label for="patient-name">Nombre y Apellido</label>
-                            <input type="text" id="patient-name" required placeholder="Ej. Juan Pérez">
-                        </div>
-                        <div class="form-group">
-                            <label for="patient-phone">Teléfono / WhatsApp</label>
-                            <input type="text" id="patient-phone" required placeholder="Ej. +549351...">
-                        </div>
-                        <div class="form-group">
-                            <label for="patient-motivo">Motivo de Consulta</label>
-                            <textarea id="patient-motivo" rows="2" placeholder="Breve descripción..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Registrar Paciente</button>
-                    </form>
-                </div>
+    // Función limpia que carga el archivo independiente sin romper rutas ni generar 404
+    function cargarModuloYoico() {
+        const contenedor = document.getElementById('app-content');
+        contenedor.innerHTML = `<iframe src="elite_func_yoicas.html"></iframe>`;
+    }
+</script>
 
-                <div class="card">
-                    <h2><i class="fa-solid fa-address-book"></i> Listado de Pacientes</h2>
-                    <input type="text" id="search-patient" placeholder="Buscar paciente..." style="margin-bottom: 10px; width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px;">
-                    <div id="patients-list" class="patients-list"></div>
-                </div>
-            </section>
-
-            <section class="content-area">
-                <div id="no-patient-selected" class="card placeholder-card">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <h3>Seleccione un paciente del listado</h3>
-                    <p>Para ver su historial de documentos, adjuntar PDFs y gestionar notas clínicas.</p>
-                </div>
-
-                <div id="patient-detail" class="card hidden">
-                    <div class="patient-header">
-                        <div>
-                            <h2 id="detail-name">Nombre del Paciente</h2>
-                            <p><strong id="detail-phone">Tel: </strong> | <span id="detail-motivo">Motivo</span></p>
-                        </div>
-                        <a id="whatsapp-direct-btn" href="#" target="_blank" class="btn btn-success">
-                            <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
-                        </a>
-                    </div>
-
-                    <hr class="divider">
-
-                    <div class="section-block">
-                        <h3><i class="fa-solid fa-file-pdf"></i> Reservorio de Documentos</h3>
-                        <form id="document-form" class="inline-form">
-                            <input type="text" id="doc-title" placeholder="Título (Ej. Plan Terapéutico N°1)" required>
-                            <input type="url" id="doc-url" placeholder="Enlace del PDF (Google Drive / Gamma)" required>
-                            <button type="submit" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Agregar</button>
-                        </form>
-                    </div>
-
-                    <div id="documents-container" class="documents-container"></div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <script type="module" src="app.js"></script>
 </body>
 </html>
