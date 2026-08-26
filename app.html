@@ -30,18 +30,17 @@
         
         /* NIVEL 1: BARRA PRINCIPAL (5 Botones Exactos) */
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
-        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s, transform 0.1s; }
-        .main-nav-btn:hover { opacity: 1; transform: translateY(-1px); }
+        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
+        .main-nav-btn:hover { opacity: 1; }
         .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
 
-        /* Colores asignados por botón principal */
         .btn-admin { background-color: var(--color-admin); }
         .btn-historia { background-color: var(--color-historia); }
         .btn-pacientes { background-color: var(--color-pacientes); }
         .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
         .btn-materiales { background-color: var(--color-materiales); }
 
-        /* NIVEL 2: BARRA SECUNDARIA (Subnavs dinámicos) */
+        /* NIVEL 2: BARRA SECUNDARIA */
         .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); display: none; }
         .subnav-bar.active-subnav { display: flex; }
         .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
@@ -50,7 +49,7 @@
         .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
 
-        /* NIVEL 3: BARRA TERCIARIA (Submenús internos ej. Ejes, Aparato Psíquico, Autoevaluación) */
+        /* NIVEL 3: BARRA TERCIARIA */
         .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
         .subnav-internal.active-internal { display: flex; }
         .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
@@ -94,22 +93,18 @@
         </div>
     </header>
 
-    <!-- ======================================================== -->
-    <!-- ARQUITECTURA DE NAVEGACIÓN MAESTRA DE 3 NIVELES           -->
-    <!-- ======================================================== -->
-
-    <!-- NIVEL 1: BARRA PRINCIPAL (Exactamente 5 Botones con sus Colores) -->
+    <!-- NIVEL 1: BARRA PRINCIPAL (5 Botones) -->
     <nav class="main-nav-bar">
-        <a href="app.html" class="main-nav-btn btn-admin active" data-module="1"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones.html" class="main-nav-btn btn-historia" data-module="2"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="herramientas_pacientes.html" class="main-nav-btn btn-pacientes" data-module="3"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="herramientas_terapeuta.html" class="main-nav-btn btn-terapeuta" data-module="4"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="materiales_consulta.html" class="main-nav-btn btn-materiales" data-module="5"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+        <a class="main-nav-btn btn-admin active" onclick="switchModule('1')"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a class="main-nav-btn btn-historia" onclick="switchModule('2')"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a class="main-nav-btn btn-pacientes" onclick="switchModule('3')"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a class="main-nav-btn btn-terapeuta" onclick="switchModule('4')"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a class="main-nav-btn btn-materiales" onclick="switchModule('5')"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
-    <!-- NIVEL 2: BARRA SECUNDARIA (Subnavs por módulo activo) -->
+    <!-- NIVEL 2: BARRA SECUNDARIA -->
     
-    <!-- Módulo 1: Administración -->
+    <!-- Módulo 1: Administración (Operativo) -->
     <nav id="subnav-1" class="subnav-bar active-subnav">
         <a href="app.html" class="subnav-btn active"><i class="fa-solid fa-users"></i> 1.1 Pacientes</a>
         <a href="agenda.html" class="subnav-btn"><i class="fa-solid fa-calendar-days"></i> 1.2 Agenda</a>
@@ -120,94 +115,90 @@
 
     <!-- Módulo 2: Historia Clínica -->
     <nav id="subnav-2" class="subnav-bar">
-        <a href="sesiones.html" class="subnav-btn">1. Registro de Sesiones[cite: 1]</a>
-        <a href="entrevista.html" class="subnav-btn">2. Primera entrevista[cite: 1]</a>
-        <a href="eync.html" class="subnav-btn">3. Est y NC[cite: 1]</a>
-        <a href="ejes.html" class="subnav-btn" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap[cite: 1]</a>
-        <a href="genograma.html" class="subnav-btn">5. Genograma[cite: 1]</a>
-        <a href="herramientas_usadas.html" class="subnav-btn">6. Herramientas usadas[cite: 1]</a>
-        <a href=" aparato_freud.html" class="subnav-btn" onclick="toggleInternal('internal-freud', event)">7. Aparato Psiquico Freud[cite: 1]</a>
-        <a href="psiquismo_creador.html" class="subnav-btn" onclick="toggleInternal('internal-psiquismo', event)">8. Psiquismo creador[cite: 1]</a>
-        <a href="interconsultas.html" class="subnav-btn">9. Interconsultas[cite: 1]</a>
+        <a href="sesiones.html" class="subnav-btn">1. Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn">2. Primera entrevista</a>
+        <a href="eync.html" class="subnav-btn">3. Est y NC</a>
+        <a class="subnav-btn" onclick="toggleInternal('internal-ejes')">4. Ejes Proceso Terap ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas</a>
+        <a class="subnav-btn" onclick="toggleInternal('internal-freud')">7. Aparato Psiquico Freud ▾</a>
+        <a class="subnav-btn" onclick="toggleInternal('internal-psiquismo')">8. Psiquismo creador ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
     <!-- Módulo 3: Herramientas Clínicas Pacientes -->
     <nav id="subnav-3" class="subnav-bar">
-        <a href="hp_acting_out.html" class="subnav-btn">3.1 Potencial acting out[cite: 2]</a>
-        <a href="hp_exp_emocional.html" class="subnav-btn">3.2 Exp emocional creativa[cite: 2]</a>
-        <a href="hp_neuropsiq.html" class="subnav-btn">3.3 Med neuropsicológicos[cite: 2]</a>
-        <a href="hp_psicodiagnostico.html" class="subnav-btn">3.4 Psicodiagnóstico[cite: 2]</a>
-        <a href="hp_test.html" class="subnav-btn">3.5 Test[cite: 2]</a>
-        <a href="hp_riesgos.html" class="subnav-btn">3.6 Riesgos en PB[cite: 2]</a>
-        <a href="hp_memorias.html" class="subnav-btn">3.7 Memorias traumáticas[cite: 2]</a>
-        <a href="hp_ritmos.html" class="subnav-btn">3.8 Ritmos circadianos[cite: 2]</a>
-        <a href="hp_mapeos.html" class="subnav-btn">3.9 Mapeos visuales[cite: 2]</a>
-        <a href="hp_adherencia.html" class="subnav-btn">3.10 Adherencia[cite: 2]</a>
-        <a href="hp_resonancia.html" class="subnav-btn">3.11 Resonancia CT[cite: 2]</a>
-        <a href="hp_inteligencia.html" class="subnav-btn">3.12 Inteligencia Elite[cite: 2]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.1 Potencial acting out</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.2 Exp emocional creativa</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.3 Med neuropsicológicos</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.4 Psicodiagnóstico</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.5 Test</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.6 Riesgos en PB</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.7 Memorias traumáticas</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.8 Ritmos circadianos</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.9 Mapeos visuales</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.10 Adherencia</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.11 Resonancia CT</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">3.12 Inteligencia Elite</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
     <!-- Módulo 4: Herramientas Clínicas Terapeuta -->
     <nav id="subnav-4" class="subnav-bar">
-        <a href="ht_exp_emocional.html" class="subnav-btn">4.1 Exp emocional creador T[cite: 3]</a>
-        <a href="ht_contratransferencia.html" class="subnav-btn">4.2 Contratransferencia[cite: 3]</a>
-        <a href="ht_terminacion.html" class="subnav-btn">4.3 Terminación Separación[cite: 3]</a>
-        <a href="autoevaluacion.html" class="subnav-btn" onclick="toggleInternal('internal-autoeval', event)">4.4 Autoevaluación[cite: 3]</a>
-        <a href="ht_farmacologia.html" class="subnav-btn">4.5 Farmacología[cite: 3]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">4.1 Exp emocional creador T</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">4.2 Contratransferencia</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">4.3 Terminación Separación</a>
+        <a class="subnav-btn" onclick="toggleInternal('internal-autoeval')">4.4 Autoevaluación ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">4.5 Farmacología</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
     <!-- Módulo 5: Materiales Teóricos de Consulta -->
     <nav id="subnav-5" class="subnav-bar">
-        <a href="mat_neurodinamicos.html" class="subnav-btn">5.1 Esquemas Neurodinámicos[cite: 4]</a>
-        <a href="mat_psicodinamicos.html" class="subnav-btn">5.2 Esquemas Psicodinámicos[cite: 4]</a>
-        <a href="mat_pnie.html" class="subnav-btn">5.3 Esquemas PNIE[cite: 4]</a>
-        <a href="mat_psicotropicos.html" class="subnav-btn">5.4 Psicotrópicos[cite: 4]</a>
-        <a href="mat_rubricas.html" class="subnav-btn">5.5 Rúbricas[cite: 4]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5.1 Esquemas Neurodinámicos</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5.2 Esquemas Psicodinámicos</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5.3 Esquemas PNIE</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5.4 Psicotrópicos</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5.5 Rúbricas</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
 
-    <!-- NIVEL 3: BARRA TERCIARIA (Submenús internos desplegables) -->
+    <!-- NIVEL 3: BARRA TERCIARIA -->
 
-    <!-- Submenú Terciario para Ejes (Módulo 2 -> Opción 4) -->
     <div id="internal-ejes" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Ejes:</span>
-        <a href="ejes.html" class="internal-btn active">4.1 Eje 1 Foco[cite: 1]</a>
-        <a href="elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas[cite: 1]</a>
-        <a href="eje3_relac.html" class="internal-btn">4.3 Eje 3 Relac TP[cite: 1]</a>
-        <a href="integraciones_ejes.html" class="internal-btn">4.4 Integraciones</a>
+        <a href="ejes.html" class="internal-btn active">4.1 Eje 1 Foco</a>
+        <a href="elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4 Integraciones</a>
     </div>
 
-    <!-- Submenú Terciario para Aparato Psíquico Freud (Módulo 2 -> Opción 7) -->
     <div id="internal-freud" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Aparato Psíquico:</span>
-        <a href="val_yo.html" class="internal-btn">7.1 Val Yo[cite: 1]</a>
-        <a href="val_superyo.html" class="internal-btn">7.2 Val SuperYo[cite: 1]</a>
-        <a href="val_ello.html" class="internal-btn">7.3 Val Ello[cite: 1]</a>
-        <a href="integraciones_freud.html" class="internal-btn">7.4 Integraciones[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones</a>
     </div>
 
-    <!-- Submenú Terciario para Psiquismo Creador (Módulo 2 -> Opción 8) -->
     <div id="internal-psiquismo" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Psiquismo Creador:</span>
-        <a href="proto_fiorini.html" class="internal-btn">8.1 Protocolo Fiorini[cite: 1]</a>
-        <a href="puente_simbolizacion.html" class="internal-btn">8.2 Puente simbolización[cite: 1]</a>
-        <a href="proyecto_vital.html" class="internal-btn">8.3 Proyecto vital[cite: 1]</a>
-        <a href="via_motora.html" class="internal-btn">8.4 Via motora[cite: 1]</a>
-        <a href="temporalidad.html" class="internal-btn">8.5 Temporalidad[cite: 1]</a>
-        <a href="convergencia_clinica.html" class="internal-btn">8.6 Convergencia clínica[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica</a>
     </div>
 
-    <!-- Submenú Terciario para Autoevaluación Terapeuta (Módulo 4 -> Opción 4.4) -->
     <div id="internal-autoeval" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Autoevaluación:</span>
-        <a href="autoeval_rol.html" class="internal-btn">4.4.1 Rol profesional</a>
-        <a href="autoeval_alianza.html" class="internal-btn">4.4.2 Alianza terapéutica[cite: 3]</a>
-        <a href="autoeval_estilo.html" class="internal-btn">4.4.3 Estilo de intervención[cite: 3]</a>
-        <a href="autoeval_self.html" class="internal-btn">4.4.4 Cuidado del self[cite: 3]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4.1 Rol profesional</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4.2 Alianza terapéutica</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4.3 Estilo de intervención</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4.4 Cuidado del self</a>
     </div>
 
 
@@ -275,45 +266,33 @@
         </div>
     </main>
 
-    <!-- Script de Control de Navegación Dinámica -->
+    <!-- Script de Control Visual de Módulos y Submenús -->
     <script>
-        // Función para cambiar de módulo superior y mostrar su respectiva barra secundaria
         function switchModule(moduleId) {
             document.querySelectorAll('.main-nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.subnav-bar').forEach(bar => bar.classList.remove('active-subnav'));
             document.querySelectorAll('.subnav-internal').forEach(internal => internal.classList.remove('active-internal'));
 
-            const selectedMainBtn = document.querySelector(`.main-nav-btn[data-module="${moduleId}"]`);
-            const selectedSubNav = document.getElementById(`subnav-${moduleId}`);
-
-            if (selectedMainBtn) selectedMainBtn.classList.add('active');
-            if (selectedSubNav) selectedSubNav.classList.add('active-subnav');
+            const selectedMainBtn = document.querySelector(`.main-nav-btn.btn-admin, .main-nav-btn.btn-historia, .main-nav-btn.btn-pacientes, .main-nav-btn.btn-terapeuta, .main-nav-btn.btn-materiales`);
             
-            sessionStorage.setItem('active_elite_module', moduleId);
+            // Activar botón y barra secundaria correspondiente
+            document.querySelectorAll('.main-nav-btn')[moduleId - 1].classList.add('active');
+            const targetSub = document.getElementById(`subnav-${moduleId}`);
+            if (targetSub) targetSub.classList.add('active-subnav');
         }
 
-        // Función para alternar submenús terciarios internos
-        function toggleInternal(internalId, event) {
-            // Si el enlace es puramente estructural para desplegar submenú sin recargar inmediatamente:
-            // event.preventDefault(); 
+        function toggleInternal(internalId) {
             document.querySelectorAll('.subnav-internal').forEach(internal => {
                 if(internal.id !== internalId) internal.classList.remove('active-internal');
             });
-            const targetInternal = document.getElementById(internalId);
-            if(targetInternal) {
-                targetInternal.classList.toggle('active-internal');
-            }
+            const target = document.getElementById(internalId);
+            if(target) target.classList.toggle('active-internal');
         }
 
-        // Vincular clics de la barra principal
-        document.querySelectorAll('.main-nav-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const mod = btn.getAttribute('data-module');
-                // Si deseas navegación interna instantánea por JS sin cambiar de archivo todavía:
-                // e.preventDefault();
-                // switchModule(mod);
-            });
-        });
+        function avisoDesarrollo(e) {
+            e.preventDefault();
+            alert("Módulo en desarrollo / Próximamente disponible en GitHub.");
+        }
     </script>
     <script type="module" src="app.js"></script>
 </body>
