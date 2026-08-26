@@ -1,205 +1,295 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestión Elite v7.0 - app.html</title>
+    
+    <!-- Firebase SDKs Compat (Asegúrate de que tus credenciales estén configuradas más abajo) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-// Validación de sesión
-if (sessionStorage.getItem('clinica_auth') !== 'true') {
-    window.location.href = 'index.html';
-}
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Barra de Navegación Unificada Elite 2.0 */
+        .elite-navbar {
+            background: #111;
+            border-bottom: 2px solid #00e5ff;
+            padding: 10px 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background-color: #2c3e50;
+            color: white;
+            border: 1px solid #00e5ff;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+        .tab-btn:hover {
+            background-color: #00e5ff;
+            color: black;
+        }
+        /* Contenedor Principal de Trabajo */
+        #app-content {
+            flex: 1;
+            position: relative;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
 
-window.logout = function() {
-    sessionStorage.removeItem('clinica_auth');
-    window.location.href = 'index.html';
-}
+    <!-- BARRA DE NAVEGACIÓN UNIFICADA DEFINITIVA -->
+    <div class="elite-navbar">
+        <span style="color:#00e5ff; font-weight:bold; font-size:12px; margin-right:10px;">ELITE 7.0:</span>
+        <button class="tab-btn" onclick="alert('Módulo de Pacientes')">👥 PACIENTES</button>
+        <button class="tab-btn" onclick="alert('Historia Clínica')">📋 HISTORIA CLÍNICA</button>
+        <button class="tab-btn" style="background-color: #005f73; border-color: #00e5ff;" onclick="fy_iniciarModulo()">🔘 F. YOICAS</button>
+        <button class="tab-btn" onclick="alert('Próximo módulo')">🧠 APARATO PSÍQUICO</button>
+        <button class="tab-btn" onclick="alert('Próximo módulo')">📊 AGENDA Y PAGOS</button>
+    </div>
 
-// Tus credenciales de Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
-    authDomain: "materiales-terapeuticos.firebaseapp.com",
-    projectId: "materiales-terapeuticos",
-    storageBucket: "materiales-terapeuticos.firebasestorage.app",
-    messagingSenderId: "827133493876",
-    appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
-};
+    <!-- ÁREA DE TRABAJO DINÁMICA -->
+    <div id="app-content">
+        <div style="margin: auto; text-align: center; color: #666;">
+            <h2 style="color: #00e5ff;">Sistema Gestión Elite v7.0</h2>
+            <p>Selecciona un módulo en la barra superior para comenzar.</p>
+        </div>
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<script>
+    // Inicialización de Firebase (Configura aquí tus credenciales si no las tienes en otro script global)
+    /*
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+    };
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    */
 
-let patients = [];
-let activePatientId = null;
+    // ==========================================
+    // MÓDULO INTEGRADO Y PERSISTENTE: EJE 2 (FUNCIONES YOICAS)
+    // ==========================================
 
-const patientForm = document.getElementById('patient-form');
-const patientsListEl = document.getElementById('patients-list');
-const noPatientSelected = document.getElementById('no-patient-selected');
-const patientDetail = document.getElementById('patient-detail');
-const documentForm = document.getElementById('document-form');
-const searchInput = document.getElementById('search-patient');
+    const rubricaValYo = {
+        "Función de Realidad": {
+            criterio: "Capacidad de distinguir estímulos internos de externos (Corteza Prefrontal / Juicio Crítico).",
+            n1: "Alucinaciones, delirios o pérdida total de objetividad.",
+            n2: "Proyecciones frecuentes; distorsiones ante el estrés.",
+            n3: "Juicio de realidad conservado: capacidad de autocrítica."
+        },
+        "Regulación de Impulsos": {
+            criterio: "Control inhibitorio y tolerancia a la frustración (Circuito Órbito-frontal).",
+            n1: "Actuación (Acting-out) inmediata; incapacidad de postergar.",
+            n2: "Impulsividad selectiva; sentimientos de culpa posteriores.",
+            n3: "Elevada tolerancia a la frustración; demora de gratificación."
+        },
+        "Mecanismos de Defensa": {
+            criterio: "Estrategias de mediación ante el conflicto (Madurez del procesamiento emocional).",
+            n1: "Defensas primarias (escisión, negación, identificación proyectiva).",
+            n2: "Defensas neuróticas (represión, formación reactiva, desplazamiento).",
+            n3: "Defensas maduras (sublimación, humor, supresión consciente)."
+        },
+        "Integración de Identidad": {
+            criterio: "Continuidad del 'Self' y cohesión imagen corporal (Red de Modo Predeterminado).",
+            n1: "Identidad difusa; sentimiento de vacío; fragmentación corporal.",
+            n2: "Identidad inestable; dependencia excesiva del entorno.",
+            n3: "Identidad cohesiva; sentido histórico del sí mismo."
+        },
+        "Función Sintético-Asociativa": {
+            criterio: "Capacidad de organizar la experiencia y el pensamiento (Integración Hemisférica).",
+            n1: "Pensamiento desorganizado; incapacidad de jerarquizar.",
+            n2: "Dificultad para vincular afecto y pensamiento (alexitimia parcial).",
+            n3: "Excelente capacidad de insight y simbolización."
+        }
+    };
 
-async function loadPatientsFromCloud() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "patients"));
-        patients = [];
-        querySnapshot.forEach((docSnap) => {
-            patients.push({
-                id: docSnap.id,
-                ...docSnap.data()
-            });
+    // Función principal vinculada al botón de la barra de navegación
+    window.fy_iniciarModulo = async function() {
+        let areaTrabajo = document.getElementById('app-content');
+        if (!areaTrabajo) return;
+
+        areaTrabajo.innerHTML = `
+            <div style="background:#151515; padding:12px; border-bottom:1px solid #00e5ff; display:flex; gap:15px; align-items:center;">
+                <b style="color:#00e5ff; font-size:11px;">ESTADÍSTICA FUNCIONES YOICAS:</b>
+                <input type="date" id="stats-yo-inicio" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
+                <input type="date" id="stats-yo-fin" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
+            </div>
+
+            <div id="valyo-indicadores-scroll" style="flex:1; overflow-y:auto; padding:20px; border-bottom:2px solid #00e5ff;"></div>
+
+            <div style="height:340px; background:#0a0a0a; padding:15px; border-top:2px solid #00e5ff;">
+                <div style="display:flex; gap:8px; margin-bottom:15px;">
+                    <button onclick="medirValYo()" style="flex:1; background:#00e5ff; color:black; font-weight:bold; padding:12px; cursor:pointer; border:none; border-radius:5px;">📊 MEDIR / GRAFICAR</button>
+                    <button onclick="interpretarIAValYo()" style="flex:1; background:#b21f1f; color:white; font-weight:bold; padding:12px; cursor:pointer; border:none; border-radius:5px;">🤖 INFORME IA</button>
+                    <button onclick="guardarValYo()" style="flex:1; background:#27ae60; color:white; font-weight:bold; padding:12px; cursor:pointer; border:none; border-radius:5px;">💾 GUARDAR EN BD</button>
+                </div>
+                
+                <div id="valyo-consola" style="height:200px; border:1px solid #333; background:#000; padding:15px; overflow-y:auto; border-radius:8px;">
+                    <div id="eq-main" style="display:flex; align-items:flex-end; justify-content:space-around; height:90px; border-bottom:1px solid #222; padding-bottom:30px; margin-bottom:15px;"></div>
+                    <div id="ia-informe" style="font-size:12px; color:#ccc; margin-bottom:15px;"></div>
+                    <div id="etiquetas-listado" style="display:flex; flex-direction:column; gap:6px;"></div>
+                </div>
+            </div>
+        `;
+
+        renderValYoCampos();
+        await cargarHistoricoValYo();
+    };
+
+    function renderValYoCampos() {
+        const areaScroll = document.getElementById('valyo-indicadores-scroll');
+        if (!areaScroll) return;
+        
+        areaScroll.innerHTML = "";
+        Object.keys(rubricaValYo).forEach(key => {
+            const data = rubricaValYo[key];
+            const divInd = document.createElement('div');
+            divInd.style = "background:#111; padding:15px; margin-bottom:12px; border-left:5px solid #00e5ff; border-radius:5px;";
+            divInd.title = `CRITERIO: ${data.criterio}`;
+            divInd.innerHTML = `
+                <b style="color:#00e5ff; display:block; margin-bottom:10px; font-size:13px;">${key.toUpperCase()}</b>
+                <div style="display:flex; justify-content:space-between;">
+                    <label title="${data.n1}" style="color:#ff5252; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="1"> Nivel 1: Deficitario</label>
+                    <label title="${data.n2}" style="color:#ffd740; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="2"> Nivel 2: Intermedio</label>
+                    <label title="${data.n3}" style="color:#69f0ae; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="3"> Nivel 3: Funcional</label>
+                </div>`;
+            areaScroll.appendChild(divInd);
         });
-        renderPatients();
-    } catch (error) {
-        console.error("Error al cargar pacientes: ", error);
-    }
-}
-
-patientForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newPatientData = {
-        name: document.getElementById('patient-name').value.trim(),
-        phone: document.getElementById('patient-phone').value.trim(),
-        motivo: document.getElementById('patient-motivo').value.trim(),
-        documents: []
-    };
-
-    try {
-        const docRef = await addDoc(collection(db, "patients"), newPatientData);
-        newPatientData.id = docRef.id;
-        patients.push(newPatientData);
-        patientForm.reset();
-        renderPatients();
-        alert('¡Paciente registrado con éxito en la nube!');
-    } catch (error) {
-        console.error("Error al guardar paciente: ", error);
-    }
-});
-
-function renderPatients(filter = '') {
-    patientsListEl.innerHTML = '';
-    const filtered = patients.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
-
-    if (filtered.length === 0) {
-        patientsListEl.innerHTML = '<p style="font-size: 0.85rem; color: #64748b; text-align:center; padding: 10px;">No hay pacientes.</p>';
-        return;
     }
 
-    filtered.forEach(patient => {
-        const div = document.createElement('div');
-        div.className = `patient-item ${patient.id === activePatientId ? 'active' : ''}`;
-        div.innerHTML = `
-            <strong>${patient.name}</strong>
-            <p style="font-size: 0.8rem; color: #64748b;">${patient.motivo || 'Sin motivo'}</p>
-        `;
-        div.onclick = () => selectPatient(patient.id);
-        patientsListEl.appendChild(div);
-    });
-}
-
-searchInput.addEventListener('input', (e) => {
-    renderPatients(e.target.value);
-});
-
-function selectPatient(id) {
-    activePatientId = id;
-    renderPatients(searchInput.value);
-    
-    const patient = patients.find(p => p.id === id);
-    if (!patient) return;
-
-    noPatientSelected.classList.add('hidden');
-    patientDetail.classList.remove('hidden');
-
-    document.getElementById('detail-name').innerText = patient.name;
-    document.getElementById('detail-phone').innerText = `Tel: ${patient.phone}`;
-    document.getElementById('detail-motivo').innerText = patient.motivo;
-
-    const waBtn = document.getElementById('whatsapp-direct-btn');
-    const waMsg = encodeURIComponent(`Hola ${patient.name}, te escribo desde la Clínica de la Convergencia.`);
-    waBtn.href = `https://wa.me/${patient.phone.replace(/[^0-9]/g, '')}?text=${waMsg}`;
-
-    renderDocuments(patient);
-}
-
-documentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!activePatientId) return;
-
-    const title = document.getElementById('doc-title').value.trim();
-    const url = document.getElementById('doc-url').value.trim();
-    const patient = patients.find(p => p.id === activePatientId);
-    
-    const newDoc = {
-        id: Date.now().toString(),
-        title,
-        url,
-        date: new Date().toLocaleDateString(),
-        notes: ''
-    };
-
-    patient.documents.push(newDoc);
-
-    try {
-        const patientRef = doc(db, "patients", activePatientId);
-        await updateDoc(patientRef, { documents: patient.documents });
-        documentForm.reset();
-        renderDocuments(patient);
-    } catch (error) {
-        console.error("Error al guardar documento: ", error);
-    }
-});
-
-function renderDocuments(patient) {
-    const container = document.getElementById('documents-container');
-    container.innerHTML = '';
-
-    if (!patient.documents || patient.documents.length === 0) {
-        container.innerHTML = '<p style="font-size: 0.9rem; color: #64748b; text-align: center; padding: 20px;">No hay documentos.</p>';
-        return;
+    function medirValYo() {
+        const eq = document.getElementById('eq-main');
+        if (!eq) return;
+        eq.innerHTML = "";
+        
+        Object.keys(rubricaValYo).forEach(key => {
+            const val = document.querySelector(`input[name="yo_${key}"]:checked`)?.value || 0;
+            const h = (val / 3) * 100;
+            const color = val <= 1.5 ? '#ff5252' : val <= 2.5 ? '#ffd740' : '#69f0ae';
+            eq.innerHTML += `
+                <div style="width:18%; height:100%; display:flex; flex-direction:column; align-items:center; position:relative;">
+                    <div style="width:18px; height:100%; background:#222; position:relative; border:2px solid #444; border-radius:3px;">
+                        <div style="position:absolute; bottom:0; width:100%; height:${h}%; background:linear-gradient(to top, #000, ${color});"></div>
+                    </div>
+                    <span style="font-size:7px; color:#fff; margin-top:5px; text-align:center; position:absolute; top:105%; width:max-content; font-weight:bold;">${key.toUpperCase()}</span>
+                </div>`;
+        });
     }
 
-    patient.documents.forEach(docItem => {
-        const docDiv = document.createElement('div');
-        docDiv.className = 'doc-card';
-        docDiv.innerHTML = `
-            <div class="doc-info">
-                <div>
-                    <strong>${docItem.title}</strong>
-                    <span style="font-size: 0.75rem; color: #64748b; display: block;">Fecha: ${docItem.date}</span>
-                </div>
-                <div>
-                    <a href="${docItem.url}" target="_blank" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-eye"></i> Ver</a>
-                    <button onclick="deleteDocItem('${docItem.id}')" class="btn" style="background: #ef4444; color: white; padding: 5px 10px; font-size: 0.8rem; margin-left: 5px;"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </div>
-            <div class="notes-section">
-                <label style="font-size: 0.75rem; color: #475569;"><i class="fa-solid fa-pen-to-square"></i> Observaciones:</label>
-                <textarea rows="2" oninput="updateNotes('${docItem.id}', this.value)">${docItem.notes || ''}</textarea>
-            </div>
-        `;
-        container.appendChild(docDiv);
-    });
-}
+    function interpretarIAValYo() {
+        const iaBox = document.getElementById('ia-informe');
+        if (!iaBox) return;
+        let total = 0;
+        let reporte = "<b>INFORME RVC-YO (LITERAL):</b><br><br>";
+        
+        Object.keys(rubricaValYo).forEach(key => {
+            const v = document.querySelector(`input[name="yo_${key}"]:checked`)?.value;
+            if(v) {
+                total += parseInt(v);
+                reporte += `• ${key}: ${rubricaValYo[key]['n'+v]}<br>`;
+            }
+        });
+        
+        let escala = total <= 8 ? "Rango Deficitario" : total <= 12 ? "Rango Neurótico" : "Fortaleza Yoica";
+        iaBox.innerHTML = `${reporte}<br><b style="color:#00e5ff;">PUNTAJE GLOBAL: ${total} PUNTOS - ${escala}</b>`;
+    }
 
-window.updateNotes = async function(docId, text) {
-    const patient = patients.find(p => p.id === activePatientId);
-    const docItem = patient.documents.find(d => d.id === docId);
-    if (docItem) {
-        docItem.notes = text;
+    // Persistencia real en Firebase Firestore
+    async function guardarValYo() {
+        const pacienteId = window.pacienteActualId || "paciente_general_demo";
+        let vals = {}; 
+        let total = 0;
+        
+        Object.keys(rubricaValYo).forEach(k => {
+            const val = document.querySelector(`input[name="yo_${k}"]:checked`)?.value || 0;
+            vals[k] = parseInt(val);
+            total += parseInt(val);
+        });
+
+        if (total === 0) {
+            alert("Por favor, selecciona al menos un valor antes de guardar.");
+            return;
+        }
+
         try {
-            await updateDoc(doc(db, "patients", activePatientId), { documents: patient.documents });
+            if (typeof db !== 'undefined') {
+                await db.collection("pacientes").doc(pacienteId).collection("evaluaciones_yoicas").add({
+                    fecha: new Date().toISOString(),
+                    puntajes: vals,
+                    puntajeTotal: total,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            alert("¡Evaluación yoica guardada exitosamente en Firestore!");
+            await cargarHistoricoValYo();
         } catch (error) {
-            console.error("Error al actualizar notas:", error);
+            console.error("Error al guardar en Firestore:", error);
+            alert("Error al conectar con la base de datos.");
         }
     }
-};
 
-window.deleteDocItem = async function(docId) {
-    if (!confirm('¿Eliminar documento?')) return;
-    const patient = patients.find(p => p.id === activePatientId);
-    patient.documents = patient.documents.filter(d => d.id !== docId);
-    try {
-        await updateDoc(doc(db, "patients", activePatientId), { documents: patient.documents });
-        renderDocuments(patient);
-    } catch (error) {
-        console.error("Error al eliminar documento:", error);
+    async function cargarHistoricoValYo() {
+        const pacienteId = window.pacienteActualId || "paciente_general_demo";
+        const etiquetaListado = document.getElementById('etiquetas-listado');
+        if (!etiquetaListado) return;
+        
+        etiquetaListado.innerHTML = "<span style='color:#666; font-size:11px;'>Cargando registros de Firestore...</span>";
+
+        try {
+            if (typeof db !== 'undefined') {
+                const snapshot = await db.collection("pacientes").doc(pacienteId).collection("evaluaciones_yoicas").orderBy("createdAt", "desc").get();
+                etiquetaListado.innerHTML = "";
+
+                if (snapshot.empty) {
+                    etiquetaListado.innerHTML = "<span style='color:#666; font-size:11px;'>No hay registros previos para este paciente.</span>";
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const fechaFormateada = data.fecha ? new Date(data.fecha).toLocaleString() : "Fecha";
+                    const tag = document.createElement('div');
+                    tag.style = "background:#111; border:1px solid #00e5ff; padding:6px 10px; font-size:10px; color:#fff; border-radius:4px; display:flex; justify-content:space-between;";
+                    tag.innerHTML = `<span><b>[${fechaFormateada}]</b> Total: ${data.puntajeTotal} pts</span> <span style="color:#00e5ff;">Sincronizado</span>`;
+                    etiquetaListado.appendChild(tag);
+                });
+            } else {
+                etiquetaListado.innerHTML = "<span style='color:#ffd740; font-size:11px;'>Modo local: Base de datos no inicializada en este entorno de pruebas.</span>";
+            }
+        } catch (error) {
+            console.error("Error al cargar histórico:", error);
+            etiquetaListado.innerHTML = "<span style='color:#ff5252; font-size:11px;'>Error al recuperar datos de Firestore.</span>";
+        }
     }
-};
+</script>
 
-loadPatientsFromCloud();
+</body>
+</html>
