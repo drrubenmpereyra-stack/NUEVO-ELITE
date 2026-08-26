@@ -2,224 +2,399 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Eje 2: Funciones Yoicas - ELITE 2.0</title>
-    <!-- Firebase SDKs Compat -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Clínica - Eje 2: Funciones Yoicas | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #0b0b0b;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --hc-sesiones: #059669;
+            --color-hc: #059669;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
         }
-        .module-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #000;
-            border: 2px solid #00e5ff;
-            border-radius: 10px;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* Barra Superior de Secciones Generales */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
+        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        select, input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        select:focus, input:focus { outline: none; border-color: var(--hc-sesiones); }
+
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #047857; }
+
+        .app-container {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .yo-indicator-item {
+            background: #f8fafc;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--hc-sesiones);
+            border-radius: 4px;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .yo-radio-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .yo-radio-group label {
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: white;
+            border: 1px solid var(--border-color);
+            flex: 1;
+            min-width: 140px;
         }
     </style>
 </head>
 <body>
 
-<div class="module-container">
-    <!-- CABECERA DE FILTROS -->
-    <div style="background:#151515; padding:12px; border-bottom:1px solid #00e5ff; display:flex; gap:15px; align-items:center;">
-        <b style="color:#00e5ff; font-size:11px;">ESTADÍSTICA FUNCIONES YOICAS:</b>
-        <input type="date" id="stats-yo-inicio" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
-        <input type="date" id="stats-yo-fin" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
-    </div>
-
-    <!-- CUERPO DE EVALUACIÓN (SCROLL) -->
-    <div id="valyo-indicadores-scroll" style="flex:1; overflow-y:auto; padding:20px; border-bottom:2px solid #00e5ff;"></div>
-
-    <!-- PANEL DE CONTROL E INFERIOR -->
-    <div style="height:320px; background:#0a0a0a; padding:15px; display:flex; flex-direction:column; box-sizing:border-box;">
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <button onclick="medirValYo()" style="flex:1; background:#00e5ff; color:black; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">📊 MEDIR / GRAFICAR</button>
-            <button onclick="interpretarIAValYo()" style="flex:1; background:#b21f1f; color:white; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">🤖 INFORME IA</button>
-            <button onclick="guardarValYo()" style="flex:1; background:#27ae60; color:white; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">💾 GUARDAR EN BD</button>
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección General: Historia Clínica</p>
         </div>
-        
-        <div id="valyo-consola" style="flex:1; border:1px solid #333; background:#000; padding:12px; overflow-y:auto; border-radius:8px; display:flex; flex-direction:column;">
-            <div id="eq-main" style="display:flex; align-items:flex-end; justify-content:space-around; height:70px; border-bottom:1px solid #222; padding-bottom:15px; margin-bottom:10px;"></div>
-            <div id="ia-informe" style="font-size:11px; color:#ccc; margin-bottom:10px;"></div>
-            <div id="etiquetas-listado" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </header>
+
+    <!-- Barra Superior de Secciones Generales -->
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <a href="eync.html" class="subnav-btn"><i class="fa-solid fa-chess"></i> Estrategias y Niveles de Cambio</a>
+        <a href="ejes.html" class="subnav-btn active"><i class="fa-solid fa-bullseye"></i> Ejes del Proceso Terapéutico</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <!-- Selección de Paciente -->
+        <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
+            <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="yo-patient-select">Paciente Activo</label>
+                <select id="yo-patient-select" onchange="onPatientSelected()">
+                    <option value="">-- Seleccione un paciente --</option>
+                </select>
+            </div>
         </div>
-    </div>
-</div>
 
-<script>
-    const rubricaValYo = {
-        "Función de Realidad": {
-            criterio: "Capacidad de distinguir estímulos internos de externos (Corteza Prefrontal / Juicio Crítico).",
-            n1: "Alucinaciones, delirios o pérdida total de objetividad.",
-            n2: "Proyecciones frecuentes; distorsiones ante el estrés.",
-            n3: "Juicio de realidad conservado: capacidad de autocrítica."
-        },
-        "Regulación de Impulsos": {
-            criterio: "Control inhibitorio y tolerancia a la frustración (Circuito Órbito-frontal).",
-            n1: "Actuación (Acting-out) inmediata; incapacidad de postergar.",
-            n2: "Impulsividad selectiva; sentimientos de culpa posteriores.",
-            n3: "Elevada tolerancia a la frustración; demora de gratificación."
-        },
-        "Mecanismos de Defensa": {
-            criterio: "Estrategias de mediación ante el conflicto (Madurez del procesamiento emocional).",
-            n1: "Defensas primarias (escisión, negación, identificación proyectiva).",
-            n2: "Defensas neuróticas (represión, formación reactiva, desplazamiento).",
-            n3: "Defensas maduras (sublimación, humor, supresión consciente)."
-        },
-        "Integración de Identidad": {
-            criterio: "Continuidad del 'Self' y cohesión imagen corporal (Red de Modo Predeterminado).",
-            n1: "Identidad difusa; sentimiento de vacío; fragmentación corporal.",
-            n2: "Identidad inestable; dependencia excesiva del entorno.",
-            n3: "Identidad cohesiva; sentido histórico del sí mismo."
-        },
-        "Función Sintético-Asociativa": {
-            criterio: "Capacidad de organizar la experiencia y el pensamiento (Integración Hemisférica).",
-            n1: "Pensamiento desorganizado; incapacidad de jerarquizar.",
-            n2: "Dificultad para vincular afecto y pensamiento (alexitimia parcial).",
-            n3: "Excelente capacidad de insight y simbolización."
-        }
-    };
+        <!-- Módulo Principal Eje 2: Funciones Yoicas -->
+        <div id="yo-module-container" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-chart-line"></i> Eje 2: Funciones Yoicas (Evaluación y Ecualizador)</h2>
+            
+            <div class="app-container">
+                <!-- CABECERA DE FILTROS -->
+                <div style="background:#f1f5f9; padding:12px; border-bottom:1px solid var(--border-color); display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+                    <b style="color:var(--primary-color); font-size:0.85rem;"><i class="fa-solid fa-filter"></i> ESTADÍSTICA FUNCIONES YOICAS (DESDE / HASTA):</b>
+                    <input type="date" id="stats-yo-inicio" style="background:#fff; color:var(--text-color); border:1px solid var(--border-color); padding:5px; font-size:0.85rem; border-radius:4px;">
+                    <input type="date" id="stats-yo-fin" style="background:#fff; color:var(--text-color); border:1px solid var(--border-color); padding:5px; font-size:0.85rem; border-radius:4px;">
+                </div>
 
-    window.onload = async function() {
-        renderValYoCampos();
-        await cargarHistoricoValYo();
-    };
+                <!-- CUERPO DE EVALUACIÓN (SCROLL) -->
+                <div id="valyo-indicadores-scroll" style="max-height: 450px; overflow-y:auto; padding:20px; border-bottom:2px solid var(--border-color);"></div>
 
-    function renderValYoCampos() {
-        const areaScroll = document.getElementById('valyo-indicadores-scroll');
-        if (!areaScroll) return;
-        
-        areaScroll.innerHTML = "";
-        Object.keys(rubricaValYo).forEach(key => {
-            const data = rubricaValYo[key];
-            const divInd = document.createElement('div');
-            divInd.style = "background:#111; padding:12px; margin-bottom:10px; border-left:5px solid #00e5ff; border-radius:5px;";
-            divInd.title = `CRITERIO: ${data.criterio}`;
-            divInd.innerHTML = `
-                <b style="color:#00e5ff; display:block; margin-bottom:8px; font-size:12px;">${key.toUpperCase()}</b>
-                <div style="display:flex; justify-content:space-between;">
-                    <label title="${data.n1}" style="color:#ff5252; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="1"> Nivel 1</label>
-                    <label title="${data.n2}" style="color:#ffd740; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="2"> Nivel 2</label>
-                    <label title="${data.n3}" style="color:#69f0ae; cursor:help; font-size:11px;"><input type="radio" name="yo_${key}" value="3"> Nivel 3</label>
-                </div>`;
-            areaScroll.appendChild(divInd);
-        });
-    }
-
-    function medirValYo() {
-        const eq = document.getElementById('eq-main');
-        if (!eq) return;
-        eq.innerHTML = "";
-        
-        Object.keys(rubricaValYo).forEach(key => {
-            const val = document.querySelector(`input[name="yo_${key}"]:checked`)?.value || 0;
-            const h = (val / 3) * 100;
-            const color = val <= 1.5 ? '#ff5252' : val <= 2.5 ? '#ffd740' : '#69f0ae';
-            eq.innerHTML += `
-                <div style="width:18%; height:100%; display:flex; flex-direction:column; align-items:center; position:relative;">
-                    <div style="width:16px; height:100%; background:#222; position:relative; border:1px solid #444; border-radius:3px;">
-                        <div style="position:absolute; bottom:0; width:100%; height:${h}%; background:${color};"></div>
+                <!-- PANEL DE CONTROL E INFERIOR (CONSOLA Y ECUALIZADOR) -->
+                <div style="background:#f8fafc; padding:20px; display:flex; flex-direction:column; box-sizing:border-box;">
+                    <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+                        <button onclick="medirValYo()" class="btn" style="flex:1;"><i class="fa-solid fa-chart-bar"></i> MEDIR / GRAFICAR</button>
+                        <button onclick="interpretarIAValYo()" class="btn" style="flex:1; background-color:#ca8a04;"><i class="fa-solid fa-robot"></i> INFORME IA</button>
+                        <button onclick="guardarValYo()" class="btn" style="flex:1; background-color:var(--secondary-color);"><i class="fa-solid fa-floppy-disk"></i> GUARDAR EN LA NUBE</button>
                     </div>
-                    <span style="font-size:6px; color:#fff; margin-top:4px; text-align:center; white-space:nowrap;">${key}</span>
-                </div>`;
-        });
-    }
+                    
+                    <div id="valyo-consola" style="border:1px solid var(--border-color); background:#ffffff; padding:15px; overflow-y:auto; border-radius:8px;">
+                        <div id="eq-main" style="display:flex; align-items:flex-end; justify-content:space-around; height:120px; border-bottom:1px solid #e2e8f0; padding-bottom:30px; margin-bottom:15px;"></div>
+                        <div id="ia-informe" style="font-size:0.9rem; color:var(--text-color); margin-bottom:15px;"></div>
+                        <div id="etiquetas-listado" style="display:flex; flex-direction:column; gap:8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    function interpretarIAValYo() {
-        const iaBox = document.getElementById('ia-informe');
-        if (!iaBox) return;
-        let total = 0;
-        let reporte = "<b>INFORME RVC-YO:</b><br>";
-        
-        Object.keys(rubricaValYo).forEach(key => {
-            const v = document.querySelector(`input[name="yo_${key}"]:checked`)?.value;
-            if(v) {
-                total += parseInt(v);
-                reporte += `• ${key}: Nivel ${v}<br>`;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let activePatientId = null;
+
+        // Rúbrica oficial de Funciones Yoicas[cite: 24]
+        const rubricaValYo = {
+            "Función de Realidad": {
+                criterio: "Capacidad de distinguir estímulos internos de externos (Corteza Prefrontal / Juicio Crítico).[cite: 24]",
+                n1: "Alucinaciones, delirios o pérdida total de objetividad.[cite: 24]",
+                n2: "Proyecciones frecuentes; distorsiones ante el estrés.[cite: 24]",
+                n3: "Juicio de realidad conservado: capacidad de autocrítica.[cite: 24]"
+            },
+            "Regulación de Impulsos": {
+                criterio: "Control inhibitorio y tolerancia a la frustración (Circuito Órbito-frontal).[cite: 24]",
+                n1: "Actuación (Acting-out) inmediata; incapacidad de postergar.[cite: 24]",
+                n2: "Impulsividad selectiva; sentimientos de culpa posteriores.[cite: 24]",
+                n3: "Elevada tolerancia a la frustración; demora de gratificación.[cite: 24]"
+            },
+            "Mecanismos de Defensa": {
+                criterio: "Estrategias de mediación ante el conflicto (Madurez del procesamiento emocional).[cite: 24]",
+                n1: "Defensas primarias (escisión, negación, identificación proyectiva).[cite: 24]",
+                n2: "Defensas neuróticas (represión, formación reactiva, desplazamiento).[cite: 24]",
+                n3: "Defensas maduras (sublimación, humor, supresión consciente).[cite: 24]"
+            },
+            "Integración de Identidad": {
+                criterio: "Continuidad del 'Self' y cohesión imagen corporal (Red de Modo Predeterminado).[cite: 24]",
+                n1: "Identidad difusa; sentimiento de vacío; fragmentación corporal.[cite: 24]",
+                n2: "Identidad inestable; dependencia excesiva del entorno.[cite: 24]",
+                n3: "Identidad cohesiva; sentido histórico del sí mismo.[cite: 24]"
+            },
+            "Función Sintético-Asociativa": {
+                criterio: "Capacidad de organizar la experiencia y el pensamiento (Integración Hemisférica).[cite: 24]",
+                n1: "Pensamiento desorganizado; incapacidad de jerarquizar.[cite: 24]",
+                n2: "Dificultad para vincular afecto y pensamiento (alexitimia parcial).[cite: 24]",
+                n3: "Excelente capacidad de insight y simbolización.[cite: 24]"
             }
-        });
-        
-        let escala = total <= 8 ? "Rango Deficitario" : total <= 12 ? "Rango Neurótico" : "Fortaleza Yoica";
-        iaBox.innerHTML = `${reporte}<b style="color:#00e5ff;">TOTAL: ${total} pts - ${escala}</b>`;
-    }
+        };
 
-    async function guardarValYo() {
-        const pacienteId = window.parent.pacienteActualId || "paciente_general_demo";
-        let vals = {}; 
-        let total = 0;
-        
-        Object.keys(rubricaValYo).forEach(k => {
-            const val = document.querySelector(`input[name="yo_${k}"]:checked`)?.value || 0;
-            vals[k] = parseInt(val);
-            total += parseInt(val);
-        });
-
-        if (total === 0) {
-            alert("Selecciona al menos un valor antes de guardar.");
-            return;
-        }
-
-        try {
-            if (typeof db !== 'undefined') {
-                await db.collection("pacientes").doc(pacienteId).collection("evaluaciones_yoicas").add({
-                    fecha: new Date().toISOString(),
-                    puntajes: vals,
-                    puntajeTotal: total,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        async function initPacientes() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('yo-patient-select');
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
                 });
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
             }
-            alert("¡Evaluación guardada en Firestore!");
-            await cargarHistoricoValYo();
-        } catch (error) {
-            console.error("Error al guardar:", error);
-            alert("Error al conectar con la base de datos.");
         }
-    }
 
-    async function cargarHistoricoValYo() {
-        const pacienteId = window.parent.pacienteActualId || "paciente_general_demo";
-        const etiquetaListado = document.getElementById('etiquetas-listado');
-        if (!etiquetaListado) return;
-        
-        etiquetaListado.innerHTML = "<span style='color:#666; font-size:11px;'>Cargando histórico...</span>";
+        window.onPatientSelected = async function() {
+            activePatientId = document.getElementById('yo-patient-select').value;
+            const container = document.getElementById('yo-module-container');
+            
+            if (!activePatientId) {
+                container.style.display = 'none';
+                return;
+            }
 
-        try {
-            if (typeof db !== 'undefined') {
-                const snapshot = await db.collection("pacientes").doc(pacienteId).collection("evaluaciones_yoicas").orderBy("createdAt", "desc").get();
-                etiquetaListado.innerHTML = "";
+            container.style.display = 'block';
+            fy_iniciarModulo();
+            await cargarRegistrosYoicosCloud();
+        };
 
-                if (snapshot.empty) {
-                    etiquetaListado.innerHTML = "<span style='color:#666; font-size:11px;'>Sin registros previos.</span>";
-                    return;
+        window.fy_iniciarModulo = function() {
+            renderValYo();
+        };
+
+        function renderValYo() {
+            const areaScroll = document.getElementById('valyo-indicadores-scroll');
+            if (!areaScroll) return;
+            
+            areaScroll.innerHTML = "";
+            Object.keys(rubricaValYo).forEach(key => {
+                const data = rubricaValYo[key];
+                const divInd = document.createElement('div');
+                divInd.className = 'yo-indicator-item';
+                divInd.title = `CRITERIO: ${data.criterio}`;[cite: 24]
+                divInd.innerHTML = `
+                    <b style="color:var(--primary-color); display:block; margin-bottom:8px; font-size:0.9rem;"><i class="fa-solid fa-bullseye"></i> ${key.toUpperCase()}</b>
+                    <p style="font-size:0.8rem; color:#64748b; margin-bottom:8px;"><em>${data.criterio}</em></p>
+                    <div class="yo-radio-group">
+                        <label title="${data.n1}" style="color:#dc2626;"><input type="radio" name="yo_${key}" value="1"> <strong>N1:</strong> Deficitario</label>
+                        <label title="${data.n2}" style="color:#d97706;"><input type="radio" name="yo_${key}" value="2"> <strong>N2:</strong> Intermedio</label>
+                        <label title="${data.n3}" style="color:#16a34a;"><input type="radio" name="yo_${key}" value="3"> <strong>N3:</strong> Funcional</label>
+                    </div>`;
+                areaScroll.appendChild(divInd);
+            });
+        }
+
+        window.medirValYo = function() {
+            const eq = document.getElementById('eq-main');
+            if (!eq) return;
+            eq.innerHTML = "";
+            
+            Object.keys(rubricaValYo).forEach(key => {
+                const val = document.querySelector(`input[name="yo_${key}"]:checked`)?.value || 0;
+                const h = (val / 3) * 100;
+                const color = val <= 1.5 ? '#ef4444' : val <= 2.5 ? '#eab308' : '#22c55e';
+                eq.innerHTML += `
+                    <div style="width:18%; height:100%; display:flex; flex-direction:column; align-items:center; position:relative;">
+                        <div style="width:24px; height:100%; background:#e2e8f0; position:relative; border:1px solid #cbd5e1; border-radius:4px; overflow:hidden;">
+                            <div style="position:absolute; bottom:0; width:100%; height:${h}%; background:${color}; transition: height 0.3s ease;"></div>
+                        </div>
+                        <span style="font-size:0.7rem; color:var(--text-color); margin-top:6px; text-align:center; width:100%; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${key}">${key}</span>
+                    </div>`;
+            });
+        }
+
+        window.interpretarIAValYo = function() {
+            const iaBox = document.getElementById('ia-informe');
+            if (!iaBox) return;
+            let total = 0;
+            let count = 0;
+            let reporte = "<b>INFORME RVC-YO (LITERAL):</b><br><br>";[cite: 24]
+            
+            Object.keys(rubricaValYo).forEach(key => {
+                const v = document.querySelector(`input[name="yo_${key}"]:checked`)?.value;
+                if(v) {
+                    total += parseInt(v);
+                    count++;
+                    reporte += `• <b>${key}:</b> ${rubricaValYo[key]['n'+v]}<br>`;[cite: 24]
                 }
-
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const fecha = data.fecha ? new Date(data.fecha).toLocaleString() : "Fecha";
-                    const tag = document.createElement('div');
-                    tag.style = "background:#111; border:1px solid #00e5ff; padding:4px 8px; font-size:10px; color:#fff; border-radius:4px; display:flex; justify-content:space-between;";
-                    tag.innerHTML = `<span><b>[${fecha}]</b> Total: ${data.puntajeTotal} pts</span> <span style="color:#00e5ff;">Sincronizado</span>`;
-                    etiquetaListado.appendChild(tag);
-                });
+            });
+            
+            if (count === 0) {
+                iaBox.innerHTML = "<span style='color:#ef4444;'>Por favor, seleccione al menos un nivel en los indicadores para generar el informe.</span>";
+                return;
             }
-        } catch (error) {
-            console.error("Error histórico:", error);
-            etiquetaListado.innerHTML = "<span style='color:#ff5252; font-size:11px;'>Error al recuperar histórico.</span>";
+
+            let escala = total <= 8 ? "Rango Deficitario" : total <= 12 ? "Rango Neurótico" : "Fortaleza Yoica";[cite: 24]
+            iaBox.innerHTML = `${reporte}<br><b style="color:var(--primary-color);">PUNTAJE GLOBAL: ${total} PUNTOS - ${escala}</b>`;[cite: 24]
         }
-    }
-</script>
+
+        window.guardarValYo = async function() {
+            if (!activePatientId) return;
+
+            let vals = {}; 
+            let completo = true;
+            Object.keys(rubricaValYo).forEach(k => {
+                const checked = document.querySelector(`input[name="yo_${k}"]:checked`);
+                if (!checked) completo = false;
+                vals[k] = checked ? parseInt(checked.value) : 0;
+            });
+
+            if (!completo) {
+                alert("Por favor, seleccione una opción en cada una de las 5 funciones yoicas antes de guardar.");
+                return;
+            }
+
+            let total = Object.values(vals).reduce((a, b) => a + b, 0);
+            let escala = total <= 8 ? "Rango Deficitario" : total <= 12 ? "Rango Neurótico" : "Fortaleza Yoica";[cite: 24]
+
+            const registroCloud = {
+                id: Date.now().toString(),
+                fecha: new Date().toISOString().split('T')[0],
+                valores: vals,
+                puntajeGlobal: total,
+                escala: escala
+            };
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                await updateDoc(patientRef, {
+                    focosEje2Yoicas: arrayUnion(registroCloud)
+                });
+                alert('¡Evaluación de Funciones Yoicas guardada con éxito en la nube!');
+                await cargarRegistrosYoicosCloud();
+            } catch (error) {
+                console.error("Error al guardar en la nube:", error);
+                alert("Error al guardar los datos en la nube.");
+            }
+        };
+
+        async function cargarRegistrosYoicosCloud() {
+            const etiquetaListado = document.getElementById('etiquetas-listado');
+            if (!etiquetaListado) return;
+            
+            etiquetaListado.innerHTML = '<p style="color: #64748b; font-size: 0.85rem; text-align: center;">Cargando registros históricos...</p>';
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                
+                if (patientSnap.exists()) {
+                    const data = patientSnap.data();
+                    const registros = data.focosEje2Yoicas || [];
+                    
+                    etiquetaListado.innerHTML = '';
+                    if (registros.length === 0) {
+                        etiquetaListado.innerHTML = '<p style="color: #64748b; font-size: 0.85rem; text-align: center;">No hay registros yoicos guardados para este paciente.</p>';
+                        return;
+                    }
+
+                    registros.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                    registros.forEach(reg => {
+                        const tag = document.createElement('div');
+                        tag.style = "background:#f1f5f9; border:1px solid var(--border-color); padding:10px; font-size:0.85rem; color:var(--text-color); border-radius:4px;";
+                        tag.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <strong><i class="fa-solid fa-calendar"></i> Fecha: ${reg.fecha}</strong>
+                                <span style="color:var(--primary-color); font-weight:600;">Global: ${reg.puntajeGlobal} pts (${reg.escala})</span>
+                            </div>
+                            <span style="font-size:0.8rem; color:#64748b;">Detalle: ${JSON.stringify(reg.valores)}</span>
+                        `;
+                        etiquetaListado.appendChild(tag);
+                    });
+                }
+            } catch (error) {
+                console.error("Error al cargar historial yoico:", error);
+            }
+        }
+
+        initPacientes();
+    </script>
 </body>
 </html>
