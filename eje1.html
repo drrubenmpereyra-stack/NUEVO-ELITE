@@ -50,7 +50,7 @@
         .fiorini-canvas-wrapper {
             position: relative;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto 20px auto;
             background: #ffffff;
             border: 1px solid var(--border-color);
@@ -64,41 +64,40 @@
             display: block;
         }
 
-        /* Campos de texto flotantes sobre los sectores de la imagen */
+        /* Campos de texto flotantes con guía visual */
         .schema-input {
             position: absolute;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             border: 2px solid var(--hc-sesiones);
             border-radius: 6px;
-            padding: 6px;
-            font-size: 0.75rem;
+            padding: 5px;
+            font-size: 0.7rem;
             resize: vertical;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
             transition: all 0.2s ease;
         }
         .schema-input:focus {
             background: #ffffff;
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
             z-index: 10;
         }
 
-        /* Posicionamiento porcentual adaptativo para cada sector (1 al 7) sobre la imagen */
-        #fiorini-box-1 { top: 40%; left: 8%; width: 22%; height: 22%; } /* Núcleo central */
-        #fiorini-box-2 { top: 12%; left: 8%; width: 22%; height: 20%; } /* Anillo exterior */
-        #fiorini-box-6 { top: 10%; left: 58%; width: 35%; height: 16%; } /* Componente 6 Arriba */
-        #fiorini-box-3 { top: 30%; left: 58%; width: 35%; height: 16%; } /* Componente 3 */
-        #fiorini-box-4 { top: 48%; left: 58%; width: 35%; height: 16%; } /* Componente 4 */
-        #fiorini-box-5 { top: 66%; left: 58%; width: 35%; height: 16%; } /* Componente 5 */
-        #fiorini-box-7 { top: 84%; left: 58%; width: 35%; height: 14%; } /* Componente 7 Abajo */
+        /* Posicionamiento porcentual adaptativo para cada sector (1 al 7) */
+        #fiorini-box-1 { top: 38%; left: 6%; width: 26%; height: 26%; } /* 1- Núcleo central */
+        #fiorini-box-2 { top: 10%; left: 6%; width: 26%; height: 22%; } /* 2- Anillo exterior */
+        #fiorini-box-6 { top: 8%; left: 56%; width: 38%; height: 16%; } /* 6- Histórico genéticos */
+        #fiorini-box-3 { top: 27%; left: 56%; width: 38%; height: 16%; } /* 3- Situación grupal */
+        #fiorini-box-4 { top: 46%; left: 56%; width: 38%; height: 16%; } /* 4- Caracterológicos */
+        #fiorini-box-5 { top: 65%; left: 56%; width: 38%; height: 16%; } /* 5- Contexto social */
+        #fiorini-box-7 { top: 83%; left: 56%; width: 38%; height: 15%; } /* 7- Momento evolutivo */
 
         .foco-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
         
         @media (max-width: 768px) {
-            /* En pantallas chicas los cuadros pasan a flujo normal para facilitar la escritura */
             .fiorini-canvas-wrapper { position: static; display: flex; flex-direction: column; }
-            .schema-input { position: static !important; width: 100% !important; margin-bottom: 10px; height: 80px; }
+            .schema-input { position: static !important; width: 100% !important; margin-bottom: 10px; height: 90px; }
         }
     </style>
 </head>
@@ -147,7 +146,7 @@
         <!-- Formulario del Eje 1: Foco Interactivo sobre la Imagen -->
         <div id="foco-form-card" class="card" style="display: none;">
             <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco - Esquema Interactivo (Modelo Fiorini)</h2>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Complete los campos escribiendo directamente sobre cada sector numerado del esquema.</p>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Escriba directamente en cada sector del esquema guiándose por los hints indicados.</p>
             
             <form id="foco-form">
                 <div class="form-grid" style="margin-bottom: 20px;">
@@ -161,30 +160,30 @@
                     </div>
                 </div>
 
-                <!-- Contenedor con la imagen de fondo y los inputs posicionados encima -->
+                <!-- Contenedor con la imagen de fondo y los inputs con sus hints posicionados encima -->
                 <div class="fiorini-canvas-wrapper">
                     <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
                     
                     <!-- 1: Motivo de consulta y conflicto nuclear -->
-                    <textarea id="foco-1" class="schema-input" placeholder="1. Motivo explícito / Inconsciente..."></textarea>
+                    <textarea id="foco-1" class="schema-input" placeholder="1- Motivo de consulta y conflicto nuclear (Motivo explícito/Inconsciente)"></textarea>
                     
                     <!-- 2: Situación actual estructurada a partir de un eje -->
-                    <textarea id="foco-2" class="schema-input" placeholder="2. Breve hipótesis clínica..."></textarea>
+                    <textarea id="foco-2" class="schema-input" placeholder="2- Situación actual estructurada a partir de un eje (Breve hipótesis clínica)"></textarea>
                     
                     <!-- 3: Situación grupal -->
-                    <textarea id="foco-3" class="schema-input" placeholder="3. Dinamismos, conflictos, roles..."></textarea>
+                    <textarea id="foco-3" class="schema-input" placeholder="3- Situación grupal: (Dinamismos, conflictos, roles, recuerdos)"></textarea>
                     
                     <!-- 4: Aspectos caracterológicos individuales -->
-                    <textarea id="foco-4" class="schema-input" placeholder="4. Psicodinamismos, defensas..."></textarea>
+                    <textarea id="foco-4" class="schema-input" placeholder="4- Aspectos caracterológicos individuales: (Psicodinamismos, defensas, recursos)"></textarea>
                     
                     <!-- 5: Determinantes del contexto social más amplio -->
-                    <textarea id="foco-5" class="schema-input" placeholder="5. Económicos, sociales, culturales..."></textarea>
+                    <textarea id="foco-5" class="schema-input" placeholder="5- Determinantes del contexto social más amplio: (Económicos, sociales, culturales)"></textarea>
                     
                     <!-- 6: Aspectos histórico genéticos -->
-                    <textarea id="foco-6" class="schema-input" placeholder="6. Individuales, grupales, sociales..."></textarea>
+                    <textarea id="foco-6" class="schema-input" placeholder="6- Aspectos histórico genéticos: (Individuales, grupales, sociales)"></textarea>
                     
                     <!-- 7: Momento evolutivo -->
-                    <textarea id="foco-7" class="schema-input" placeholder="7. Momento evolutivo..."></textarea>
+                    <textarea id="foco-7" class="schema-input" placeholder="7- Momento evolutivo: (Individual, grupal, social)"></textarea>
                 </div>
 
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar Foco Interactivo en la Nube</button>
@@ -262,7 +261,6 @@
             historyCard.style.display = 'block';
             document.getElementById('foco-fecha').valueAsDate = new Date();
             
-            // Limpiar inputs al cambiar de paciente
             for (let i = 1; i <= 7; i++) {
                 document.getElementById(`foco-${i}`).value = '';
             }
