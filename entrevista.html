@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Clínica - Primera Entrevista | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --hc-sesiones: #059669;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
+
+        .subnav-bar { background: #064e3b; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--hc-sesiones); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--hc-sesiones); box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        input, select, textarea { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--hc-sesiones); }
+        textarea { width: 100%; min-height: 120px; resize: vertical; }
+
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #047857; }
+
+        .interview-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — ELITE 2.0</p>
+        </div>
+    </header>
+
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-notes-medical"></i> Registro de Sesiones</a>
+        <a href="entrevista.html" class="subnav-btn active"><i class="fa-solid fa-clipboard-user"></i> Primera Entrevista</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
+            <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
+            <div class="form-group">
+                <label for="interview-patient">Paciente Activo</label>
+                <select id="interview-patient" onchange="loadPatientInterviews()">
+                    <option value="">-- Seleccione un paciente --</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="interview-form-card" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-file-lines"></i> Registrar Primera Entrevista</h2>
+            <form id="interview-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="int-title">Título de la Evaluación</label>
+                        <input type="text" id="int-title" required value="Primera Entrevista Clínica" placeholder="Ej. Entrevista Inicial">
+                    </div>
+                    <div class="form-group">
+                        <label for="int-date">Fecha de Entrevista</label>
+                        <input type="date" id="int-date" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="int-motivo">Motivo de Consulta (Manifiesto y Latente)</label>
+                    <textarea id="int-motivo" required placeholder="Describir el discurso y la demanda inicial del paciente..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="int-antecedentes">Antecedentes Personales y Familiares</label>
+                    <textarea id="int-antecedentes" placeholder="Historial médico, psicológico y constelación vincular..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="int-estructura">Evaluación del Aparato Psíquico / Estructura</label>
+                    <textarea id="int-estructura" placeholder="Observaciones clínicas, defensas predominantes, prueba de realidad..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="int-hipotesis">Hipótesis Diagnóstica / Estrategia Preliminar</label>
+                    <textarea id="int-hipotesis" placeholder="Impresión diagnóstica y plan psicoterapéutico sugerido..."></textarea>
+                </div>
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Entrevista en la Nube</button>
+            </form>
+        </div>
+
+        <div id="interviews-history-card" class="card" style="display: none;">
+            <h2><i class="fa-solid fa-folder-open"></i> Historial de Primeras Entrevistas</h2>
+            <div id="interviews-container">
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">Seleccione un paciente para ver sus registros.</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let activePatientId = null;
+
+        async function initEntrevista() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('interview-patient');
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
+            }
+        }
+
+        window.loadPatientInterviews = async function() {
+            activePatientId = document.getElementById('interview-patient').value;
+            const formCard = document.getElementById('interview-form-card');
+            const historyCard = document.getElementById('interviews-history-card');
+
+            if (!activePatientId) {
+                formCard.style.display = 'none';
+                historyCard.style.display = 'none';
+                return;
+            }
+
+            formCard.style.display = 'block';
+            historyCard.style.display = 'block';
+            document.getElementById('int-date').valueAsDate = new Date();
+            renderInterviews();
+        }
+
+        async function renderInterviews() {
+            const container = document.getElementById('interviews-container');
+            container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center;">Cargando entrevistas...</p>';
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                
+                if (patientSnap.exists()) {
+                    const data = patientSnap.data();
+                    const interviews = data.interviews || [];
+                    
+                    container.innerHTML = '';
+                    if (interviews.length === 0) {
+                        container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">No hay primeras entrevistas registradas para este paciente.</p>';
+                        return;
+                    }
+
+                    interviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    interviews.forEach(i => {
+                        const div = document.createElement('div');
+                        div.className = 'interview-card';
+                        div.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
+                                <strong><i class="fa-solid fa-clipboard-user"></i> ${i.title}</strong>
+                                <span style="font-size: 0.8rem; color: #64748b;">Fecha: ${i.date}</span>
+                            </div>
+                            <p style="font-size: 0.9rem; color: #334155; margin-bottom: 6px;"><strong>Motivo:</strong> ${i.motivo}</p>
+                            <p style="font-size: 0.9rem; color: #334155; margin-bottom: 6px;"><strong>Antecedentes:</strong> ${i.antecedentes || '-'}</p>
+                            <p style="font-size: 0.9rem; color: #334155; margin-bottom: 6px;"><strong>Estructura Psíquica:</strong> ${i.estructura || '-'}</p>
+                            <p style="font-size: 0.9rem; color: #334155;"><strong>Hipótesis / Estrategia:</strong> ${i.hipotesis || '-'}</p>
+                        `;
+                        container.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                console.error("Error al renderizar entrevistas:", error);
+            }
+        }
+
+        document.getElementById('interview-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!activePatientId) return;
+
+            const newInterview = {
+                id: Date.now().toString(),
+                title: document.getElementById('int-title').value.trim(),
+                date: document.getElementById('int-date').value,
+                motivo: document.getElementById('int-motivo').value.trim(),
+                antecedentes: document.getElementById('int-antecedentes').value.trim(),
+                estructura: document.getElementById('int-estructura').value.trim(),
+                hipotesis: document.getElementById('int-hipotesis').value.trim()
+            };
+
+            try {
+                const patientRef = doc(db, "patients", activePatientId);
+                const patientSnap = await getDoc(patientRef);
+                let interviews = patientSnap.data().interviews || [];
+                interviews.push(newInterview);
+
+                await updateDoc(patientRef, { interviews: interviews });
+                document.getElementById('interview-form').reset();
+                document.getElementById('int-title').value = 'Primera Entrevista Clínica';
+                document.getElementById('int-date').valueAsDate = new Date();
+                alert('¡Primera Entrevista guardada con éxito en la nube!');
+                renderInterviews();
+            } catch (error) {
+                console.error("Error al guardar entrevista:", error);
+                alert("Error al registrar la entrevista.");
+            }
+        });
+
+        initEntrevista();
+    </script>
+</body>
+</html>
