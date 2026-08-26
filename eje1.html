@@ -33,72 +33,46 @@
         .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; flex-shrink: 0; }
         .logout-btn:hover { background: #dc2626; }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .container { max-width: 1300px; margin: 20px auto; padding: 0 20px; }
         .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
         label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
         input, select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
         input:focus, select:focus { outline: none; border-color: var(--hc-sesiones); }
+        textarea { width: 100%; min-height: 75px; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; resize: vertical; }
+        textarea:focus { outline: none; border-color: var(--hc-sesiones); }
 
-        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        /* Estructura en Dos Columnas: Imagen de Referencia vs Formulario Guiado */
+        .fiorini-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+            align-items: start;
+        }
+        @media (max-width: 900px) { .fiorini-workspace { grid-template-columns: 1fr; } }
+
+        .fiorini-image-preview {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            text-align: center;
+        }
+        .fiorini-image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; }
         .btn:hover { background-color: #047857; }
 
-        /* Lienzo interactivo sobre la imagen */
-        .fiorini-canvas-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 950px;
-            margin: 0 auto 20px auto;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-        .fiorini-canvas-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Campos de texto flotantes con guía visual */
-        .schema-input {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--hc-sesiones);
-            border-radius: 6px;
-            padding: 5px;
-            font-size: 0.7rem;
-            resize: vertical;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            transition: all 0.2s ease;
-        }
-        .schema-input:focus {
-            background: #ffffff;
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
-            z-index: 10;
-        }
-
-        /* Posicionamiento porcentual adaptativo para cada sector (1 al 7) */
-        #fiorini-box-1 { top: 38%; left: 6%; width: 26%; height: 26%; } /* 1- Núcleo central */
-        #fiorini-box-2 { top: 10%; left: 6%; width: 26%; height: 22%; } /* 2- Anillo exterior */
-        #fiorini-box-6 { top: 8%; left: 56%; width: 38%; height: 16%; } /* 6- Histórico genéticos */
-        #fiorini-box-3 { top: 27%; left: 56%; width: 38%; height: 16%; } /* 3- Situación grupal */
-        #fiorini-box-4 { top: 46%; left: 56%; width: 38%; height: 16%; } /* 4- Caracterológicos */
-        #fiorini-box-5 { top: 65%; left: 56%; width: 38%; height: 16%; } /* 5- Contexto social */
-        #fiorini-box-7 { top: 83%; left: 56%; width: 38%; height: 15%; } /* 7- Momento evolutivo */
-
         .foco-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
-        
-        @media (max-width: 768px) {
-            .fiorini-canvas-wrapper { position: static; display: flex; flex-direction: column; }
-            .schema-input { position: static !important; width: 100% !important; margin-bottom: 10px; height: 90px; }
-        }
     </style>
 </head>
 <body>
@@ -135,7 +109,7 @@
         <!-- Selección de Paciente -->
         <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
             <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 0;">
                 <label for="foco-patient">Paciente Activo</label>
                 <select id="foco-patient" onchange="loadPatientFocos()">
                     <option value="">-- Seleccione un paciente --</option>
@@ -143,50 +117,64 @@
             </div>
         </div>
 
-        <!-- Formulario del Eje 1: Foco Interactivo sobre la Imagen -->
+        <!-- Formulario del Eje 1: Foco con Espacios Numerados y Hints -->
         <div id="foco-form-card" class="card" style="display: none;">
-            <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco - Esquema Interactivo (Modelo Fiorini)</h2>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Escriba directamente en cada sector del esquema guiándose por los hints indicados.</p>
+            <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco - Modelo Fiorini</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Complete cada sector numérico guiándose por los hints clínicos incorporados.</p>
             
             <form id="foco-form">
                 <div class="form-grid" style="margin-bottom: 20px;">
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 0;">
                         <label for="foco-titulo">Título del Foco / Identificador</label>
                         <input type="text" id="foco-titulo" required value="Foco Terapéutico N° 1" placeholder="Ej. Foco Inicial">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 0;">
                         <label for="foco-fecha">Fecha de Registro</label>
                         <input type="date" id="foco-fecha" required>
                     </div>
                 </div>
 
-                <!-- Contenedor con la imagen de fondo y los inputs con sus hints posicionados encima -->
-                <div class="fiorini-canvas-wrapper">
-                    <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
-                    
-                    <!-- 1: Motivo de consulta y conflicto nuclear -->
-                    <textarea id="foco-1" class="schema-input" placeholder="1- Motivo de consulta y conflicto nuclear (Motivo explícito/Inconsciente)"></textarea>
-                    
-                    <!-- 2: Situación actual estructurada a partir de un eje -->
-                    <textarea id="foco-2" class="schema-input" placeholder="2- Situación actual estructurada a partir de un eje (Breve hipótesis clínica)"></textarea>
-                    
-                    <!-- 3: Situación grupal -->
-                    <textarea id="foco-3" class="schema-input" placeholder="3- Situación grupal: (Dinamismos, conflictos, roles, recuerdos)"></textarea>
-                    
-                    <!-- 4: Aspectos caracterológicos individuales -->
-                    <textarea id="foco-4" class="schema-input" placeholder="4- Aspectos caracterológicos individuales: (Psicodinamismos, defensas, recursos)"></textarea>
-                    
-                    <!-- 5: Determinantes del contexto social más amplio -->
-                    <textarea id="foco-5" class="schema-input" placeholder="5- Determinantes del contexto social más amplio: (Económicos, sociales, culturales)"></textarea>
-                    
-                    <!-- 6: Aspectos histórico genéticos -->
-                    <textarea id="foco-6" class="schema-input" placeholder="6- Aspectos histórico genéticos: (Individuales, grupales, sociales)"></textarea>
-                    
-                    <!-- 7: Momento evolutivo -->
-                    <textarea id="foco-7" class="schema-input" placeholder="7- Momento evolutivo: (Individual, grupal, social)"></textarea>
-                </div>
+                <div class="fiorini-workspace">
+                    <!-- Columna Izquierda: Imagen de referencia fija para consulta visual -->
+                    <div class="fiorini-image-preview">
+                        <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
+                        <p style="font-size: 0.75rem; color: #64748b; margin-top: 8px;">Esquema de referencia estructurado (1 al 7)</p>
+                    </div>
 
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar Foco Interactivo en la Nube</button>
+                    <!-- Columna Derecha: Campos numerados con hints claros -->
+                    <div>
+                        <div class="form-group">
+                            <label>1- Motivo de consulta y conflicto nuclear</label>
+                            <textarea id="foco-1" placeholder="Motivo explícito/Inconsciente..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>2- Situación actual estructurada a partir de un eje</label>
+                            <textarea id="foco-2" placeholder="Breve hipótesis clínica..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>3- Situación grupal</label>
+                            <textarea id="foco-3" placeholder="Dinamismos, conflictos, roles, recuerdos..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>4- Aspectos caracterológicos individuales</label>
+                            <textarea id="foco-4" placeholder="Psicodinamismos, defensas, recursos..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>5- Determinantes del contexto social más amplio</label>
+                            <textarea id="foco-5" placeholder="Económicos, sociales, culturales..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>6- Aspectos histórico genéticos</label>
+                            <textarea id="foco-6" placeholder="Individuales, grupales, sociales..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>7- Momento evolutivo</label>
+                            <textarea id="foco-7" placeholder="Individual, grupal, social..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn" style="margin-top: 10px;"><i class="fa-solid fa-floppy-disk"></i> Guardar Foco en la Nube</button>
+                    </div>
+                </div>
             </form>
         </div>
 
