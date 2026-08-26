@@ -63,25 +63,26 @@
             border-radius: 8px;
         }
 
-        /* TEXTAREAS FLOTANTES CON NUEVAS COORDENADAS */
+        /* TEXTAREAS FLOTANTES CON MAYOR TRANSPARENCIA (0.75 en reposo, 0.95 al escribir) */
         .fiorini-input-overlay {
             position: absolute;
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.75);
             border: 1.5px solid #0d9488;
             border-radius: 6px;
             padding: 6px 8px;
             font-size: 0.73rem;
             color: #0f172a;
             resize: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            backdrop-filter: blur(1px);
             transition: all 0.25s ease;
         }
         .fiorini-input-overlay::placeholder {
-            color: #64748b;
+            color: #475569;
             font-style: italic;
         }
         .fiorini-input-overlay:focus {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.96);
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.2);
@@ -89,7 +90,7 @@
             font-size: 0.78rem;
         }
 
-        /* COORDENADAS AJUSTADAS SEGÚN TUS INDICACIONES */
+        /* COORDENADAS PRECISAS MANTENIDAS */
         #foco-1 { top: calc(38% + 10px); left: calc(7% + 50px); width: 23%; height: 24%; }  
         #foco-2 { top: 12%; left: 7%; width: 23%; height: 21%; }  
         #foco-6 { top: 4%;  left: 55%; width: 38%; height: 16%; } 
