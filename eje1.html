@@ -18,7 +18,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
         
-        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
@@ -33,68 +33,78 @@
         .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; flex-shrink: 0; }
         .logout-btn:hover { background: #dc2626; }
 
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
-        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .container { max-width: 1100px; margin: 25px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #e2e8f0; }
         h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
         label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
-        input, select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input, select { padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; background: #fff; }
+        input:focus, select:focus { outline: none; border-color: var(--hc-sesiones); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); }
 
-        /* CONTENEDOR DEL LIENZO DIRECTO SOBRE LA IMAGEN */
+        /* CONTENEDOR DEL LIENZO */
         .fiorini-overlay-container {
             position: relative;
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto 20px auto;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
+            max-width: 920px;
+            margin: 0 auto 25px auto;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
             background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
             display: inline-block;
+            overflow: hidden;
         }
         .fiorini-overlay-container img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
-        /* TEXTAREAS MONTADOS SOBRE LA IMAGEN CON HINTS INTEGRADORES */
+        /* TEXTAREAS FLOTANTES CON NUEVAS COORDENADAS */
         .fiorini-input-overlay {
             position: absolute;
-            background: rgba(255, 255, 255, 0.92);
-            border: 1.5px solid var(--hc-sesiones);
-            border-radius: 5px;
-            padding: 4px 6px;
-            font-size: 0.72rem;
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1.5px solid #0d9488;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 0.73rem;
+            color: #0f172a;
             resize: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            transition: all 0.25s ease;
+        }
+        .fiorini-input-overlay::placeholder {
+            color: #64748b;
+            font-style: italic;
         }
         .fiorini-input-overlay:focus {
             background: #ffffff;
             outline: none;
-            border-color: #1e3a8a;
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.2);
             z-index: 20;
+            font-size: 0.78rem;
         }
 
-        /* COORDENADAS PORCENTUALES STRICT SOBRE EL GRÁFICO FIORINI */
-        #foco-1 { top: 38%; left: 7%; width: 23%; height: 24%; }  /* 1- Núcleo central */
-        #foco-2 { top: 12%; left: 7%; width: 23%; height: 21%; }  /* 2- Anillo naranja */
-        #foco-6 { top: 4%;  left: 55%; width: 38%; height: 16%; } /* 6- Arriba derecha */
-        #foco-3 { top: 23%; left: 55%; width: 38%; height: 16%; } /* 3- Grupal */
-        #foco-4 { top: 42%; left: 55%; width: 38%; height: 16%; } /* 4- Individual */
-        #foco-5 { top: 61%; left: 55%; width: 38%; height: 16%; } /* 5- Social */
-        #foco-7 { top: 80%; left: 55%; width: 38%; height: 15%; } /* 7- Abajo derecha */
+        /* COORDENADAS AJUSTADAS SEGÚN TUS INDICACIONES */
+        #foco-1 { top: calc(38% + 10px); left: calc(7% + 50px); width: 23%; height: 24%; }  
+        #foco-2 { top: 12%; left: 7%; width: 23%; height: 21%; }  
+        #foco-6 { top: 4%;  left: 55%; width: 38%; height: 16%; } 
+        #foco-3 { top: 23%; left: calc(55% - 60px); width: 38%; height: 16%; } 
+        #foco-4 { top: 42%; left: 55%; width: 38%; height: 16%; } 
+        #foco-5 { top: 61%; left: calc(55% + 200px); width: 38%; height: 16%; } 
+        #foco-7 { top: 80%; left: 55%; width: 38%; height: 15%; } 
 
-        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 12px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; }
+        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; transition: background 0.2s, transform 0.1s; }
         .btn:hover { background-color: #047857; }
 
-        .foco-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
+        .foco-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 18px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+        .foco-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .foco-grid-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+        .foco-item-box { background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -128,7 +138,6 @@
     </nav>
 
     <main class="container">
-        <!-- Selección de Paciente -->
         <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
             <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
             <div class="form-group">
@@ -139,13 +148,12 @@
             </div>
         </div>
 
-        <!-- Formulario del Eje 1: Foco SOBRE la imagen de Fiorini -->
         <div id="foco-form-card" class="card" style="display: none;">
-            <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco - Modelo Fiorini</h2>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Escriba directamente dentro de los cuadros superpuestos en cada sector del gráfico.</p>
+            <h2><i class="fa-solid fa-bullseye"></i> Eje 1: Foco - Esquema Interactivo (Modelo Fiorini)</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Complete los campos escribiendo directamente sobre cada sector numerado del gráfico.</p>
             
             <form id="foco-form">
-                <div class="form-grid" style="margin-bottom: 20px;">
+                <div class="form-grid">
                     <div class="form-group">
                         <label for="foco-titulo">Título del Foco / Identificador</label>
                         <input type="text" id="foco-titulo" required value="Foco Terapéutico N° 1" placeholder="Ej. Foco Inicial">
@@ -156,24 +164,24 @@
                     </div>
                 </div>
 
-                <!-- LIENZO DE SUPERPOSICIÓN DIRECTA -->
-                <div class="fiorini-overlay-container">
-                    <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
-                    
-                    <textarea id="foco-1" class="fiorini-input-overlay" placeholder="1- Motivo de consulta y conflicto nuclear (Motivo explícito/Inconsciente)"></textarea>
-                    <textarea id="foco-2" class="fiorini-input-overlay" placeholder="2- Situación actual estructurada a partir de un eje (Breve hipótesis clínica)"></textarea>
-                    <textarea id="foco-3" class="fiorini-input-overlay" placeholder="3- Situación grupal: (Dinamismos, conflictos, roles, recuerdos)"></textarea>
-                    <textarea id="foco-4" class="fiorini-input-overlay" placeholder="4- Aspectos caracterológicos individuales: (Psicodinamismos, defensas, recursos)"></textarea>
-                    <textarea id="foco-5" class="fiorini-input-overlay" placeholder="5- Determinantes del contexto social más amplio: (Económicos, sociales, culturales)"></textarea>
-                    <textarea id="foco-6" class="fiorini-input-overlay" placeholder="6- Aspectos histórico genéticos: (Individuales, grupales, sociales)"></textarea>
-                    <textarea id="foco-7" class="fiorini-input-overlay" placeholder="7- Momento evolutivo: (Individual, grupal, social)"></textarea>
+                <div style="text-align: center;">
+                    <div class="fiorini-overlay-container">
+                        <img src="Fiorini foco vacio.jpeg" alt="Esquema Foco Fiorini">
+                        
+                        <textarea id="foco-1" class="fiorini-input-overlay" placeholder="1- Motivo de consulta y conflicto nuclear (Motivo explícito/Inconsciente)"></textarea>
+                        <textarea id="foco-2" class="fiorini-input-overlay" placeholder="2- Situación actual estructurada a partir de un eje (Breve hipótesis clínica)"></textarea>
+                        <textarea id="foco-3" class="fiorini-input-overlay" placeholder="3- Situación grupal: (Dinamismos, conflictos, roles, recuerdos)"></textarea>
+                        <textarea id="foco-4" class="fiorini-input-overlay" placeholder="4- Aspectos caracterológicos individuales: (Psicodinamismos, defensas, recursos)"></textarea>
+                        <textarea id="foco-5" class="fiorini-input-overlay" placeholder="5- Determinantes del contexto social más amplio: (Económicos, sociales, culturales)"></textarea>
+                        <textarea id="foco-6" class="fiorini-input-overlay" placeholder="6- Aspectos histórico genéticos: (Individuales, grupales, sociales)"></textarea>
+                        <textarea id="foco-7" class="fiorini-input-overlay" placeholder="7- Momento evolutivo: (Individual, grupal, social)"></textarea>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Foco Interactivo en Firebase</button>
             </form>
         </div>
 
-        <!-- Historial de Focos Guardados -->
         <div id="focos-history-card" class="card" style="display: none;">
             <h2><i class="fa-solid fa-folder-open"></i> Historial de Focos Registrados</h2>
             <div id="focos-container">
@@ -275,18 +283,20 @@
                         let itemsHtml = '';
                         for (let i = 1; i <= 7; i++) {
                             if (f.datos[i]) {
-                                itemsHtml += `<p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>${labelsMap[i]}:</strong> ${f.datos[i]}</p>`;
+                                itemsHtml += `<div class="foco-item-box"><strong>${labelsMap[i]}:</strong> ${f.datos[i]}</div>`;
                             }
                         }
 
                         const div = document.createElement('div');
                         div.className = 'foco-card';
                         div.innerHTML = `
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
-                                <strong><i class="fa-solid fa-bullseye"></i> ${f.titulo}</strong>
-                                <span style="font-size: 0.8rem; color: #64748b;">Fecha: ${f.fecha}</span>
+                            <div class="foco-card-header">
+                                <strong><i class="fa-solid fa-bullseye" style="color: var(--hc-sesiones);"></i> ${f.titulo}</strong>
+                                <span style="font-size: 0.8rem; color: #64748b;"><i class="fa-regular fa-calendar"></i> Fecha: ${f.fecha}</span>
                             </div>
-                            ${itemsHtml}
+                            <div class="foco-grid-items">
+                                ${itemsHtml}
+                            </div>
                         `;
                         container.appendChild(div);
                     });
