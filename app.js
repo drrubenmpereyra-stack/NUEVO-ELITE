@@ -1,205 +1,156 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-// Validación de sesión
-if (sessionStorage.getItem('clinica_auth') !== 'true') {
-    window.location.href = 'index.html';
-}
-
-window.logout = function() {
-    sessionStorage.removeItem('clinica_auth');
-    window.location.href = 'index.html';
-}
-
-// Tus credenciales de Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
-    authDomain: "materiales-terapeuticos.firebaseapp.com",
-    projectId: "materiales-terapeuticos",
-    storageBucket: "materiales-terapeuticos.firebasestorage.app",
-    messagingSenderId: "827133493876",
-    appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let patients = [];
-let activePatientId = null;
-
-const patientForm = document.getElementById('patient-form');
-const patientsListEl = document.getElementById('patients-list');
-const noPatientSelected = document.getElementById('no-patient-selected');
-const patientDetail = document.getElementById('patient-detail');
-const documentForm = document.getElementById('document-form');
-const searchInput = document.getElementById('search-patient');
-
-async function loadPatientsFromCloud() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "patients"));
-        patients = [];
-        querySnapshot.forEach((docSnap) => {
-            patients.push({
-                id: docSnap.id,
-                ...docSnap.data()
-            });
-        });
-        renderPatients();
-    } catch (error) {
-        console.error("Error al cargar pacientes: ", error);
-    }
-}
-
-patientForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newPatientData = {
-        name: document.getElementById('patient-name').value.trim(),
-        phone: document.getElementById('patient-phone').value.trim(),
-        motivo: document.getElementById('patient-motivo').value.trim(),
-        documents: []
-    };
-
-    try {
-        const docRef = await addDoc(collection(db, "patients"), newPatientData);
-        newPatientData.id = docRef.id;
-        patients.push(newPatientData);
-        patientForm.reset();
-        renderPatients();
-        alert('¡Paciente registrado con éxito en la nube!');
-    } catch (error) {
-        console.error("Error al guardar paciente: ", error);
-    }
-});
-
-function renderPatients(filter = '') {
-    patientsListEl.innerHTML = '';
-    const filtered = patients.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
-
-    if (filtered.length === 0) {
-        patientsListEl.innerHTML = '<p style="font-size: 0.85rem; color: #64748b; text-align:center; padding: 10px;">No hay pacientes.</p>';
-        return;
-    }
-
-    filtered.forEach(patient => {
-        const div = document.createElement('div');
-        div.className = `patient-item ${patient.id === activePatientId ? 'active' : ''}`;
-        div.innerHTML = `
-            <strong>${patient.name}</strong>
-            <p style="font-size: 0.8rem; color: #64748b;">${patient.motivo || 'Sin motivo'}</p>
-        `;
-        div.onclick = () => selectPatient(patient.id);
-        patientsListEl.appendChild(div);
-    });
-}
-
-searchInput.addEventListener('input', (e) => {
-    renderPatients(e.target.value);
-});
-
-function selectPatient(id) {
-    activePatientId = id;
-    renderPatients(searchInput.value);
-    
-    const patient = patients.find(p => p.id === id);
-    if (!patient) return;
-
-    noPatientSelected.classList.add('hidden');
-    patientDetail.classList.remove('hidden');
-
-    document.getElementById('detail-name').innerText = patient.name;
-    document.getElementById('detail-phone').innerText = `Tel: ${patient.phone}`;
-    document.getElementById('detail-motivo').innerText = patient.motivo;
-
-    const waBtn = document.getElementById('whatsapp-direct-btn');
-    const waMsg = encodeURIComponent(`Hola ${patient.name}, te escribo desde la Clínica de la Convergencia.`);
-    waBtn.href = `https://wa.me/${patient.phone.replace(/[^0-9]/g, '')}?text=${waMsg}`;
-
-    renderDocuments(patient);
-}
-
-documentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!activePatientId) return;
-
-    const title = document.getElementById('doc-title').value.trim();
-    const url = document.getElementById('doc-url').value.trim();
-    const patient = patients.find(p => p.id === activePatientId);
-    
-    const newDoc = {
-        id: Date.now().toString(),
-        title,
-        url,
-        date: new Date().toLocaleDateString(),
-        notes: ''
-    };
-
-    patient.documents.push(newDoc);
-
-    try {
-        const patientRef = doc(db, "patients", activePatientId);
-        await updateDoc(patientRef, { documents: patient.documents });
-        documentForm.reset();
-        renderDocuments(patient);
-    } catch (error) {
-        console.error("Error al guardar documento: ", error);
-    }
-});
-
-function renderDocuments(patient) {
-    const container = document.getElementById('documents-container');
-    container.innerHTML = '';
-
-    if (!patient.documents || patient.documents.length === 0) {
-        container.innerHTML = '<p style="font-size: 0.9rem; color: #64748b; text-align: center; padding: 20px;">No hay documentos.</p>';
-        return;
-    }
-
-    patient.documents.forEach(docItem => {
-        const docDiv = document.createElement('div');
-        docDiv.className = 'doc-card';
-        docDiv.innerHTML = `
-            <div class="doc-info">
-                <div>
-                    <strong>${docItem.title}</strong>
-                    <span style="font-size: 0.75rem; color: #64748b; display: block;">Fecha: ${docItem.date}</span>
-                </div>
-                <div>
-                    <a href="${docItem.url}" target="_blank" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-eye"></i> Ver</a>
-                    <button onclick="deleteDocItem('${docItem.id}')" class="btn" style="background: #ef4444; color: white; padding: 5px 10px; font-size: 0.8rem; margin-left: 5px;"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </div>
-            <div class="notes-section">
-                <label style="font-size: 0.75rem; color: #475569;"><i class="fa-solid fa-pen-to-square"></i> Observaciones:</label>
-                <textarea rows="2" oninput="updateNotes('${docItem.id}', this.value)">${docItem.notes || ''}</textarea>
-            </div>
-        `;
-        container.appendChild(docDiv);
-    });
-}
-
-window.updateNotes = async function(docId, text) {
-    const patient = patients.find(p => p.id === activePatientId);
-    const docItem = patient.documents.find(d => d.id === docId);
-    if (docItem) {
-        docItem.notes = text;
-        try {
-            await updateDoc(doc(db, "patients", activePatientId), { documents: patient.documents });
-        } catch (error) {
-            console.error("Error al actualizar notas:", error);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Pacientes | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --success-color: #16a34a;
+            --admin-pacientes: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
         }
-    }
-};
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* Barra Superior de Secciones Generales */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 15px; border-bottom: 1px solid #1e293b; }
+        .main-nav-btn { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; }
+        .main-nav-btn:hover { color: white; }
+        .main-nav-btn.active { color: white; background: rgba(255,255,255,0.1); }
 
-window.deleteDocItem = async function(docId) {
-    if (!confirm('¿Eliminar documento?')) return;
-    const patient = patients.find(p => p.id === activePatientId);
-    patient.documents = patient.documents.filter(d => d.id !== docId);
-    try {
-        await updateDoc(doc(db, "patients", activePatientId), { documents: patient.documents });
-        renderDocuments(patient);
-    } catch (error) {
-        console.error("Error al eliminar documento:", error);
-    }
-};
+        /* Barra de Submenú de Administración (Flow de Azules) */
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-pacientes); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--admin-pacientes); box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
 
-loadPatientsFromCloud();
+        .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
+        .patients-layout { display: grid; grid-template-columns: 350px 1fr; gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+        input[type="text"], input[type="url"], textarea, select { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        input:focus, textarea:focus { outline: none; border-color: var(--secondary-color); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .btn-primary { background-color: var(--primary-color); color: white; width: 100%; }
+        .btn-primary:hover { background-color: #172554; }
+        .btn-secondary { background-color: var(--secondary-color); color: white; }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .patients-list { max-height: 400px; overflow-y: auto; }
+        .patient-item { padding: 10px; border-bottom: 1px solid #e2e8f0; cursor: pointer; border-radius: 4px; transition: background 0.2s; }
+        .patient-item:hover, .patient-item.active { background-color: #f1f5f9; border-left: 4px solid var(--primary-color); }
+        .placeholder-card { text-align: center; padding: 60px 20px; color: #64748b; }
+        .placeholder-card i { font-size: 3rem; margin-bottom: 15px; color: #94a3b8; }
+        .hidden { display: none; }
+        .patient-header { display: flex; justify-content: space-between; align-items: center; }
+        .divider { border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0; }
+        .inline-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-bottom: 20px; }
+        .doc-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .doc-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .notes-section textarea { margin-top: 8px; resize: vertical; }
+        @media (max-width: 900px) { .patients-layout { grid-template-columns: 1fr; } .inline-form { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — Repositorio Clínico ELITE 2.0</p>
+        </div>
+    </header>
+
+    <!-- Barra Superior de Secciones Generales -->
+    <nav class="main-nav-bar">
+        <a href="app.html" class="main-nav-btn active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="sesiones.html" class="main-nav-btn"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+    </nav>
+
+    <!-- Submenú de Administración con Flow de Azules -->
+    <nav class="subnav-bar">
+        <a href="app.html" class="subnav-btn active"><i class="fa-solid fa-users"></i> Pacientes</a>
+        <a href="agenda.html" class="subnav-btn"><i class="fa-solid fa-calendar-days"></i> Agenda</a>
+        <a href="contabilidad.html" class="subnav-btn"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</a>
+        <a href="impresiones.html" class="subnav-btn"><i class="fa-solid fa-print"></i> Impresiones</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="patients-layout">
+            <section class="sidebar">
+                <div class="card">
+                    <h2><i class="fa-solid fa-user-plus"></i> Nuevo Paciente</h2>
+                    <form id="patient-form">
+                        <div class="form-group">
+                            <label for="patient-name">Nombre y Apellido</label>
+                            <input type="text" id="patient-name" required placeholder="Ej. Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-phone">Teléfono / WhatsApp</label>
+                            <input type="text" id="patient-phone" required placeholder="Ej. +549351...">
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-motivo">Motivo de Consulta</label>
+                            <textarea id="patient-motivo" rows="2" placeholder="Breve descripción..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Registrar Paciente</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-address-book"></i> Listado de Pacientes</h2>
+                    <input type="text" id="search-patient" placeholder="Buscar paciente..." style="margin-bottom: 10px; width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <div id="patients-list" class="patients-list"></div>
+                </div>
+            </section>
+
+            <section class="content-area">
+                <div id="no-patient-selected" class="card placeholder-card">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <h3>Seleccione un paciente del listado</h3>
+                    <p>Para ver su historial de documentos, adjuntar PDFs y gestionar notas clínicas.</p>
+                </div>
+
+                <div id="patient-detail" class="card hidden">
+                    <div class="patient-header">
+                        <div>
+                            <h2 id="detail-name">Nombre del Paciente</h2>
+                            <p><strong id="detail-phone">Tel: </strong> | <span id="detail-motivo">Motivo</span></p>
+                        </div>
+                        <a id="whatsapp-direct-btn" href="#" target="_blank" class="btn btn-success">
+                            <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
+                        </a>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="section-block">
+                        <h3><i class="fa-solid fa-file-pdf"></i> Reservorio de Documentos</h3>
+                        <form id="document-form" class="inline-form">
+                            <input type="text" id="doc-title" placeholder="Título (Ej. Plan Terapéutico N°1)" required>
+                            <input type="url" id="doc-url" placeholder="Enlace del PDF (Google Drive / Gamma)" required>
+                            <button type="submit" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Agregar</button>
+                        </form>
+                    </div>
+
+                    <div id="documents-container" class="documents-container"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
