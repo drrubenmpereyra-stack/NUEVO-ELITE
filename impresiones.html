@@ -46,8 +46,10 @@
         .logout-btn:hover { background: #dc2626; }
 
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 4px solid var(--admin-pacientes); }
         h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .btn { background-color: var(--admin-pacientes); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+        .btn:hover { background-color: #1d4ed8; }
     </style>
 </head>
 <body>
@@ -55,16 +57,16 @@
     <header>
         <div>
             <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
-            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección: Administración</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección: Administración (Impresiones)</p>
         </div>
     </header>
 
     <nav class="main-nav-bar">
         <a href="./app.html" class="main-nav-btn btn-admin active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
         <a href="./sesiones.html" class="main-nav-btn btn-historia"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
     <nav class="subnav-bar">
@@ -77,15 +79,15 @@
 
     <main class="container">
         <div class="card">
-            <h2><i class="fa-solid fa-print"></i> Centro de Impresiones</h2>
-            <p style="color: #64748b;">Módulo de impresiones clínicas integrado con la barra de navegación unificada ELITE 2.0.</p>
+            <h2><i class="fa-solid fa-print"></i> Centro de Impresiones Institucional</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Gestione y exporte historiales clínicos, reportes de turnos y balances contables directamente a formato de impresión o PDF.</p>
+            <button class="btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Imprimir / Exportar Reporte</button>
         </div>
     </main>
 
     <script>
         if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
         window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
-        function avisoDesarrollo(e) { e.preventDefault(); alert("Módulo en desarrollo / Próximamente disponible en GitHub."); }
     </script>
 </body>
 </html>
