@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historia Clínica - Registro de Sesiones | ELITE 2.0</title>
+    <title>Historia Clínica - Sesiones | Clínica de la Convergencia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
-            --hc-sesiones: #059669;
+            --admin-historia: #16a34a;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
@@ -23,10 +23,10 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
-        
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
+        /* NIVEL 1: BARRA PRINCIPAL */
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
         .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
         .main-nav-btn:hover { opacity: 1; }
@@ -38,51 +38,24 @@
         .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
         .btn-materiales { background-color: var(--color-materiales); }
 
-        .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
-        .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
-        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
-        .subnav-btn.active { background-color: var(--hc-sesiones); color: white; box-shadow: 0 2px 5px rgba(5, 150, 105, 0.4); }
-        .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-historia); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--admin-historia); box-shadow: 0 2px 5px rgba(22, 163, 74, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
 
-        .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
-        .subnav-internal.active-internal { display: flex; }
-        .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
-        .internal-btn:hover { background: rgba(255, 255, 255, 0.15); color: white; }
-        .internal-btn.active { background: var(--secondary-color); color: white; }
-
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
         .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        
-        .form-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; gap: 5px; }
         label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
         input, select, textarea { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--hc-sesiones); }
-        
-        .textarea-wrapper { position: relative; }
-        textarea { width: 100%; min-height: 140px; resize: vertical; padding-right: 45px; }
-        
-        .mic-btn {
-            position: absolute; right: 10px; top: 10px; background: #e2e8f0; border: none;
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex;
-            align-items: center; justify-content: center; color: #475569; transition: all 0.2s;
-        }
-        .mic-btn:hover { background: #cbd5e1; color: #1e293b; }
-        .mic-btn.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-
-        .btn { background-color: var(--hc-sesiones); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn:hover { background-color: #047857; }
-
-        .session-card { background: #f8fafc; border-left: 4px solid var(--hc-sesiones); padding: 15px; border-radius: 6px; margin-bottom: 12px; }
-        .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--admin-historia); }
+        .btn { background-color: var(--admin-historia); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #15803d; }
+        .session-item { background: #f1f5f9; border-left: 4px solid var(--admin-historia); padding: 15px; border-radius: 4px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -90,75 +63,34 @@
     <header>
         <div>
             <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Dr. y Mgter. Rubén M. Pereyra — ELITE 2.0</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Historia Clínica General</p>
         </div>
     </header>
 
+    <!-- NIVEL 1: BARRA PRINCIPAL -->
     <nav class="main-nav-bar">
         <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
         <a href="./sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
     <nav class="subnav-bar">
-        <a href="./sesiones.html" class="subnav-btn active">1. Registro de Sesiones</a>
-        <a href="./entrevista.html" class="subnav-btn">2. Primera entrevista</a>
-        <a href="./eync.html" class="subnav-btn">3. Estrategias y Niveles de Cambio</a>
-        <a href="./eje1.html" class="subnav-btn" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas</a>
-        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾</a>
-        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas</a>
+        <a href="sesiones.html" class="subnav-btn active"><i class="fa-solid fa-book-medical"></i> Registro de Sesiones</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
-    <div id="internal-ejes" class="subnav-internal">
-        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Ejes:</span>
-        <a href="./eje1.html" class="internal-btn">4.1 Eje 1 Foco</a>
-        <a href="./elite_func_yoicas.html" class="internal-btn">4.2 Eje 2 Func yoicas</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4 Integraciones</a>
-    </div>
-
-    <div id="internal-freud" class="subnav-internal">
-        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Aparato Psíquico:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones</a>
-    </div>
-
-    <div id="internal-psiquismo" class="subnav-internal">
-        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Psiquismo Creador:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica</a>
-    </div>
-
     <main class="container">
-        <div class="card" style="border-top: 4px solid var(--hc-sesiones);">
-            <h2><i class="fa-solid fa-user-injured"></i> Seleccionar Paciente</h2>
-            <div class="form-group">
-                <label for="session-patient">Paciente Activo</label>
-                <select id="session-patient" onchange="loadPatientSessions()">
-                    <option value="">-- Seleccione un paciente --</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="session-form-card" class="card" style="display: none;">
-            <h2><i class="fa-solid fa-pen-nib"></i> Registrar Nueva Sesión</h2>
+        <div class="card">
+            <h2><i class="fa-solid fa-pen-to-square"></i> Nueva Evolución de Sesión</h2>
             <form id="session-form">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="session-title">Título / Nro. de Sesión</label>
-                        <input type="text" id="session-title" required placeholder="Ej. Sesión Ordinaria N° 4">
+                        <label for="session-patient">Paciente</label>
+                        <select id="session-patient" required>
+                            <option value="">-- Seleccionar paciente --</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="session-date">Fecha de Sesión</label>
@@ -166,45 +98,24 @@
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="session-narrative">Narrativa Principal (Tipee o use el micrófono)</label>
-                    <div class="textarea-wrapper">
-                        <textarea id="session-narrative" placeholder="Desarrolle los ejes centrales de la sesión, intervenciones y material clínico..."></textarea>
-                        <button type="button" id="mic-toggle-btn" class="mic-btn" title="Dictar por voz" onclick="toggleSpeechRecognition()">
-                            <i class="fa-solid fa-microphone"></i>
-                        </button>
-                    </div>
-                    <span id="mic-status" style="font-size: 0.75rem; color: #64748b; margin-top: 3px; display: block;"></span>
+                    <label for="session-notes">Notas Clínicas y Evolución Focalizada</label>
+                    <textarea id="session-notes" rows="4" required placeholder="Desarrollo de la sesión, intervenciones, material clínico..."></textarea>
                 </div>
-                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Sesión en la Nube</button>
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Evolución en la Nube</button>
             </form>
         </div>
 
-        <div id="sessions-history-card" class="card" style="display: none;">
-            <h2><i class="fa-solid fa-timeline"></i> Evolución y Bitácora de Sesiones</h2>
+        <div class="card">
+            <h2><i class="fa-solid fa-folder-open"></i> Historial de Evoluciones Registradas</h2>
             <div id="sessions-container">
-                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">Seleccione un paciente para ver sus registros previos.</p>
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">Cargando evoluciones...</p>
             </div>
         </div>
     </main>
 
-    <script>
-        function toggleInternal(internalId, event) {
-            event.preventDefault();
-            document.querySelectorAll('.subnav-internal').forEach(internal => {
-                if(internal.id !== internalId) internal.classList.remove('active-internal');
-            });
-            const target = document.getElementById(internalId);
-            if(target) target.classList.toggle('active-internal');
-        }
-        function avisoDesarrollo(e) {
-            e.preventDefault();
-            alert("Módulo en desarrollo / Próximamente disponible en GitHub.");
-        }
-    </script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
         window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
@@ -221,153 +132,83 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let activePatientId = null;
-
-        async function initSecciones() {
+        async function initSesiones() {
             try {
-                const querySnapshot = await getDocs(collection(db, "patients"));
+                const patientsSnap = await getDocs(collection(db, "patients"));
                 const selectEl = document.getElementById('session-patient');
-                querySnapshot.forEach(docSnap => {
+                selectEl.innerHTML = '<option value="">-- Seleccionar paciente --</option>';
+                const patientMap = {};
+                
+                patientsSnap.forEach(docSnap => {
                     const data = docSnap.data();
+                    patientMap[docSnap.id] = data.name;
                     const opt = document.createElement('option');
                     opt.value = docSnap.id;
                     opt.textContent = data.name;
                     selectEl.appendChild(opt);
                 });
-            } catch (error) {
-                console.error("Error al cargar pacientes:", error);
-            }
-        }
 
-        window.loadPatientSessions = async function() {
-            activePatientId = document.getElementById('session-patient').value;
-            const formCard = document.getElementById('session-form-card');
-            const historyCard = document.getElementById('sessions-history-card');
+                const sessionSnap = await getDocs(collection(db, "sessions"));
+                const container = document.getElementById('sessions-container');
+                container.innerHTML = '';
 
-            if (!activePatientId) {
-                formCard.style.display = 'none';
-                historyCard.style.display = 'none';
-                return;
-            }
-
-            formCard.style.display = 'block';
-            historyCard.style.display = 'block';
-            document.getElementById('session-date').valueAsDate = new Date();
-            renderSessions();
-        }
-
-        async function renderSessions() {
-            const container = document.getElementById('sessions-container');
-            container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center;">Cargando bitácora...</p>';
-
-            try {
-                const patientRef = doc(db, "patients", activePatientId);
-                const patientSnap = await getDoc(patientRef);
-                
-                if (patientSnap.exists()) {
-                    const data = patientSnap.data();
-                    const sessions = data.sessions || [];
-                    
-                    container.innerHTML = '';
-                    if (sessions.length === 0) {
-                        container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 15px;">No hay sesiones registradas para este paciente.</p>';
-                        return;
-                    }
-
-                    sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                    sessions.forEach(s => {
-                        const div = document.createElement('div');
-                        div.className = 'session-card';
-                        div.innerHTML = `
-                            <div class="session-header">
-                                <strong><i class="fa-solid fa-calendar-day"></i> ${s.title}</strong>
-                                <span style="font-size: 0.8rem; color: #64748b;">Fecha: ${s.date}</span>
-                            </div>
-                            <p style="font-size: 0.9rem; color: #334155; white-space: pre-line;">${s.narrative}</p>
-                        `;
-                        container.appendChild(div);
-                    });
+                if (sessionSnap.empty) {
+                    container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">No hay evoluciones registradas.</p>';
+                    return;
                 }
+
+                sessionSnap.forEach(sDoc => {
+                    const session = sDoc.data();
+                    const patientName = patientMap[session.patientId] || 'Paciente desconocido';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'session-item';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong><i class="fa-solid fa-user"></i> ${patientName}</strong>
+                            <span style="font-size: 0.85rem; color: #64748b;"><i class="fa-regular fa-calendar"></i> ${session.date}</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #334155; white-space: pre-wrap; margin-bottom: 10px;">${session.notes}</p>
+                        <button onclick="deleteSession('${sDoc.id}')" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">
+                            <i class="fa-solid fa-trash"></i> Eliminar Evolución
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
             } catch (error) {
-                console.error("Error al renderizar sesiones:", error);
+                console.error("Error al cargar sesiones:", error);
             }
         }
 
         document.getElementById('session-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!activePatientId) return;
-
             const newSession = {
-                id: Date.now().toString(),
-                title: document.getElementById('session-title').value.trim(),
+                patientId: document.getElementById('session-patient').value,
                 date: document.getElementById('session-date').value,
-                narrative: document.getElementById('session-narrative').value.trim()
+                notes: document.getElementById('session-notes').value.trim()
             };
 
             try {
-                const patientRef = doc(db, "patients", activePatientId);
-                const patientSnap = await getDoc(patientRef);
-                let sessions = patientSnap.data().sessions || [];
-                sessions.push(newSession);
-
-                await updateDoc(patientRef, { sessions: sessions });
-                document.getElementById('session-title').value = '';
-                document.getElementById('session-narrative').value = '';
-                alert('¡Sesión guardada con éxito en la nube!');
-                renderSessions();
+                await addDoc(collection(db, "sessions"), newSession);
+                document.getElementById('session-form').reset();
+                alert('¡Evolución guardada con éxito en la nube!');
+                initSesiones();
             } catch (error) {
                 console.error("Error al guardar sesión:", error);
-                alert("Error al registrar la sesión.");
             }
         });
 
-        let recognition = null;
-        let isRecording = false;
-
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'es-AR';
-            recognition.continuous = true;
-            recognition.interimResults = true;
-
-            recognition.onresult = (event) => {
-                let finalTranscript = '';
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        finalTranscript += event.results[i][0].transcript;
-                    }
-                }
-                const textarea = document.getElementById('session-narrative');
-                if (finalTranscript) {
-                    textarea.value += (textarea.value ? ' ' : '') + finalTranscript;
-                }
-            };
-        }
-
-        window.toggleSpeechRecognition = function() {
-            if (!recognition) {
-                alert('Su navegador no soporta el reconocimiento de voz.');
-                return;
+        window.deleteSession = async function(id) {
+            if (!confirm('¿Desea eliminar esta evolución clínica?')) return;
+            try {
+                await deleteDoc(doc(db, "sessions", id));
+                initSesiones();
+            } catch (error) {
+                console.error("Error al eliminar sesión:", error);
             }
-            const btn = document.getElementById('mic-toggle-btn');
-            const status = document.getElementById('mic-status');
+        };
 
-            if (!isRecording) {
-                recognition.start();
-                isRecording = true;
-                btn.classList.add('recording');
-                status.innerHTML = '<i class="fa-solid fa-microphone-lines"></i> Escuchando...';
-            } else {
-                recognition.stop();
-                isRecording = false;
-                btn.classList.remove('recording');
-                status.innerText = 'Dictado finalizado.';
-            }
-        }
-
-        initSecciones();
+        initSesiones();
     </script>
 </body>
 </html>
