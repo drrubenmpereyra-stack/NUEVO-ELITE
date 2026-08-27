@@ -87,8 +87,8 @@
 
     <!-- NIVEL 1: BARRA PRINCIPAL -->
     <nav class="main-nav-bar">
-        <a href="app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="./sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
         <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
         <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
         <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
@@ -96,58 +96,55 @@
 
     <!-- NIVEL 2: BARRA SECUNDARIA (Historia Clínica) -->
     <nav class="subnav-bar">
-        <a href="sesiones.html" class="subnav-btn">1. Registro de Sesiones[cite: 1]</a>
-        <a href="entrevista.html" class="subnav-btn">2. Primera entrevista[cite: 1]</a>
-        <a href="eync.html" class="subnav-btn">3. Est y NC[cite: 1]</a>
-        <a href="ejes1.html" class="subnav-btn active" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas[cite: 1]</a>
-        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾[cite: 1]</a>
-        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas[cite: 1]</a>
+        <a href="./sesiones.html" class="subnav-btn">1. Registro de Sesiones</a>
+        <a href="./entrevista.html" class="subnav-btn">2. Primera entrevista</a>
+        <a href="./eync.html" class="subnav-btn">3. Estrategias y Niveles de Cambio</a>
+        <a href="./eje1.html" class="subnav-btn active" onclick="toggleInternal('internal-ejes', event)">4. Ejes Proceso Terap ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">5. Genograma</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">6. Herramientas usadas</a>
+        <a href="#" onclick="toggleInternal('internal-freud', event)" class="subnav-btn">7. Aparato Psiquico Freud ▾</a>
+        <a href="#" onclick="toggleInternal('internal-psiquismo', event)" class="subnav-btn">8. Psiquismo creador ▾</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="subnav-btn">9. Interconsultas</a>
         <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
     </nav>
 
-    <!-- NIVEL 3: BARRA TERCIARIA (Por defecto visible al estar dentro de Ejes) -->
+    <!-- NIVEL 3: BARRA TERCIARIA -->
     <div id="internal-ejes" class="subnav-internal active-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Ejes:</span>
-        <a href="ejes1.html" class="internal-btn">4.1 Eje 1 Foco[cite: 1]</a>
-        <a href="elite_func_yoicas.html" class="internal-btn active">4.2 Eje 2 Func yoicas[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP[cite: 1]</a>
+        <a href="./eje1.html" class="internal-btn">4.1 Eje 1 Foco</a>
+        <a href="./elite_func_yoicas.html" class="internal-btn active">4.2 Eje 2 Func yoicas</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.3 Eje 3 Relac TP</a>
         <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">4.4 Integraciones</a>
     </div>
 
     <div id="internal-freud" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Aparato Psíquico:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.1 Val Yo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.2 Val SuperYo</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.3 Val Ello</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">7.4 Integraciones</a>
     </div>
 
     <div id="internal-psiquismo" class="subnav-internal">
         <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Psiquismo Creador:</span>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad[cite: 1]</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica[cite: 1]</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.1 Protocolo Fiorini</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.2 Puente simbolización</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.3 Proyecto vital</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.4 Via motora</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.5 Temporalidad</a>
+        <a href="#" onclick="avisoDesarrollo(event)" class="internal-btn">8.6 Convergencia clínica</a>
     </div>
 
     <main class="container">
         <div class="app-container">
-            <!-- CABECERA DE FILTROS -->
             <div style="background:#151515; padding:12px; border-bottom:1px solid #00e5ff; display:flex; gap:15px; align-items:center;">
                 <b style="color:#00e5ff; font-size:11px;">ESTADÍSTICA FUNCIONES YOICAS (DESDE / HASTA):</b>
                 <input type="date" id="stats-yo-inicio" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
                 <input type="date" id="stats-yo-fin" style="background:#222; color:#fff; border:1px solid #00e5ff; padding:5px; font-size:11px; border-radius:4px;">
             </div>
 
-            <!-- CUERPO DE EVALUACIÓN (SCROLL) -->
             <div id="valyo-indicadores-scroll" style="flex:1; overflow-y:auto; padding:20px; border-bottom:2px solid #00e5ff;"></div>
 
-            <!-- PANEL DE CONTROL E INFERIOR (CONSOLA Y ECUALIZADOR) -->
             <div style="height:340px; background:#0a0a0a; padding:15px; border-top:2px solid #00e5ff; display:flex; flex-direction:column; box-sizing:border-box;">
                 <div style="display:flex; gap:8px; margin-bottom:12px;">
                     <button onclick="medirValYo()" style="flex:1; background:#00e5ff; color:black; font-weight:bold; padding:10px; cursor:pointer; border:none; border-radius:5px;">📊 MEDIR / GRAFICAR</button>
@@ -178,7 +175,6 @@
             alert("Módulo en desarrollo / Próximamente disponible en GitHub.");
         }
 
-        // Rúbrica oficial de Funciones Yoicas
         const rubricaValYo = {
             "Función de Realidad": {
                 criterio: "Capacidad de distinguir estímulos internos de externos (Corteza Prefrontal / Juicio Crítico).",
