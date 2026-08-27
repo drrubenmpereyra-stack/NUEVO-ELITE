@@ -24,11 +24,9 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
-        
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* NIVEL 1: BARRA PRINCIPAL */
         .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
         .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
         .main-nav-btn:hover { opacity: 1; }
@@ -40,23 +38,23 @@
         .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
         .btn-materiales { background-color: var(--color-materiales); }
 
-        /* NIVEL 2: BARRA SECUNDARIA (Administración) */
         .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
         .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
-        .subnav-btn.active { background-color: var(--admin-pacientes); color: white; box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4); }
+        .subnav-btn.active { background-color: var(--admin-pacientes); color: white; }
         .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
-
-        /* NIVEL 3: BARRA TERCIARIA GENÉRICA */
-        .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
-        .subnav-internal.active-internal { display: flex; }
-        .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
-        .internal-btn:hover { background: rgba(255, 255, 255, 0.15); color: white; }
 
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
         .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 4px solid var(--admin-pacientes); }
         h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--primary-color); }
+        input, select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+        .btn { background-color: var(--admin-pacientes); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background-color: #1d4ed8; }
+        .appointment-item { background: #f8fafc; padding: 12px; border-radius: 6px; border-left: 4px solid var(--admin-pacientes); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
@@ -64,20 +62,18 @@
     <header>
         <div>
             <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
-            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección: Administración</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Sección: Administración (Agenda)</p>
         </div>
     </header>
 
-    <!-- NIVEL 1: BARRA PRINCIPAL -->
     <nav class="main-nav-bar">
         <a href="./app.html" class="main-nav-btn btn-admin active"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
         <a href="./sesiones.html" class="main-nav-btn btn-historia"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="#" onclick="avisoDesarrollo(event)" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="#" onclick="alert('Módulo en desarrollo'); return false;" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
     </nav>
 
-    <!-- NIVEL 2: BARRA SECUNDARIA (Administración) -->
     <nav class="subnav-bar">
         <a href="./app.html" class="subnav-btn"><i class="fa-solid fa-users"></i> 1.1 Pacientes</a>
         <a href="./agenda.html" class="subnav-btn active"><i class="fa-solid fa-calendar-days"></i> 1.2 Agenda</a>
@@ -88,15 +84,121 @@
 
     <main class="container">
         <div class="card">
-            <h2><i class="fa-solid fa-calendar-days"></i> Agenda de Turnos y Consultas</h2>
-            <p style="color: #64748b;">Módulo de agenda institucional integrado con la barra de navegación unificada ELITE 2.0.</p>
+            <h2><i class="fa-solid fa-calendar-plus"></i> Agendar Nuevo Turno</h2>
+            <form id="appointment-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="appt-patient">Seleccionar Paciente</label>
+                        <select id="appt-patient" required>
+                            <option value="">-- Seleccione paciente --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="appt-date">Fecha y Hora</label>
+                        <input type="datetime-local" id="appt-date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Turno en la Nube</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-calendar-days"></i> Agenda General de Turnos</h2>
+            <div id="appointments-list">
+                <p style="color: #64748b; font-size: 0.9rem; text-align: center;">Cargando turnos...</p>
+            </div>
         </div>
     </main>
 
     <script>
         if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
         window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
-        function avisoDesarrollo(e) { e.preventDefault(); alert("Módulo en desarrollo / Próximamente disponible en GitHub."); }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initAgenda() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('appt-patient');
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = data.name;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+                loadAppointments();
+            } catch (error) {
+                console.error("Error al cargar pacientes para agenda:", error);
+            }
+        }
+
+        async function loadAppointments() {
+            const container = document.getElementById('appointments-list');
+            try {
+                const globalRef = doc(db, "config", "agenda_global");
+                const snap = await getDoc(globalRef);
+                container.innerHTML = '';
+                if (snap.exists()) {
+                    const appts = snap.data().appointments || [];
+                    if (appts.length === 0) {
+                        container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center;">No hay turnos agendados.</p>';
+                        return;
+                    }
+                    appts.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    appts.forEach(a => {
+                        const div = document.createElement('div');
+                        div.className = 'appointment-item';
+                        div.innerHTML = `<div><strong>${a.patient}</strong><br><small style="color: #64748b;"><i class="fa-regular fa-clock"></i> ${new Date(a.date).toLocaleString()}</small></div>`;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem; text-align: center;">No hay turnos agendados.</p>';
+                }
+            } catch (error) {
+                console.error("Error cargando turnos:", error);
+                container.innerHTML = '<p style="color: #ef4444; font-size: 0.9rem; text-align: center;">Error al cargar la agenda desde la nube.</p>';
+            }
+        }
+
+        document.getElementById('appointment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const patient = document.getElementById('appt-patient').value;
+            const date = document.getElementById('appt-date').value;
+            const newAppt = { id: Date.now().toString(), patient, date };
+
+            try {
+                const globalRef = doc(db, "config", "agenda_global");
+                const snap = await getDoc(globalRef);
+                let appts = [];
+                if (snap.exists()) { appts = snap.data().appointments || []; }
+                appts.push(newAppt);
+                await setDoc(globalRef, { appointments: appts }, { merge: true });
+                alert('¡Turno registrado con éxito!');
+                document.getElementById('appointment-form').reset();
+                loadAppointments();
+            } catch (error) {
+                console.error("Error al guardar turno:", error);
+                alert("Error al registrar el turno.");
+            }
+        });
+
+        initAgenda();
     </script>
 </body>
 </html>
