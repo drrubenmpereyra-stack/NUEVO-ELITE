@@ -14,30 +14,12 @@
             --card-bg: #ffffff;
             --text-color: #334155;
             --border-color: #cbd5e1;
-            
-            --color-admin: #2563eb;
-            --color-historia: #16a34a;
-            --color-pacientes: #ea580c;
-            --color-terapeuta: #eab308;
-            --color-materiales: #9333ea;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* NIVEL 1: BARRA PRINCIPAL */
-        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
-        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
-        .main-nav-btn:hover { opacity: 1; }
-        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
-
-        .btn-admin { background-color: var(--color-admin); }
-        .btn-historia { background-color: var(--color-historia); }
-        .btn-pacientes { background-color: var(--color-pacientes); }
-        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
-        .btn-materiales { background-color: var(--color-materiales); }
-
         .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--admin-historia); }
         .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
@@ -66,15 +48,6 @@
             <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Historia Clínica General</p>
         </div>
     </header>
-
-    <!-- NIVEL 1: BARRA PRINCIPAL -->
-    <nav class="main-nav-bar">
-        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="./sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
-    </nav>
 
     <nav class="subnav-bar">
         <a href="sesiones.html" class="subnav-btn active"><i class="fa-solid fa-book-medical"></i> Registro de Sesiones</a>
