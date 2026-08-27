@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas Clínicas Terapeuta | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --color-admin: #2563eb;
+            --color-historia: #16a34a;
+            --color-pacientes: #ea580c;
+            --color-terapeuta: #ca8a04;
+            --color-materiales: #9333ea;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* NIVEL 1: BARRA PRINCIPAL */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
+        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
+        .main-nav-btn:hover { opacity: 1; }
+        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
+
+        .btn-admin { background-color: var(--color-admin); }
+        .btn-historia { background-color: var(--color-historia); }
+        .btn-pacientes { background-color: var(--color-pacientes); }
+        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
+        .btn-materiales { background-color: var(--color-materiales); }
+
+        /* NIVEL 2: BARRA SECUNDARIA (4.1 a 4.5) */
+        .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        .subnav-btn.active { background-color: var(--color-terapeuta); color: #1e293b !important; }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        /* NIVEL 3: BARRA TERCIARIA (4.4.1 a 4.4.4) */
+        .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
+        .subnav-internal.active-internal { display: flex; }
+        .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+        .internal-btn:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+        .internal-btn.active { background: var(--secondary-color); color: white; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .tool-section { display: none; }
+        .tool-section.active-section { display: block; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 4px solid var(--color-terapeuta); }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Herramientas Clínicas Terapeuta</p>
+        </div>
+    </header>
+
+    <nav class="main-nav-bar">
+        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="./sesiones.html" class="main-nav-btn btn-historia"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta active"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <button class="subnav-btn active" id="btn-4-1" onclick="switchToolTab('4-1', event)">4.1 Exp emocional creador T</button>
+        <button class="subnav-btn" id="btn-4-2" onclick="switchToolTab('4-2', event)">4.2 Contratransferencia</button>
+        <button class="subnav-btn" id="btn-4-3" onclick="switchToolTab('4-3', event)">4.3 Terminación Separación</button>
+        <button class="subnav-btn" id="btn-4-4" onclick="toggleAutoeval(event)">4.4 Autoevaluación ▾</button>
+        <button class="subnav-btn" id="btn-4-5" onclick="switchToolTab('4-5', event)">4.5 Farmacología</button>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <div id="internal-autoeval" class="subnav-internal">
+        <span style="color: #cbd5e1; font-weight: bold; margin-right: 5px;">Submenú Autoevaluación:</span>
+        <button class="internal-btn active" id="btn-4-4-1" onclick="switchSubTab('4-4-1', event)">4.4.1 Rol profesional</button>
+        <button class="internal-btn" id="btn-4-4-2" onclick="switchSubTab('4-4-2', event)">4.4.2 Alianza terapéutica</button>
+        <button class="internal-btn" id="btn-4-4-3" onclick="switchSubTab('4-4-3', event)">4.4.3 Estilo de intervención y eficacia</button>
+        <button class="internal-btn" id="btn-4-4-4" onclick="switchSubTab('4-4-4', event)">4.4.4 Cuidado del self y estado psicofisiológico</button>
+    </div>
+
+    <main class="container">
+        <div id="sec-4-1" class="tool-section active-section card">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.1 Experiencia Emocional Creador (Terapeuta)</h2>
+            <p style="color: #64748b;">Monitoreo de la capacidad operativa y resonancia vivencial del analista en el campo.</p>
+        </div>
+        <div id="sec-4-2" class="tool-section card">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.2 Contratransferencia</h2>
+            <p style="color: #64748b;">Análisis y registro sistemático de los movimientos contratransferenciales en el proceso.</p>
+        </div>
+        <div id="sec-4-3" class="tool-section card">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.3 Terminación y Separación</h2>
+            <p style="color: #64748b;">Protocolos de cierre, elaboración del duelo de separación y evaluación de cierre del proceso.</p>
+        </div>
+        <div id="sec-4-4-1" class="tool-section card sub-sec-autoeval">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.4.1 Autoevaluación: Rol Profesional</h2>
+            <p style="color: #64748b;">Revisión crítica del posicionamiento técnico, encuadre y función institucional.</p>
+        </div>
+        <div id="sec-4-4-2" class="tool-section card sub-sec-autoeval">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.4.2 Autoevaluación: Alianza Terapéutica</h2>
+            <p style="color: #64748b;">Métrica y seguimiento de la sintonía colaborativa con el paciente.</p>
+        </div>
+        <div id="sec-4-4-3" class="tool-section card sub-sec-autoeval">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.4.3 Autoevaluación: Estilo de Intervención y Eficacia</h2>
+            <p style="color: #64748b;">Análisis del impacto táctico de las intervenciones y resultados clínicos obtenidos.</p>
+        </div>
+        <div id="sec-4-4-4" class="tool-section card sub-sec-autoeval">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.4.4 Autoevaluación: Cuidado del Self y Estado Psicofisiológico</h2>
+            <p style="color: #64748b;">Monitoreo del desgaste profesional, homeostasis y recursos de autoprotección del terapeuta.</p>
+        </div>
+        <div id="sec-4-5" class="tool-section card">
+            <h2><i class="fa-solid fa-stethoscope"></i> 4.5 Farmacología</h2>
+            <p style="color: #64748b;">Articulación interdisciplinaria, psiquiatría y seguimiento de psicofármacos en la convergencia.</p>
+        </div>
+    </main>
+
+    <script>
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        function switchToolTab(tabId, event) {
+            event.preventDefault();
+            document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active-section'));
+            document.getElementById('internal-autoeval').classList.remove('active-internal');
+
+            document.getElementById('btn-' + tabId).classList.add('active');
+            document.getElementById('sec-' + tabId).classList.add('active-section');
+        }
+
+        function toggleAutoeval(event) {
+            event.preventDefault();
+            const internal = document.getElementById('internal-autoeval');
+            internal.classList.toggle('active-internal');
+            
+            document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-4-4').classList.add('active');
+
+            if(internal.classList.contains('active-internal')) {
+                switchSubTab('4-4-1', event);
+            }
+        }
+
+        function switchSubTab(subId, event) {
+            event.preventDefault();
+            document.querySelectorAll('.internal-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.sub-sec-autoeval').forEach(s => s.classList.remove('active-section'));
+
+            document.getElementById('btn-' + subId).classList.add('active');
+            document.getElementById('sec-' + subId).classList.add('active-section');
+        }
+    </script>
+</body>
+</html>

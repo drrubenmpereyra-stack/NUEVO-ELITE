@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas Clínicas Pacientes | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --color-admin: #2563eb;
+            --color-historia: #16a34a;
+            --color-pacientes: #ea580c;
+            --color-terapeuta: #eab308;
+            --color-materiales: #9333ea;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* NIVEL 1: BARRA PRINCIPAL */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
+        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
+        .main-nav-btn:hover { opacity: 1; }
+        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
+
+        .btn-admin { background-color: var(--color-admin); }
+        .btn-historia { background-color: var(--color-historia); }
+        .btn-pacientes { background-color: var(--color-pacientes); }
+        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
+        .btn-materiales { background-color: var(--color-materiales); }
+
+        /* NIVEL 2: BARRA SECUNDARIA (Herramientas Pacientes 3.1 a 3.12) */
+        .subnav-bar { background: #1e293b; padding: 6px 15px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.73rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        .subnav-btn.active { background-color: var(--color-pacientes); color: white; }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .tool-section { display: none; }
+        .tool-section.active-section { display: block; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 4px solid var(--color-pacientes); }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Herramientas Clínicas Pacientes</p>
+        </div>
+    </header>
+
+    <nav class="main-nav-bar">
+        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="./sesiones.html" class="main-nav-btn btn-historia"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes active"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+    </nav>
+
+    <nav class="subnav-bar">
+        <button class="subnav-btn active" id="btn-3-1" onclick="switchToolTab('3-1', event)">3.1 Potencial acting out</button>
+        <button class="subnav-btn" id="btn-3-2" onclick="switchToolTab('3-2', event)">3.2 Exp emocional creativa</button>
+        <button class="subnav-btn" id="btn-3-3" onclick="switchToolTab('3-3', event)">3.3 Med neuropsicológicos</button>
+        <button class="subnav-btn" id="btn-3-4" onclick="switchToolTab('3-4', event)">3.4 Psicodiagnóstico</button>
+        <button class="subnav-btn" id="btn-3-5" onclick="switchToolTab('3-5', event)">3.5 Test</button>
+        <button class="subnav-btn" id="btn-3-6" onclick="switchToolTab('3-6', event)">3.6 Riesgos en PB</button>
+        <button class="subnav-btn" id="btn-3-7" onclick="switchToolTab('3-7', event)">3.7 Memorias traumáticas</button>
+        <button class="subnav-btn" id="btn-3-8" onclick="switchToolTab('3-8', event)">3.8 Ritmos circadianos</button>
+        <button class="subnav-btn" id="btn-3-9" onclick="switchToolTab('3-9', event)">3.9 Mapeos visuales</button>
+        <button class="subnav-btn" id="btn-3-10" onclick="switchToolTab('3-10', event)">3.10 Adherencia</button>
+        <button class="subnav-btn" id="btn-3-11" onclick="switchToolTab('3-11', event)">3.11 Resonancia CT</button>
+        <button class="subnav-btn" id="btn-3-12" onclick="switchToolTab('3-12', event)">3.12 Inteligencia Elite</button>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div id="sec-3-1" class="tool-section active-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.1 Potencial Acting Out</h2>
+            <p style="color: #64748b;">Evaluación y monitoreo del potencial de actuación y descarga impulsiva en el encuadre clínico del paciente.</p>
+        </div>
+        <div id="sec-3-2" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.2 Experiencia Emocional Creativa</h2>
+            <p style="color: #64748b;">Dispositivos y registros orientados a la facilitación de la simbolización y expresión afectiva.</p>
+        </div>
+        <div id="sec-3-3" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.3 Medios Neuropsicológicos</h2>
+            <p style="color: #64748b;">Evaluación de funciones ejecutivas, atención y procesamiento cognitivo.</p>
+        </div>
+        <div id="sec-3-4" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.4 Psicodiagnóstico</h2>
+            <p style="color: #64748b;">Baterías de exploración clínica y estructuración de personalidad.</p>
+        </div>
+        <div id="sec-3-5" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.5 Test</h2>
+            <p style="color: #64748b;">Inventarios y escalas psicométricas estandarizadas para el seguimiento.</p>
+        </div>
+        <div id="sec-3-6" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.6 Riesgos en PB</h2>
+            <p style="color: #64748b;">Protocolos de evaluación y contención de factores de riesgo psicobiosocial.</p>
+        </div>
+        <div id="sec-3-7" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.7 Memorias Traumáticas</h2>
+            <p style="color: #64748b;">Abordaje de huellas mnémicas tempranas y procesamiento de la experiencia escindida.</p>
+        </div>
+        <div id="sec-3-8" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.8 Ritmos Circadianos</h2>
+            <p style="color: #64748b;">Monitoreo de patrones cronobiológicos, sueño y estabilidad neurovegetativa.</p>
+        </div>
+        <div id="sec-3-9" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.9 Mapeos Visuales</h2>
+            <p style="color: #64748b;">Representaciones gráficas y esquemáticas de la red vincular y dinámica situacional.</p>
+        </div>
+        <div id="sec-3-10" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.10 Adherencia al Tratamiento</h2>
+            <p style="color: #64748b;">Control de cumplimiento del encuadre, asistencia y alianza terapéutica operativa.</p>
+        </div>
+        <div id="sec-3-11" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.11 Resonancia CT</h2>
+            <p style="color: #64748b;">Sintonía vincular y procesamiento de la resonancia en el campo analítico.</p>
+        </div>
+        <div id="sec-3-12" class="tool-section card">
+            <h2><i class="fa-solid fa-user-gear"></i> 3.12 Inteligencia Elite</h2>
+            <p style="color: #64748b;">Módulo avanzado de integración cognitiva y optimización de recursos yoicos.</p>
+        </div>
+    </main>
+
+    <script>
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        function switchToolTab(tabId, event) {
+            event.preventDefault();
+            document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active-section'));
+
+            document.getElementById('btn-' + tabId).classList.add('active');
+            document.getElementById('sec-' + tabId).classList.add('active-section');
+        }
+    </script>
+</body>
+</html>
