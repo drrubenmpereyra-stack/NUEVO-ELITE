@@ -9,11 +9,7 @@
         :root {
             --primary-color: #1e3a8a;
             --secondary-color: #0d9488;
-            --color-admin: #2563eb;
-            --color-historia: #16a34a;
-            --color-pacientes: #ea580c;
             --color-terapeuta: #ca8a04;
-            --color-materiales: #9333ea;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #334155;
@@ -24,19 +20,6 @@
         header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
         header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
         
-        /* NIVEL 1: BARRA PRINCIPAL */
-        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
-        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
-        .main-nav-btn:hover { opacity: 1; }
-        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
-
-        .btn-admin { background-color: var(--color-admin); }
-        .btn-historia { background-color: var(--color-historia); }
-        .btn-pacientes { background-color: var(--color-pacientes); }
-        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
-        .btn-materiales { background-color: var(--color-materiales); }
-
-        /* NIVEL 2: BARRA SECUNDARIA (4.1 a 4.5) */
         .subnav-bar { background: #1e293b; padding: 8px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); }
         .subnav-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
@@ -44,7 +27,6 @@
         .logout-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
         .logout-btn:hover { background: #dc2626; }
 
-        /* NIVEL 3: BARRA TERCIARIA (4.4.1 a 4.4.4) */
         .subnav-internal { background: #0f172a; padding: 6px 20px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); display: none; font-size: 0.75rem; }
         .subnav-internal.active-internal { display: flex; }
         .internal-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
@@ -66,14 +48,6 @@
             <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Herramientas Clínicas Terapeuta</p>
         </div>
     </header>
-
-    <nav class="main-nav-bar">
-        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
-        <a href="./sesiones.html" class="main-nav-btn btn-historia"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
-        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
-        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta active"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
-        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
-    </nav>
 
     <nav class="subnav-bar">
         <button class="subnav-btn active" id="btn-4-1" onclick="switchToolTab('4-1', event)">4.1 Exp emocional creador T</button>
