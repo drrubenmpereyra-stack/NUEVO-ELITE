@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eje 3: Relación de Trabajo Personalizada | ELITE 2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --color-admin: #2563eb;
+            --color-historia: #16a34a;
+            --color-pacientes: #ea580c;
+            --color-terapeuta: #eab308;
+            --color-materiales: #9333ea;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; }
+        header { background-color: var(--primary-color); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* NIVEL 1: BARRA PRINCIPAL */
+        .main-nav-bar { background: #0f172a; padding: 8px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #1e293b; align-items: center; }
+        .main-nav-btn { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; opacity: 0.85; transition: opacity 0.2s; cursor: pointer; }
+        .main-nav-btn:hover { opacity: 1; }
+        .main-nav-btn.active { opacity: 1; box-shadow: 0 0 0 2px white; }
+
+        .btn-admin { background-color: var(--color-admin); }
+        .btn-historia { background-color: var(--color-historia); }
+        .btn-pacientes { background-color: var(--color-pacientes); }
+        .btn-terapeuta { background-color: var(--color-terapeuta); color: #1e293b !important; }
+        .btn-materiales { background-color: var(--color-materiales); }
+
+        /* NIVEL 2: BARRA SECUNDARIA (Historia Clínica) */
+        .subnav-bar { background: #0f172a; padding: 10px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 3px solid var(--color-historia); }
+        .subnav-btn { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
+        .subnav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .subnav-btn.active { background-color: var(--color-historia); box-shadow: 0 2px 5px rgba(22, 163, 74, 0.4); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-left: auto; }
+        .logout-btn:hover { background: #dc2626; }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .card { background: var(--card-bg); border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 4px solid var(--color-historia); }
+        h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-group { margin-bottom: 20px; }
+        label.select-label { font-size: 0.9rem; font-weight: 600; color: var(--primary-color); display: block; margin-bottom: 8px; }
+        select { width: 100%; max-width: 400px; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; }
+        select:focus { outline: none; border-color: var(--color-historia); }
+
+        /* Tabla de Rúbrica Interactiva */
+        .rubric-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.88rem; }
+        .rubric-table th, .rubric-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; vertical-align: middle; }
+        .rubric-table th { background-color: #f1f5f9; color: var(--primary-color); font-weight: 700; }
+        .rubric-table tr:hover { background-color: #f8fafc; }
+        .dimension-title { font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 4px; }
+        .neuro-tag { font-size: 0.75rem; color: #64748b; font-style: italic; }
+        
+        .radio-option { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+        .radio-option input { margin-top: 3px; cursor: pointer; }
+
+        .btn-evaluate { background-color: var(--color-historia); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s; }
+        .btn-evaluate:hover { background-color: #15803d; }
+
+        /* Resultados y Diagnósticos */
+        .result-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-top: 20px; display: none; }
+        .result-card.active { display: block; }
+        .score-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: bold; color: white; font-size: 0.95rem; margin-bottom: 15px; }
+        .badge-deficiente { background-color: #dc2626; } /* Rojo (5-8) */
+        .badge-proceso { background-color: #d97706; }    /* Amarillo/Naranja (9-12) */
+        .badge-excelente { background-color: #16a34a; }  /* Verde (13-15) */
+        
+        .result-section { margin-bottom: 12px; }
+        .result-section strong { color: var(--primary-color); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1><i class="fa-solid fa-brain"></i> Clínica de la Convergencia</h1>
+            <p style="font-size: 0.8rem; opacity: 0.8;">ELITE 2.0 — Ejes de Proceso Terapéutico (Eje 3)</p>
+        </div>
+    </header>
+
+    <!-- NIVEL 1: BARRA PRINCIPAL -->
+    <nav class="main-nav-bar">
+        <a href="./app.html" class="main-nav-btn btn-admin"><i class="fa-solid fa-building-shield"></i> 1. Administración</a>
+        <a href="./sesiones.html" class="main-nav-btn btn-historia active"><i class="fa-solid fa-book-medical"></i> 2. Historia Clínica</a>
+        <a href="./pacientes_herramientas.html" class="main-nav-btn btn-pacientes"><i class="fa-solid fa-user-gear"></i> 3. Herramientas Pacientes</a>
+        <a href="./terapeuta_herramientas.html" class="main-nav-btn btn-terapeuta"><i class="fa-solid fa-stethoscope"></i> 4. Herramientas Terapeuta</a>
+        <a href="./materiales.html" class="main-nav-btn btn-materiales"><i class="fa-solid fa-book-open-reader"></i> 5. Materiales Teóricos</a>
+    </nav>
+
+    <!-- NIVEL 2: BARRA SECUNDARIA (Historia Clínica) -->
+    <nav class="subnav-bar">
+        <a href="sesiones.html" class="subnav-btn"><i class="fa-solid fa-book-medical"></i> Registro de Sesiones</a>
+        <a href="eje3.html" class="subnav-btn active"><i class="fa-solid fa-handshake"></i> Eje 3: Relación de Trabajo</a>
+        <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2><i class="fa-solid fa-handshake-angle"></i> Rúbrica Interactiva: Eje 3 - Relación de Trabajo Personalizada (RTP)</h2>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">
+                Modelo: Psicoterapia Psicoanalítica Focalizada (Héctor Fiorini) + Aportes de la Neurociencia Relacional[cite: 7]. Seleccione el nivel descriptivo para cada dimensión operativa y neurobiológica[cite: 7].
+            </p>
+
+            <div class="form-group">
+                <label class="select-label" for="select-patient"><i class="fa-solid fa-user"></i> Seleccionar Paciente para la Evaluación:</label>
+                <select id="select-patient" required>
+                    <option value="">-- Cargando pacientes desde la nube --</option>
+                </select>
+            </div>
+
+            <form id="rtp-form">
+                <table class="rubric-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 22%;">Dimensión / Correlato</th>
+                            <th style="width: 26%;">Nivel Inicial (Deficiente - 1 Pt)</th>
+                            <th style="width: 26%;">Nivel Intermedio (En Proceso - 2 Pts)</th>
+                            <th style="width: 26%;">Nivel Excelencia (Logrado - 3 Pts)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dimensión 1 -->
+                        <tr>
+                            <td>
+                                <span class="dimension-title">Alianza y Clima</span>
+                                <span class="neuro-tag"><i class="fa-solid fa-microchip"></i> Oxitocina / Amígdala</span>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim1" value="1" required>
+                                    <span>Tensión, distancia o autoría excesiva del terapeuta.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim1" value="2">
+                                    <span>Cordialidad con asimetría rígida; inhibe iniciativa.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim1" value="3">
+                                    <span>Seguridad, respeto y co-autoría percibida.</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!-- Dimensión 2 -->
+                        <tr>
+                            <td>
+                                <span class="dimension-title">Encuadre Flexible</span>
+                                <span class="neuro-tag"><i class="fa-solid fa-microchip"></i> CPF (Planificación)</span>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim2" value="1" required>
+                                    <span>Ausencia de objetivos; proceso a la deriva.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim2" value="2">
+                                    <span>Impuesto de forma burocrática e inflexible.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim2" value="3">
+                                    <span>Acuerdos claros adaptados a la singularidad.</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!-- Dimensión 3 -->
+                        <tr>
+                            <td>
+                                <span class="dimension-title">Empatía Instrumental</span>
+                                <span class="neuro-tag"><i class="fa-solid fa-microchip"></i> Neuronas Espejo / Ínsula</span>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim3" value="1" required>
+                                    <span>Desconexión emocional o intelectualización.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim3" value="2">
+                                    <span>Empatía genérica; falla en sutilezas del foco.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim3" value="3">
+                                    <span>Resonancia afectiva precisa en el foco.</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!-- Dimensión 4 -->
+                        <tr>
+                            <td>
+                                <span class="dimension-title">Colaboración Activa</span>
+                                <span class="neuro-tag"><i class="fa-solid fa-microchip"></i> Co-regulación Límbica</span>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim4" value="1" required>
+                                    <span>Dependencia o confrontación que bloquea el pensar.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim4" value="2">
+                                    <span>Paciente pasivo; terapeuta hace todo el trabajo.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim4" value="3">
+                                    <span>Compañero de ruta; fomenta la autonomía.</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!-- Dimensión 5 -->
+                        <tr>
+                            <td>
+                                <span class="dimension-title">Manejo Resistencia</span>
+                                <span class="neuro-tag"><i class="fa-solid fa-microchip"></i> Flexibilidad / DMN</span>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim5" value="1" required>
+                                    <span>Se ignora o se vive como ataque personal.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim5" value="2">
+                                    <span>Se detecta pero señala generando defensas.</span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio-option">
+                                    <input type="radio" name="dim5" value="3">
+                                    <span>Abordada como labor compartida sin culpas.</span>
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button type="submit" class="btn-evaluate"><i class="fa-solid fa-calculator"></i> Evaluar y Registrar en la Nube</button>
+            </form>
+
+            <!-- Contenedor del Resultado Calculado -->
+            <div id="evaluation-result" class="result-card">
+                <h3><i class="fa-solid fa-square-poll-vertical"></i> Informe de Evaluación: Eje 3 (RTP)</h3>
+                <hr style="margin: 10px 0 15px 0; border: 0; border-top: 1px solid #cbd5e1;">
+                <div id="score-display"></div>
+                <div class="result-section"><strong>Diagnóstico de Proceso:</strong> <span id="res-diagnostico">-</span></div>
+                <div class="result-section"><strong>Correlato Neurobiológico:</strong> <span id="res-neuro">-</span></div>
+                <div class="result-section"><strong>Prescripción Técnica de Convergencia:</strong> <span id="res-prescripcion">-</span></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script de Integración con Firebase y Lógica Cuantitativa -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        if (sessionStorage.getItem('clinica_auth') !== 'true') { window.location.href = 'index.html'; }
+        window.logout = function() { sessionStorage.removeItem('clinica_auth'); window.location.href = 'index.html'; }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJietA0GuHsUpkN2-lk38Y3L6VDROxvZs",
+            authDomain: "materiales-terapeuticos.firebaseapp.com",
+            projectId: "materiales-terapeuticos",
+            storageBucket: "materiales-terapeuticos.firebasestorage.app",
+            messagingSenderId: "827133493876",
+            appId: "1:827133493876:web:7d51b4befe64e0f8dfc721"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Cargar pacientes en el selector
+        async function loadPatients() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "patients"));
+                const selectEl = document.getElementById('select-patient');
+                selectEl.innerHTML = '<option value="">-- Seleccionar paciente --</option>';
+                querySnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const opt = document.createElement('option');
+                    opt.value = docSnap.id;
+                    opt.textContent = data.name;
+                    selectEl.appendChild(opt);
+                });
+            } catch (error) {
+                console.error("Error al cargar pacientes:", error);
+            }
+        }
+
+        loadPatients();
+
+        // Procesar formulario y evaluar
+        document.getElementById('rtp-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const patientId = document.getElementById('select-patient').value;
+            if (!patientId) {
+                alert('Por favor, seleccione un paciente antes de realizar la evaluación.');
+                return;
+            }
+
+            const d1 = parseInt(document.querySelector('input[name="dim1"]:checked').value);
+            const d2 = parseInt(document.querySelector('input[name="dim2"]:checked').value);
+            const d3 = parseInt(document.querySelector('input[name="dim3"]:checked').value);
+            const d4 = parseInt(document.querySelector('input[name="dim4"]:checked').value);
+            const d5 = parseInt(document.querySelector('input[name="dim5"]:checked').value);
+
+            const totalScore = d1 + d2 + d3 + d4 + d5; // Escala de 5 a 15 Puntos[cite: 7]
+
+            let badgeClass = '';
+            let rangoTexto = '';
+            let diagnostico = '';
+            let neuro = '';
+            let prescripcion = '';
+
+            // Criterios cuantitativos y clínico-neurocientíficos estrictos[cite: 7]
+            if (totalScore >= 5 && totalScore <= 8) {
+                badgeClass = 'badge-deficiente';
+                rangoTexto = `Rango Deficiente (${totalScore} Puntos - 5 a 8 Puntos)`;
+                diagnostico = 'Iatrogenia por Rigidez o Desconexión Operativa. Falla en la instalación del foco terapéutico. La relación opera bajo asimetría punitiva o deriva burocrática, bloqueando las funciones yoicas del paciente[cite: 7].';
+                neuro = 'Hiperactivación del eje Hipotálamo-Pituitario-Adrenal (HPA) e inundación de cortisol. La respuesta de la amígdala se mantiene encendida por falta de seguridad percibida, e inhibe el trabajo reflexivo del hipocampo y de la corteza prefrontal dorsolateral[cite: 7].';
+                prescripcion = 'Suspender de inmediato las interpretaciones genéticas o de transferencia profunda. Intervenir de forma prioritaria sobre la regulación somática bottom-up, revisar el encuadre con el paciente y apelar a intervenciones de apoyo, clarificación y validación empática para restablecer la ventana de tolerancia[cite: 7].';
+            } else if (totalScore >= 9 && totalScore <= 12) {
+                badgeClass = 'badge-proceso';
+                rangoTexto = `Rango En Proceso (${totalScore} Puntos - 9 a 12 Puntos)`;
+                diagnostico = 'Alianza Pasiva o Intervención Unilateral. Existe una cordialidad de superficie, pero el paciente opera como un receptor pasivo del saber del terapeuta. Falla la co-autoría en el trabajo del foco[cite: 7].';
+                neuro = 'Activación parcial del sistema de recompensa y control prefrontal, pero con riesgo de fatiga cognitiva o sometimiento complaciente. El desacople entre la Ínsula y la Red de Modo Predeterminado (DMN) impide una verdadera integración afectivo-narrativa[cite: 7].';
+                prescripcion = 'Disminuir el ritmo interpretativo del analista. Aplicar la técnica de la pregunta focalizada y el espejo inverso para devolver la iniciativa al paciente, estimulando la colaboración activa e invitándolo a nombrar las sutilezas de su conflicto central[cite: 7].';
+            } else {
+                badgeClass = 'badge-excelente';
+                rangoTexto = `Rango Excelente (${totalScore} Puntos - 13 a 15 Puntos)`;
+                diagnostico = 'Consolidación de la Relación de Trabajo Personalizada (RTP Mapeada). Se ha constituido un "andamio" psíquico y relacional de alta eficiencia. El vínculo actúa como un atractor que organiza la atención sostenida sobre el foco sin fragmentar las funciones del Yo[cite: 7].';
+                neuro = 'Sincronización intersubjetiva óptima. Inhibición amigdalina sostenida mediada por oxitocina, co-regulación límbica efectiva vía corteza prefrontal ventromedial y alta plasticidad en el desacople defensivo[cite: 7].';
+                prescripcion = 'Sostener la estrategia. Aprovechar la plasticidad de la ventana de reconsolidación de la memoria para promover experiencias emocionales correctoras e interpretaciones mutativas sobre el conflicto focalizado[cite: 7].';
+            }
+
+            // Mostrar resultados en pantalla
+            const resultCard = document.getElementById('evaluation-result');
+            resultCard.classList.add('active');
+            
+            document.getElementById('score-display').innerHTML = `<span class="score-badge ${badgeClass}">${rangoTexto}</span>`;
+            document.getElementById('res-diagnostico').innerText = diagnostico;
+            document.getElementById('res-neuro').innerText = neuro;
+            document.getElementById('res-prescripcion').innerText = prescripcion;
+
+            // Guardar en la base de datos (Firebase Firestore) vinculado al paciente e indexado para el Radar de Fiorini
+            try {
+                await addDoc(collection(db, "fiorini_radar"), {
+                    patientId: patientId,
+                    axis: "Eje 3: Relación de Trabajo Personalizada",
+                    score: totalScore,
+                    dimensions: { dim1: d1, dim2: d2, dim3: d3, dim4: d4, dim5: d5 },
+                    date: new Date().toISOString()
+                });
+                alert('¡Evaluación del Eje 3 evaluada y guardada con éxito en la nube para el Radar de Fiorini!');
+            } catch (error) {
+                console.error("Error al guardar en Firebase:", error);
+                alert('Error al guardar el registro en la base de datos.');
+            }
+        });
+    </script>
+</body>
+</html>
